@@ -1,0 +1,481 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4F254C01190AF09800A2E945 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C00190AF09800A2E945 /* Cocoa.framework */; };
+		4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C09190AF09800A2E945 /* InfoPlist.strings */; };
+		4F254C0D190AF09800A2E945 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C0C190AF09800A2E945 /* main.m */; };
+		4F254C11190AF09800A2E945 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C0F190AF09800A2E945 /* Credits.rtf */; };
+		4F254C14190AF09800A2E945 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C13190AF09800A2E945 /* AppDelegate.m */; };
+		4F254C17190AF09800A2E945 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C15190AF09800A2E945 /* MainMenu.xib */; };
+		4F254C19190AF09800A2E945 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C18190AF09800A2E945 /* Images.xcassets */; };
+		4F254C20190AF09800A2E945 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C1F190AF09800A2E945 /* XCTest.framework */; };
+		4F254C21190AF09800A2E945 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C00190AF09800A2E945 /* Cocoa.framework */; };
+		4F254C29190AF09800A2E945 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C27190AF09800A2E945 /* InfoPlist.strings */; };
+		4F254C2B190AF09800A2E945 /* GyroSquaresTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C2A190AF09800A2E945 /* GyroSquaresTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4F254C22190AF09800A2E945 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F254BF5190AF09800A2E945 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F254BFC190AF09800A2E945;
+			remoteInfo = GyroSquares;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4F254BFD190AF09800A2E945 /* GyroSquares.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GyroSquares.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F254C00190AF09800A2E945 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		4F254C03190AF09800A2E945 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		4F254C04190AF09800A2E945 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		4F254C05190AF09800A2E945 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		4F254C08190AF09800A2E945 /* GyroSquares-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GyroSquares-Info.plist"; sourceTree = "<group>"; };
+		4F254C0A190AF09800A2E945 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4F254C0C190AF09800A2E945 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4F254C0E190AF09800A2E945 /* GyroSquares-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GyroSquares-Prefix.pch"; sourceTree = "<group>"; };
+		4F254C10190AF09800A2E945 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		4F254C12190AF09800A2E945 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		4F254C13190AF09800A2E945 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		4F254C16190AF09800A2E945 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4F254C18190AF09800A2E945 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		4F254C1E190AF09800A2E945 /* GyroSquaresTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GyroSquaresTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F254C1F190AF09800A2E945 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		4F254C26190AF09800A2E945 /* GyroSquaresTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GyroSquaresTests-Info.plist"; sourceTree = "<group>"; };
+		4F254C28190AF09800A2E945 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4F254C2A190AF09800A2E945 /* GyroSquaresTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GyroSquaresTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4F254BFA190AF09800A2E945 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F254C01190AF09800A2E945 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F254C1B190AF09800A2E945 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F254C21190AF09800A2E945 /* Cocoa.framework in Frameworks */,
+				4F254C20190AF09800A2E945 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4F254BF4190AF09800A2E945 = {
+			isa = PBXGroup;
+			children = (
+				4F254C06190AF09800A2E945 /* GyroSquares */,
+				4F254C24190AF09800A2E945 /* GyroSquaresTests */,
+				4F254BFF190AF09800A2E945 /* Frameworks */,
+				4F254BFE190AF09800A2E945 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4F254BFE190AF09800A2E945 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4F254BFD190AF09800A2E945 /* GyroSquares.app */,
+				4F254C1E190AF09800A2E945 /* GyroSquaresTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4F254BFF190AF09800A2E945 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F254C00190AF09800A2E945 /* Cocoa.framework */,
+				4F254C1F190AF09800A2E945 /* XCTest.framework */,
+				4F254C02190AF09800A2E945 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4F254C02190AF09800A2E945 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F254C03190AF09800A2E945 /* AppKit.framework */,
+				4F254C04190AF09800A2E945 /* CoreData.framework */,
+				4F254C05190AF09800A2E945 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		4F254C06190AF09800A2E945 /* GyroSquares */ = {
+			isa = PBXGroup;
+			children = (
+				4F254C12190AF09800A2E945 /* AppDelegate.h */,
+				4F254C13190AF09800A2E945 /* AppDelegate.m */,
+				4F254C15190AF09800A2E945 /* MainMenu.xib */,
+				4F254C18190AF09800A2E945 /* Images.xcassets */,
+				4F254C07190AF09800A2E945 /* Supporting Files */,
+			);
+			path = GyroSquares;
+			sourceTree = "<group>";
+		};
+		4F254C07190AF09800A2E945 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4F254C08190AF09800A2E945 /* GyroSquares-Info.plist */,
+				4F254C09190AF09800A2E945 /* InfoPlist.strings */,
+				4F254C0C190AF09800A2E945 /* main.m */,
+				4F254C0E190AF09800A2E945 /* GyroSquares-Prefix.pch */,
+				4F254C0F190AF09800A2E945 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4F254C24190AF09800A2E945 /* GyroSquaresTests */ = {
+			isa = PBXGroup;
+			children = (
+				4F254C2A190AF09800A2E945 /* GyroSquaresTests.m */,
+				4F254C25190AF09800A2E945 /* Supporting Files */,
+			);
+			path = GyroSquaresTests;
+			sourceTree = "<group>";
+		};
+		4F254C25190AF09800A2E945 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4F254C26190AF09800A2E945 /* GyroSquaresTests-Info.plist */,
+				4F254C27190AF09800A2E945 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4F254BFC190AF09800A2E945 /* GyroSquares */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F254C2E190AF09800A2E945 /* Build configuration list for PBXNativeTarget "GyroSquares" */;
+			buildPhases = (
+				4F254BF9190AF09800A2E945 /* Sources */,
+				4F254BFA190AF09800A2E945 /* Frameworks */,
+				4F254BFB190AF09800A2E945 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GyroSquares;
+			productName = GyroSquares;
+			productReference = 4F254BFD190AF09800A2E945 /* GyroSquares.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4F254C1D190AF09800A2E945 /* GyroSquaresTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F254C31190AF09800A2E945 /* Build configuration list for PBXNativeTarget "GyroSquaresTests" */;
+			buildPhases = (
+				4F254C1A190AF09800A2E945 /* Sources */,
+				4F254C1B190AF09800A2E945 /* Frameworks */,
+				4F254C1C190AF09800A2E945 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4F254C23190AF09800A2E945 /* PBXTargetDependency */,
+			);
+			name = GyroSquaresTests;
+			productName = GyroSquaresTests;
+			productReference = 4F254C1E190AF09800A2E945 /* GyroSquaresTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4F254BF5190AF09800A2E945 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "James Milton";
+				TargetAttributes = {
+					4F254C1D190AF09800A2E945 = {
+						TestTargetID = 4F254BFC190AF09800A2E945;
+					};
+				};
+			};
+			buildConfigurationList = 4F254BF8190AF09800A2E945 /* Build configuration list for PBXProject "GyroSquares" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4F254BF4190AF09800A2E945;
+			productRefGroup = 4F254BFE190AF09800A2E945 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4F254BFC190AF09800A2E945 /* GyroSquares */,
+				4F254C1D190AF09800A2E945 /* GyroSquaresTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4F254BFB190AF09800A2E945 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */,
+				4F254C19190AF09800A2E945 /* Images.xcassets in Resources */,
+				4F254C11190AF09800A2E945 /* Credits.rtf in Resources */,
+				4F254C17190AF09800A2E945 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F254C1C190AF09800A2E945 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F254C29190AF09800A2E945 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4F254BF9190AF09800A2E945 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F254C14190AF09800A2E945 /* AppDelegate.m in Sources */,
+				4F254C0D190AF09800A2E945 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4F254C1A190AF09800A2E945 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F254C2B190AF09800A2E945 /* GyroSquaresTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4F254C23190AF09800A2E945 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F254BFC190AF09800A2E945 /* GyroSquares */;
+			targetProxy = 4F254C22190AF09800A2E945 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4F254C09190AF09800A2E945 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4F254C0A190AF09800A2E945 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		4F254C0F190AF09800A2E945 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4F254C10190AF09800A2E945 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		4F254C15190AF09800A2E945 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4F254C16190AF09800A2E945 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		4F254C27190AF09800A2E945 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4F254C28190AF09800A2E945 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4F254C2C190AF09800A2E945 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4F254C2D190AF09800A2E945 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4F254C2F190AF09800A2E945 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GyroSquares/GyroSquares-Prefix.pch";
+				INFOPLIST_FILE = "GyroSquares/GyroSquares-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		4F254C30190AF09800A2E945 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GyroSquares/GyroSquares-Prefix.pch";
+				INFOPLIST_FILE = "GyroSquares/GyroSquares-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		4F254C32190AF09800A2E945 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GyroSquares.app/Contents/MacOS/GyroSquares";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GyroSquares/GyroSquares-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "GyroSquaresTests/GyroSquaresTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		4F254C33190AF09800A2E945 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GyroSquares.app/Contents/MacOS/GyroSquares";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GyroSquares/GyroSquares-Prefix.pch";
+				INFOPLIST_FILE = "GyroSquaresTests/GyroSquaresTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4F254BF8190AF09800A2E945 /* Build configuration list for PBXProject "GyroSquares" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F254C2C190AF09800A2E945 /* Debug */,
+				4F254C2D190AF09800A2E945 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F254C2E190AF09800A2E945 /* Build configuration list for PBXNativeTarget "GyroSquares" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F254C2F190AF09800A2E945 /* Debug */,
+				4F254C30190AF09800A2E945 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		4F254C31190AF09800A2E945 /* Build configuration list for PBXNativeTarget "GyroSquaresTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F254C32190AF09800A2E945 /* Debug */,
+				4F254C33190AF09800A2E945 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4F254BF5190AF09800A2E945 /* Project object */;
+}
