@@ -26,8 +26,9 @@
 		4F254C51190AF9CA00A2E945 /* vectorUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C47190AF9CA00A2E945 /* vectorUtil.c */; };
 		4F254C52190AF9CA00A2E945 /* modelUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C49190AF9CA00A2E945 /* modelUtil.c */; };
 		4F254C53190AF9CA00A2E945 /* matrixUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C4B190AF9CA00A2E945 /* matrixUtil.c */; };
-		4F254C54190AF9CA00A2E945 /* imageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C4D190AF9CA00A2E945 /* imageUtil.m */; };
 		4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C57190AFC6700A2E945 /* squareUtil.c */; };
+		4FD4A64F190C084F003AF3DC /* square.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A64E190C084F003AF3DC /* square.vsh */; };
+		4FD4A651190C0856003AF3DC /* square.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A650190C0856003AF3DC /* square.fsh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,8 @@
 		4F254C4F190AF9CA00A2E945 /* glUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glUtil.h; sourceTree = "<group>"; };
 		4F254C57190AFC6700A2E945 /* squareUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = squareUtil.c; sourceTree = "<group>"; };
 		4F254C59190AFC7500A2E945 /* squareUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = squareUtil.h; sourceTree = "<group>"; };
+		4FD4A64E190C084F003AF3DC /* square.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = square.vsh; sourceTree = "<group>"; };
+		4FD4A650190C0856003AF3DC /* square.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = square.fsh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				4F254C56190AFA3A00A2E945 /* Classes */,
+				4FD4A64D190C07E2003AF3DC /* Shaders */,
 				4F254C44190AF9B300A2E945 /* Other Sources */,
 				4F254C07190AF09800A2E945 /* Supporting Files */,
 			);
@@ -220,6 +224,15 @@
 				4F254C42190AF96500A2E945 /* OpenGLRenderer.m */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		4FD4A64D190C07E2003AF3DC /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				4FD4A64E190C084F003AF3DC /* square.vsh */,
+				4FD4A650190C0856003AF3DC /* square.fsh */,
+			);
+			name = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +313,8 @@
 			files = (
 				4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */,
 				4F254C11190AF09800A2E945 /* Credits.rtf in Resources */,
+				4FD4A651190C0856003AF3DC /* square.fsh in Resources */,
+				4FD4A64F190C084F003AF3DC /* square.vsh in Resources */,
 				4F254C17190AF09800A2E945 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,7 +338,6 @@
 				4F254C3E190AF44A00A2E945 /* GLEssentialsGLView.m in Sources */,
 				4F254C3F190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m in Sources */,
 				4F254C53190AF9CA00A2E945 /* matrixUtil.c in Sources */,
-				4F254C54190AF9CA00A2E945 /* imageUtil.m in Sources */,
 				4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */,
 				4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */,
 				4F254C0D190AF09800A2E945 /* main.m in Sources */,
@@ -542,6 +556,7 @@
 				4F254C30190AF09800A2E945 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4F254C31190AF09800A2E945 /* Build configuration list for PBXNativeTarget "GyroSquaresTests" */ = {
 			isa = XCConfigurationList;
@@ -550,6 +565,7 @@
 				4F254C33190AF09800A2E945 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

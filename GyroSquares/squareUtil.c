@@ -18,8 +18,10 @@ SquareModel *loadSquare()
     // I'm using triangles, which means 12 vertices for each face, 24 in total.
     //
     
+    const int vertexCount = 24;
+    
     GLfloat m1;
-    m1 = 0.75;
+    m1 = 0.5;
     
     GLfloat positionArray[] = {
        // x     y     z
@@ -35,26 +37,30 @@ SquareModel *loadSquare()
          1.0, -1.0,  1.0,
          0.0, -1.0,  1.0,
         -1.0, -1.0,  1.0,
-         1.0,  1.0, -1.0,
-         0.0,  1.0, -1.0,
-        -1.0,  1.0, -1.0,
-         m1,   m1,  -1.0,
-        -m1,   m1,  -1.0,
-         1.0,  0.0, -1.0,
-        -1.0,  0.0, -1.0,
-         m1,  -m1,  -1.0,
-        -m1,  -m1,  -1.0,
-         1.0, -1.0, -1.0,
-         0.0, -1.0, -1.0,
-        -1.0, -1.0, -1.0
+         1.0,  1.0, 0.5,
+         0.0,  1.0, 0.5,
+        -1.0,  1.0, 0.5,
+         m1,   m1,  0.5,
+        -m1,   m1,  0.5,
+         1.0,  0.0, 0.5,
+        -1.0,  0.0, 0.5,
+         m1,  -m1,  0.5,
+        -m1,  -m1,  0.5,
+         1.0, -1.0, 0.5,
+         0.0, -1.0, 0.5,
+        -1.0, -1.0, 0.5
     };
     
-    GLubyte colorArray[24];
-    for (int i = 0; i < 24; i++){
-        colorArray[i] = 255; // white
+    GLfloat colorArray[vertexCount * 4];
+    GLfloat color = 1.0;
+    for (int i = 0; i < vertexCount * 4; i+=4){
+        colorArray[i] = color;
+        colorArray[i + 1] = color;
+        colorArray[i + 2] = color;
+        colorArray[i + 3] = 1.0;
     }
     
-    GLuint elementArray[] = {
+    GLushort elementArray[] = {
         // Front
         0,  3,  1,
         3,  1,  4,
@@ -117,7 +123,7 @@ SquareModel *loadSquare()
         
         // Inside Bottom
         7, 8, 20,
-        02, 7, 19
+        20, 7, 19
     };
     
     SquareModel *newModel = (SquareModel *)calloc(sizeof(SquareModel), 1);
@@ -130,13 +136,75 @@ SquareModel *loadSquare()
     newModel->positionSize = 3;
     newModel->positionArraySize = sizeof(positionArray);
     newModel->positionType = GL_FLOAT;
-    newModel->positions = (GLfloat *)malloc(newModel->positionArraySize);
+    newModel->positions = (GLubyte *)malloc(newModel->positionArraySize);
     memcpy(newModel->positions, positionArray, newModel->positionArraySize);
     
-    newModel->colorSize = 1;
+    newModel->colorSize = 4;
     newModel->colorArraySize = sizeof(colorArray);
-    newModel->colorType = GL_UNSIGNED_BYTE;
+    newModel->colorType = GL_FLOAT;
     newModel->colors = (GLubyte *)malloc(newModel->colorArraySize);
+    memcpy(newModel->colors, colorArray, newModel->colorArraySize);
+    
+    newModel->primType = GL_TRIANGLES;
+    
+    newModel->numElements = sizeof(elementArray) / sizeof(GLushort);
+    newModel->elementType = GL_UNSIGNED_SHORT;
+    newModel->elementArraySize = sizeof(elementArray);
+    newModel->elements = (GLubyte *)malloc(newModel->elementArraySize);
+    memcpy(newModel->elements, elementArray, newModel->elementArraySize);
+    
+    newModel->numVertcies = vertexCount;
+    
+    return newModel;
+}
+
+SquareModel *loadBasicSquare()
+{
+    const int vertexCount = 4;
+    
+    GLfloat m1;
+    m1 = 0.75;
+    
+    GLfloat positionArray[] = {
+        // x     y     z
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f
+    };
+    
+    GLfloat colorArray[vertexCount * 4];
+    GLfloat color = 1.0f;
+    for (int i = 0; i < vertexCount * 4; i+=4){
+        colorArray[i] = color;
+        colorArray[i + 1] = color;
+        colorArray[i + 2] = color;
+        colorArray[i + 3] = 1.0f;
+    }
+    
+    GLuint elementArray[] = {
+        // Front
+        0,  1,  2,
+        1,  2,  3
+    };
+    
+    SquareModel *newModel = calloc(sizeof(SquareModel), 1);
+    
+    // check for memory error
+    if (newModel == NULL){
+        return NULL;
+    }
+    
+    newModel->positionSize = 3;
+    newModel->positionArraySize = sizeof(positionArray);
+    newModel->positionType = GL_FLOAT;
+    newModel->positions = malloc(newModel->positionArraySize);
+    memcpy(newModel->positions, positionArray, newModel->positionArraySize);
+    
+    newModel->colorSize = 4;
+    newModel->colorArraySize = sizeof(colorArray);
+    newModel->colorType = GL_FLOAT;
+    newModel->colors = malloc(newModel->colorArraySize);
     memcpy(newModel->colors, colorArray, sizeof(newModel->colorArraySize));
     
     newModel->primType = GL_TRIANGLES;
@@ -144,15 +212,24 @@ SquareModel *loadSquare()
     newModel->numElements = sizeof(elementArray) / sizeof(GLuint);
     newModel->elementType = GL_UNSIGNED_INT;
     newModel->elementArraySize = sizeof(elementArray);
-    newModel->elements = (GLuint *)malloc(newModel->elementArraySize);
+    newModel->elements = malloc(newModel->elementArraySize);
     memcpy(newModel->elements, elementArray, sizeof(newModel->elementArraySize));
     
-    newModel->numVertcies = 24;
+    newModel->numVertcies = vertexCount;
     
     return newModel;
 }
 
 void destroySquareModel(SquareModel *model)
 {
+    if (model == NULL){
+        return;
+    }
     
+    free(model->elements);
+    free(model->colors);
+    free(model->positions);
+    
+    free(model);
 }
+

@@ -64,11 +64,7 @@ OpenGLRenderer* m_renderer;
 	// There is no autorelease pool when this method is called
 	// because it will be called from a background thread.
 	// It's important to create one or app can leak objects.
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	[self drawView];
-	
-	[pool release];
 	return kCVReturnSuccess;
 }
 
@@ -80,7 +76,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 									  CVOptionFlags* flagsOut, 
 									  void* displayLinkContext)
 {
-    CVReturn result = [(GLEssentialsGLView*)displayLinkContext getFrameForTime:outputTime];
+    CVReturn result = [(__bridge GLEssentialsGLView*)displayLinkContext getFrameForTime:outputTime];
     return result;
 }
 
@@ -98,14 +94,14 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 		0
 	};
 	
-	NSOpenGLPixelFormat *pf = [[[NSOpenGLPixelFormat alloc] initWithAttributes:attrs] autorelease];
+	NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
 	
 	if (!pf)
 	{
 		NSLog(@"No OpenGL pixel format");
 	}
 	   
-    NSOpenGLContext* context = [[[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil] autorelease];
+    NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
     
 #if ESSENTIAL_GL_PRACTICES_SUPPORT_GL3 && defined(DEBUG)
 	// When we're using a CoreProfile context, crash if we call a legacy OpenGL function
@@ -138,7 +134,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
 	
 	// Set the renderer output callback function
-	CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, self);
+	CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, (__bridge void *)(self));
 	
 	// Set the display link for the current renderer
 	CGLContextObj cglContext = [[self openGLContext] CGLContextObj];
@@ -274,12 +270,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     // otherwise the display link thread may call into the view and crash
     // when it encounters something that has been release
 	CVDisplayLinkStop(displayLink);
-
 	CVDisplayLinkRelease(displayLink);
-
-	// Release the display link AFTER display link has been released
-	[m_renderer release];
-	
-	[super dealloc];
 }
 @end

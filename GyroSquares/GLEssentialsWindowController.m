@@ -141,9 +141,6 @@ NSWindow* standardWindow;
 	// Show the window and make it the key window for input
 	[[self window] makeKeyAndOrderFront:self];
 
-	// Release the fullscreen window
-	[fullscreenWindow release];
-
 	// Ensure we set fullscreen Window to nil so our checks for 
 	// windowed vs. fullscreen mode elsewhere are correct
 	fullscreenWindow = nil;
