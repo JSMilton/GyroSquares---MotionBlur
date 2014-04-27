@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5051" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5051" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5051"/>
     </dependencies>
@@ -9,7 +9,7 @@
         <customObject id="-3" userLabel="Application"/>
         <customObject id="Ld7-jy-MEM" customClass="GLEssentialsWindowController">
             <connections>
-                <outlet property="view" destination="TK8-pG-Z7k" id="fxO-f8-7Qq"/>
+                <outlet property="view" destination="EiT-Mj-1SZ" id="sTH-a6-HMr"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="tWc-Om-uwS"/>
             </connections>
         </customObject>
@@ -78,15 +78,9 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="604" height="485"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
-            <view key="contentView" id="EiT-Mj-1SZ">
+            <view key="contentView" id="EiT-Mj-1SZ" customClass="GLEssentialsGLView">
                 <rect key="frame" x="0.0" y="0.0" width="604" height="485"/>
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" id="TK8-pG-Z7k" customClass="GLEssentialsGLView">
-                        <rect key="frame" x="-5" y="0.0" width="609" height="485"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </openGLView>
-                </subviews>
             </view>
         </window>
     </objects>

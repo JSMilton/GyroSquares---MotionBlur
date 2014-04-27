@@ -21,7 +21,7 @@ SquareModel *loadSquare()
     const int vertexCount = 24;
     
     GLfloat m1;
-    m1 = 0.5;
+    m1 = 0.75;
     
     GLfloat positionArray[] = {
        // x     y     z
@@ -37,18 +37,45 @@ SquareModel *loadSquare()
          1.0, -1.0,  1.0,
          0.0, -1.0,  1.0,
         -1.0, -1.0,  1.0,
-         1.0,  1.0, 0.5,
-         0.0,  1.0, 0.5,
-        -1.0,  1.0, 0.5,
-         m1,   m1,  0.5,
-        -m1,   m1,  0.5,
-         1.0,  0.0, 0.5,
-        -1.0,  0.0, 0.5,
-         m1,  -m1,  0.5,
-        -m1,  -m1,  0.5,
-         1.0, -1.0, 0.5,
-         0.0, -1.0, 0.5,
-        -1.0, -1.0, 0.5
+         1.0,  1.0, -1.0,
+         0.0,  1.0, -1.0,
+        -1.0,  1.0, -1.0,
+         m1,   m1,  -1.0,
+        -m1,   m1,  -1.0,
+         1.0,  0.0, -1.0,
+        -1.0,  0.0, -1.0,
+         m1,  -m1,  -1.0,
+        -m1,  -m1,  -1.0,
+         1.0, -1.0, -1.0,
+         0.0, -1.0, -1.0,
+        -1.0, -1.0, -1.0
+    };
+    
+    GLfloat normalArray[] = {
+         1.0,  1.0,  1.0,
+         0.0,  1.0,  1.0,
+        -1.0,  1.0,  1.0,
+         0.0,  0.0,  1.0,
+         0.0,  0.0,  1.0,
+         1.0,  0.0,  1.0,
+        -1.0,  0.0,  1.0,
+         0.0,  0.0,  1.0,
+         0.0,  0.0,  1.0,
+         1.0, -1.0,  1.0,
+         0.0, -1.0,  1.0,
+        -1.0, -1.0,  1.0,
+         1.0,  1.0, -1.0,
+         0.0,  1.0, -1.0,
+        -1.0,  1.0, -1.0,
+         0.0,  0.0, -1.0,
+         0.0,  0.0, -1.0,
+         1.0,  0.0, -1.0,
+        -1.0,  0.0, -1.0,
+         0.0,  0.0, -1.0,
+         0.0,  0.0, -1.0,
+         1.0, -1.0, -1.0,
+         0.0, -1.0, -1.0,
+        -1.0, -1.0, -1.0,
     };
     
     GLfloat colorArray[vertexCount * 4];
@@ -139,6 +166,12 @@ SquareModel *loadSquare()
     newModel->positions = (GLubyte *)malloc(newModel->positionArraySize);
     memcpy(newModel->positions, positionArray, newModel->positionArraySize);
     
+    newModel->normalSize = 3;
+    newModel->normalArraySize = sizeof(normalArray);
+    newModel->normalType = GL_FLOAT;
+    newModel->normals = (GLubyte *)malloc(newModel->normalArraySize);
+    memcpy(newModel->normals, normalArray, newModel->normalArraySize);
+    
     newModel->colorSize = 4;
     newModel->colorArraySize = sizeof(colorArray);
     newModel->colorType = GL_FLOAT;
@@ -152,68 +185,6 @@ SquareModel *loadSquare()
     newModel->elementArraySize = sizeof(elementArray);
     newModel->elements = (GLubyte *)malloc(newModel->elementArraySize);
     memcpy(newModel->elements, elementArray, newModel->elementArraySize);
-    
-    newModel->numVertcies = vertexCount;
-    
-    return newModel;
-}
-
-SquareModel *loadBasicSquare()
-{
-    const int vertexCount = 4;
-    
-    GLfloat m1;
-    m1 = 0.75;
-    
-    GLfloat positionArray[] = {
-        // x     y     z
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f
-    };
-    
-    GLfloat colorArray[vertexCount * 4];
-    GLfloat color = 1.0f;
-    for (int i = 0; i < vertexCount * 4; i+=4){
-        colorArray[i] = color;
-        colorArray[i + 1] = color;
-        colorArray[i + 2] = color;
-        colorArray[i + 3] = 1.0f;
-    }
-    
-    GLuint elementArray[] = {
-        // Front
-        0,  1,  2,
-        1,  2,  3
-    };
-    
-    SquareModel *newModel = calloc(sizeof(SquareModel), 1);
-    
-    // check for memory error
-    if (newModel == NULL){
-        return NULL;
-    }
-    
-    newModel->positionSize = 3;
-    newModel->positionArraySize = sizeof(positionArray);
-    newModel->positionType = GL_FLOAT;
-    newModel->positions = malloc(newModel->positionArraySize);
-    memcpy(newModel->positions, positionArray, newModel->positionArraySize);
-    
-    newModel->colorSize = 4;
-    newModel->colorArraySize = sizeof(colorArray);
-    newModel->colorType = GL_FLOAT;
-    newModel->colors = malloc(newModel->colorArraySize);
-    memcpy(newModel->colors, colorArray, sizeof(newModel->colorArraySize));
-    
-    newModel->primType = GL_TRIANGLES;
-    
-    newModel->numElements = sizeof(elementArray) / sizeof(GLuint);
-    newModel->elementType = GL_UNSIGNED_INT;
-    newModel->elementArraySize = sizeof(elementArray);
-    newModel->elements = malloc(newModel->elementArraySize);
-    memcpy(newModel->elements, elementArray, sizeof(newModel->elementArraySize));
     
     newModel->numVertcies = vertexCount;
     

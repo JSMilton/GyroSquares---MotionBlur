@@ -24,6 +24,11 @@ typedef struct SquareModelStruct {
 	GLuint colorSize;
 	GLsizei colorArraySize;
     
+    GLubyte *normals;
+	GLenum normalType;
+	GLuint normalSize;
+	GLsizei normalArraySize;
+    
 	GLubyte *elements;
 	GLenum elementType;
 	GLuint numElements;
@@ -33,7 +38,6 @@ typedef struct SquareModelStruct {
 } SquareModel;
 
 SquareModel *loadSquare();
-SquareModel *loadBasicSquare();
 void destroySquareModel(SquareModel *model);
 
 #endif

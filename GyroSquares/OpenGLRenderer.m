@@ -55,16 +55,23 @@ enum {
     GLuint m_squareNumElements;
     GLfloat m_squareAngle;
     
+    SquareModel *m_squareModel2;
+    GLuint m_squarePrgName2;
+    GLint m_squareMvpUniformIdx2;
+    GLuint m_squareVAOName2;
+    GLuint m_squareTexName2;
+    GLenum m_squarePrimType2;
+    GLenum m_squareElementType2;
+    GLuint m_squareNumElements2;
+    GLfloat m_squareAngle2;
+    
     GLuint m_viewWidth;
     GLuint m_viewHeight;
     
     GLboolean m_useVBOs;
-    GLuint posBufferName;
-    GLuint colorBufferName;
-    GLuint elementBufferName;
 }
 
-- (void) resizeWithWidth:(GLuint)width AndHeight:(GLuint)height
+- (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height
 {
 	glViewport(0, 0, width, height);
     
@@ -78,6 +85,10 @@ enum {
 	GLfloat projection[16];
 	GLfloat mvp[16];
     
+    GLfloat modelView2[16];
+	GLfloat mvp2[16];
+    
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// Use the program for rendering our square
@@ -88,9 +99,11 @@ enum {
 	
 	// Calculate the modelview matrix to render our square
 	//  at the proper position and rotation
-	mtxLoadTranslate(modelView, 0, 0, -5.0);
-	//mtxRotateXApply(modelView, -90.0f);
-	mtxRotateApply(modelView, m_squareAngle, 45, 0, 1);
+	mtxLoadTranslate(modelView, 0, 0, -7.0);
+   // mtxRotateXApply(modelView, -45.0);
+    //mtxRotateZApply(modelView, -45.0);
+	mtxRotateApply(modelView, m_squareAngle, 0, 1, 0);
+    mtxScaleApply(modelView, 1, 1, 0.125);
 	
 	// Multiply the modelview and projection matrix and set it in the shader
 	mtxMultiply(mvp, projection, modelView);
@@ -107,6 +120,18 @@ enum {
 	//glCullFace(GL_BACK);
 	
 	// Draw our square
+    glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
+    
+    mtxLoadTranslate(modelView2, 0, 0, -7.0);
+	mtxRotateApply(modelView2, m_squareAngle, 1, 0, 0);
+    mtxRotateZApply(modelView2, m_squareAngle);
+    mtxScaleApply(modelView2, 0.5, 0.5, 0.15);
+	
+	// Multiply the modelview and projection matrix and set it in the shader
+	mtxMultiply(mvp2, projection, modelView2);
+    
+    glUniformMatrix4fv(m_squareMvpUniformIdx, 1, GL_FALSE, mvp2);
+    
     glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
 
     // Update the angle so our square keeps spinning
@@ -141,6 +166,8 @@ static GLsizei GetGLTypeSize(GLenum type)
     glGenVertexArrays(1, &vaoName);
     glBindVertexArray(vaoName);
     
+    GLuint posBufferName;
+    
     // Create a vertex buffer object (VBO) to store positions
     glGenBuffers(1, &posBufferName);
     glBindBuffer(GL_ARRAY_BUFFER, posBufferName);
@@ -161,7 +188,7 @@ static GLsizei GetGLTypeSize(GLenum type)
                           model->positionSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
                           0);	// What is the offset in the VBO to the position data?
     
-    
+    GLuint colorBufferName;
     // Create a vertex buffer object (VBO) to store positions
     glGenBuffers(1, &colorBufferName);
     glBindBuffer(GL_ARRAY_BUFFER, colorBufferName);
@@ -182,7 +209,7 @@ static GLsizei GetGLTypeSize(GLenum type)
                           model->colorSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
                           0);	// What is the offset in the VBO to the position data?
 
-    
+    GLuint elementBufferName;
     // Create a VBO to vertex array elements
     // This also attaches the element array buffer to the VAO
     glGenBuffers(1, &elementBufferName);
@@ -247,6 +274,7 @@ static GLsizei GetGLTypeSize(GLenum type)
 		m_viewWidth = 100;
 		m_viewHeight = 100;
 		m_squareAngle = 0;
+        m_squareAngle2 = 0;
         
 		//////////////////////////////
 		// Create Model             //
@@ -267,6 +295,22 @@ static GLsizei GetGLTypeSize(GLenum type)
         // loaded into GL and we've saved anything else we need
         destroySquareModel(m_squareModel);
         m_squareModel = NULL;
+        
+        m_squareModel2 = loadSquare();
+		
+		// Build Vertex Buffer Objects (VBOs) and Vertex Array Object (VAOs) with our model data: Mine will be a cube, not an awesome monster :(
+		m_squareVAOName2 = [self buildVAO:m_squareModel2];
+		
+		// Cache the number of element and primType to use later in our glDrawElements calls
+		m_squareNumElements2 = m_squareModel2->numElements;
+		m_squarePrimType2 = m_squareModel2->primType;
+		m_squareElementType2 = m_squareModel2->elementType;
+        
+        
+        //If we're using VBOs we can destroy all this memory since buffers are
+        // loaded into GL and we've saved anything else we need
+        destroySquareModel(m_squareModel2);
+        m_squareModel2 = NULL;
 		
 		////////////////////////////////////////////////////
 		// Load and Setup shaders for square rendering //
@@ -313,7 +357,7 @@ static GLsizei GetGLTypeSize(GLenum type)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		// Always use this clear color
-		glClearColor(0.5f, 0.4f, 0.5f, 1.0f);
+		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
 		
 		// Draw our scene once without presenting the rendered image.
 		//   This is done in order to pre-warm OpenGL

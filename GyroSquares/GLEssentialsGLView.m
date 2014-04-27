@@ -134,7 +134,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
 	
 	// Set the renderer output callback function
-	CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, (__bridge void *)(self));
+	CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, (__bridge void *)self);
 	
 	// Set the display link for the current renderer
 	CGLContextObj cglContext = [[self openGLContext] CGLContextObj];
