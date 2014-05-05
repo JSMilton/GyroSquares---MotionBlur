@@ -56,7 +56,9 @@
 @end
 
 @implementation GLEssentialsGLView
-
+{
+    CGPoint lastPoint;
+}
 OpenGLRenderer* m_renderer;
 
 - (CVReturn) getFrameForTime:(const CVTimeStamp*)outputTime
@@ -272,4 +274,13 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	CVDisplayLinkStop(displayLink);
 	CVDisplayLinkRelease(displayLink);
 }
+
+- (void)mouseDown:(NSEvent *)theEvent {
+    lastPoint = theEvent.locationInWindow;
+}
+
+- (void)mouseDragged:(NSEvent *)theEvent {
+    [m_renderer moveCamera:theEvent.deltaX andDeltaY:theEvent.deltaY];
+}
+
 @end

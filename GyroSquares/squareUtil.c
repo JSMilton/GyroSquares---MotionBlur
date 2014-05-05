@@ -11,13 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-SquareModel *loadSquare()
+SquareModel *loadHollowCuboid()
 {
-    //
-    // SquareModels are essentially hollow cuboids, like a 3D picture frame.
-    // I'm using triangles, which means 12 vertices for each face, 24 in total.
-    //
-    
     const int vertexCount = 24;
     
     GLfloat m1;
@@ -151,6 +146,188 @@ SquareModel *loadSquare()
         // Inside Bottom
         7, 8, 20,
         20, 7, 19
+    };
+    
+    SquareModel *newModel = (SquareModel *)calloc(sizeof(SquareModel), 1);
+    
+    // check for memory error
+    if (newModel == NULL){
+        return NULL;
+    }
+    
+    newModel->positionSize = 3;
+    newModel->positionArraySize = sizeof(positionArray);
+    newModel->positionType = GL_FLOAT;
+    newModel->positions = (GLubyte *)malloc(newModel->positionArraySize);
+    memcpy(newModel->positions, positionArray, newModel->positionArraySize);
+    
+    newModel->normalSize = 3;
+    newModel->normalArraySize = sizeof(normalArray);
+    newModel->normalType = GL_FLOAT;
+    newModel->normals = (GLubyte *)malloc(newModel->normalArraySize);
+    memcpy(newModel->normals, normalArray, newModel->normalArraySize);
+    
+    newModel->colorSize = 4;
+    newModel->colorArraySize = sizeof(colorArray);
+    newModel->colorType = GL_FLOAT;
+    newModel->colors = (GLubyte *)malloc(newModel->colorArraySize);
+    memcpy(newModel->colors, colorArray, newModel->colorArraySize);
+    
+    newModel->primType = GL_TRIANGLES;
+    
+    newModel->numElements = sizeof(elementArray) / sizeof(GLushort);
+    newModel->elementType = GL_UNSIGNED_SHORT;
+    newModel->elementArraySize = sizeof(elementArray);
+    newModel->elements = (GLubyte *)malloc(newModel->elementArraySize);
+    memcpy(newModel->elements, elementArray, newModel->elementArraySize);
+    
+    newModel->numVertcies = vertexCount;
+    
+    return newModel;
+}
+
+SquareModel *loadCube()
+{
+    const int vertexCount = 24;
+    
+    GLfloat positionArray[] = {
+         // Front
+         1.0,  1.0,  1.0,
+        -1.0,  1.0,  1.0,
+         1.0, -1.0,  1.0,
+        -1.0, -1.0,  1.0,
+        
+         // Back
+         1.0,  1.0, -1.0,
+        -1.0,  1.0, -1.0,
+         1.0, -1.0, -1.0,
+        -1.0, -1.0, -1.0,
+        
+         // Right
+         1.0,  1.0,  1.0,
+         1.0,  1.0, -1.0,
+         1.0, -1.0,  1.0,
+         1.0, -1.0, -1.0,
+        
+         // Left
+        -1.0,  1.0,  1.0,
+        -1.0,  1.0, -1.0,
+        -1.0, -1.0,  1.0,
+        -1.0, -1.0, -1.0,
+        
+         // Top
+         1.0,  1.0,  1.0,
+         1.0,  1.0, -1.0,
+        -1.0,  1.0,  1.0,
+        -1.0,  1.0, -1.0,
+        
+         // Bottom
+         1.0, -1.0,  1.0,
+         1.0, -1.0, -1.0,
+        -1.0, -1.0,  1.0,
+        -1.0, -1.0, -1.0,
+    };
+    
+    GLfloat normalArray[] = {
+         // Front
+         0.0,   0.0,   1.0,
+         0.0,   0.0,   1.0,
+         0.0,   0.0,   1.0,
+         0.0,   0.0,   1.0,
+        
+         // Back
+         0.0,   0.0,   -1.0,
+         0.0,   0.0,   -1.0,
+         0.0,   0.0,   -1.0,
+         0.0,   0.0,   -1.0,
+        
+        // Right
+        1.0,   0.0,   0.0,
+        1.0,   0.0,   0.0,
+        1.0,   0.0,   0.0,
+        1.0,   0.0,   0.0,
+        
+        // Left
+        -1.0,   0.0,   0.0,
+        -1.0,   0.0,   0.0,
+        -1.0,   0.0,   0.0,
+        -1.0,   0.0,   0.0,
+        
+        // Top
+        0.0,   1.0,   0.0,
+        0.0,   1.0,   0.0,
+        0.0,   1.0,   0.0,
+        0.0,   1.0,   0.0,
+        
+        // Bottom
+        0.0,   -1.0,   0.0,
+        0.0,   -1.0,   0.0,
+        0.0,   -1.0,   0.0,
+        0.0,   -1.0,   0.0,
+    };
+    
+    GLfloat colorArray[] = {
+        // Front
+        1.0,   1.0,   1.0, 1.0,
+        1.0,   1.0,   1.0, 1.0,
+        1.0,   1.0,   1.0, 1.0,
+        1.0,   1.0,   1.0, 1.0,
+        
+        // Back
+        0.0,   0.0,   0.0, 1.0,
+        0.0,   0.0,   0.0, 1.0,
+        0.0,   0.0,   0.0, 1.0,
+        0.0,   0.0,   0.0, 1.0,
+        
+        // Right
+        1.0,   0.0,   0.0, 1.0,
+        1.0,   0.0,   0.0, 1.0,
+        1.0,   0.0,   0.0, 1.0,
+        1.0,   0.0,   0.0, 1.0,
+        
+        // Left
+        0.0,   1.0,   0.0, 1.0,
+        0.0,   1.0,   0.0, 1.0,
+        0.0,   1.0,   0.0, 1.0,
+        0.0,   1.0,   0.0, 1.0,
+        
+        // Top
+        0.0,   0.0,   1.0, 1.0,
+        0.0,   0.0,   1.0, 1.0,
+        0.0,   0.0,   1.0, 1.0,
+        0.0,   0.0,   1.0, 1.0,
+        
+        // Bottom
+        1.0,   1.0,   0.0, 1.0,
+        1.0,   1.0,   0.0, 1.0,
+        1.0,   1.0,   0.0, 1.0,
+        1.0,   1.0,   0.0, 1.0
+    };
+    
+    GLushort elementArray[] = {
+        // Front
+        0, 1, 2,
+        1, 2, 3,
+        
+        // Back
+        4, 5, 6,
+        5, 6, 7,
+        
+        // Top
+        8, 9, 10,
+        9, 10, 11,
+        
+        // Bottom
+        12, 13, 14,
+        13, 14, 15,
+        
+        // Left
+        16, 17, 18,
+        17, 18, 19,
+        
+        // Right
+        20, 21, 22,
+        21, 22, 23
     };
     
     SquareModel *newModel = (SquareModel *)calloc(sizeof(SquareModel), 1);

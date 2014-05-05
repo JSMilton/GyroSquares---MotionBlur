@@ -18,5 +18,6 @@
 - (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height;
 - (void)render;
 - (void)dealloc;
+- (void)moveCamera:(float)deltaX andDeltaY:(float)deltaY;
 
 @end

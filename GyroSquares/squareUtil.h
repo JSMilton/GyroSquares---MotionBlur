@@ -37,7 +37,8 @@ typedef struct SquareModelStruct {
 	GLenum primType;
 } SquareModel;
 
-SquareModel *loadSquare();
+SquareModel *loadHollowCuboid();
+SquareModel *loadCube();
 void destroySquareModel(SquareModel *model);
 
 #endif

@@ -1,21 +1,22 @@
 
-uniform mat4 modelViewProjectionMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
 
-#if __VERSION__ >= 140
 in vec4  inPosition;
+in vec4  inNormal;
 in vec4  inColor;
-out vec4 varColor;
-#else
-#define lowp
-attribute vec4 inPosition;
-attribute vec4 inColor;
-varying lowp vec4 varColor;
-#endif
+out vec3 position_eye, normal_eye;
+out vec4 color;
+out mat4 modelView;
 
 void main (void)
 {
-	// Transform the vertex by the model view projection matrix so
+	// Transform the vertex by the m-odel view projection matrix so
 	// the polygon shows up in the right place
-	gl_Position	= modelViewProjectionMatrix * inPosition;
-    varColor = inColor;
+    position_eye = vec3(viewMatrix * modelMatrix * inPosition);
+    normal_eye = vec3(viewMatrix * modelMatrix * inNormal);
+    modelView = viewMatrix * modelMatrix;
+    color = inColor;
+    gl_Position	= projectionMatrix * vec4(position_eye, 1.0);
 }
