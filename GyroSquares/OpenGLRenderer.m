@@ -99,11 +99,11 @@ enum {
 	glUseProgram(m_squarePrgName);
     
     projection = GLKMatrix4MakePerspective(45.0f, (float)m_viewWidth / (float)m_viewHeight, 1.0, 100.0);
-    view = GLKMatrix4MakeLookAt(0, 5, 20, 3, 0, 0, 0, 1, 0);
-    //view = GLKMatrix4RotateY(view, GLKMathDegreesToRadians(m_squareAngle));
-    model = GLKMatrix4MakeTranslation(5, 0, 0);
+    view = GLKMatrix4MakeLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
+    view = GLKMatrix4RotateY(view, GLKMathDegreesToRadians(m_squareAngle));
+    model = GLKMatrix4MakeTranslation(-5, 0, 0);
    // model = GLKMatrix4Scale(model, 0.5, 0.5, 0.5);
-    //model = GLKMatrix4Rotate(model, GLKMathDegreesToRadians(m_squareAngle), 0, 1, 0);
+   // model = GLKMatrix4Rotate(model, GLKMathDegreesToRadians(m_squareAngle), 0, 1, 0);
 	//model = GLKMatrix4Scale(model, 0.5, 0.5, 0.5);
 	// Multiply the modelview and projection matrix and set it in the shader
 	
