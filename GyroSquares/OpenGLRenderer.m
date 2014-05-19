@@ -8,8 +8,6 @@
 
 #import "OpenGLRenderer.h"
 
-#import <GLKit/GLKit.h>
-
 #import "matrixUtil.h"
 #import "sourceUtil.h"
 #import "squareUtil.h"
@@ -45,6 +43,18 @@ enum {
     COLOR_ATTRIB_IDX
 };
 
+const int maxFrames = 50;
+
+typedef struct {
+    float alpha;
+    GLKMatrix4 modelMatrix;
+} Frame;
+
+typedef struct {
+    Frame frames[maxFrames];
+    int index;
+} FrameControl;
+
 @implementation OpenGLRenderer
 {
     SquareModel *m_squareModel;
@@ -52,11 +62,11 @@ enum {
     GLint m_squareModelUniformIdx;
     GLint m_squareViewUniformIdx;
     GLint m_squareProjectionUniformIdx;
+    GLint m_alphaUniformIndex;
     GLuint m_squareVAOName;
     GLenum m_squarePrimType;
     GLenum m_squareElementType;
     GLuint m_squareNumElements;
-    GLfloat m_squareAngle;
     
     SquareModel *m_squareModel2;
     GLuint m_squareVAOName2;
@@ -68,8 +78,15 @@ enum {
     GLuint m_viewWidth;
     GLuint m_viewHeight;
     
-    float mouseDeltaX;
-    float mouseDeltaY;
+    GLKVector3 cubeVelocityVector;
+    GLKVector3 cubeRotationVector;
+    GLKVector3 cubeOldRotationVector;
+    
+    GLKVector3 frameVelocityVector;
+    GLKVector3 frameRotationVector;
+    GLKVector3 frameOldRotationVector;
+    
+    FrameControl frameControl;
 }
 
 - (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height
@@ -80,18 +97,25 @@ enum {
 	m_viewHeight = height;
 }
 
-- (void)moveCamera:(float)deltaX andDeltaY:(float)deltaY {
-    mouseDeltaX += deltaX;
-    mouseDeltaY += deltaY;
+- (void)moveCamera:(GLKVector3)vector {
+    
+}
+
+int velMod = 500;
+- (void)moveInnerCube:(GLKVector3)vector {
+    cubeVelocityVector.x += vector.x / velMod;
+    cubeVelocityVector.y += vector.y / velMod;
+    cubeVelocityVector.z += vector.z / velMod;
+}
+
+- (void)moveOuterFrame:(GLKVector3)vector {
+    frameVelocityVector.x += vector.x / velMod;
+    frameVelocityVector.y += vector.y / velMod;
+    frameVelocityVector.z += vector.z / velMod;
 }
 
 - (void)render {
-    GLKMatrix4 model, view, projection;
-    
-//	GLfloat model[16];
-//    GLfloat model2[16];
-//    GLfloat view[16];
-//	GLfloat projection[16];
+    GLKMatrix4 model, model2, view, projection;
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -100,18 +124,16 @@ enum {
     
     projection = GLKMatrix4MakePerspective(45.0f, (float)m_viewWidth / (float)m_viewHeight, 1.0, 100.0);
     view = GLKMatrix4MakeLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-    view = GLKMatrix4RotateY(view, GLKMathDegreesToRadians(m_squareAngle));
-    model = GLKMatrix4MakeTranslation(-5, 0, 0);
-   // model = GLKMatrix4Scale(model, 0.5, 0.5, 0.5);
-   // model = GLKMatrix4Rotate(model, GLKMathDegreesToRadians(m_squareAngle), 0, 1, 0);
-	//model = GLKMatrix4Scale(model, 0.5, 0.5, 0.5);
-	// Multiply the modelview and projection matrix and set it in the shader
+    model = GLKMatrix4MakeTranslation(100, 100, 100);
+    model = GLKMatrix4RotateX(model, GLKMathDegreesToRadians(cubeRotationVector.y));
+    model = GLKMatrix4RotateY(model, GLKMathDegreesToRadians(cubeRotationVector.x));
 	
 	// Have our shader use the modelview projection matrix
 	// that we calculated above
 	glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
+    glUniform1f(m_alphaUniformIndex, 1.0);
 	
 	// Bind our vertex array object
 	glBindVertexArray(m_squareVAOName);
@@ -121,25 +143,60 @@ enum {
 	//glCullFace(GL_BACK);
 	
 	// Draw our square
-    glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
+   // glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
     
-//    glBindVertexArray(m_squareVAOName2);
-//    
-//    mtxLoadScale(model2, 1, 1, 1);
-//	mtxRotateApply(model2, m_squareAngle, 0, 1, 0);
-//    //mtxRotateZApply(model2, m_squareAngle);
-//    mtxScaleApply(model2, 2, 2, 0.2);
-//	
-//	// Multiply the modelview and projection matrix and set it in the shader
-//    
-//    glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, model2);
-//    glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, view);
-//    glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, projection);
+    glBindVertexArray(m_squareVAOName2);
     
-   // glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
+    model2 = GLKMatrix4MakeTranslation(0, 0, 0);
+    model2 = GLKMatrix4RotateX(model2, GLKMathDegreesToRadians(frameRotationVector.x));
+    model2 = GLKMatrix4RotateY(model2, GLKMathDegreesToRadians(frameRotationVector.y));
+    model2 = GLKMatrix4Scale(model2, 3, 3, 0.25);
+	
+	// Multiply the modelview and projection matrix and set it in the shader
+    
+    glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model2.m00);
+    glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
+    glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
+    glUniform1f(m_alphaUniformIndex, 1.0);
+    
+    glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
+    
+    for (int i = 0; i < maxFrames; i++){
+        if (frameControl.frames[i].alpha > 0.0){
+            GLKMatrix4 mat = GLKMatrix4Scale(frameControl.frames[i].modelMatrix, 1, 1, 1);
+            glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &mat.m00);
+            glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
+            glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
+            glUniform1f(m_alphaUniformIndex, frameControl.frames[i].alpha -= 0.02);
+            
+            glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
+        }
+    }
 
-    // Update the angle so our square keeps spinning
-	m_squareAngle++;
+    cubeRotationVector.x += cubeVelocityVector.x;
+    cubeRotationVector.y += cubeVelocityVector.y;
+    cubeRotationVector.z += cubeVelocityVector.z;
+    cubeVelocityVector.x *= 0.99;
+    cubeVelocityVector.y *= 0.99;
+    cubeVelocityVector.z *= 0.99;
+    
+    frameRotationVector.x += frameVelocityVector.x;
+    frameRotationVector.y += frameVelocityVector.y;
+    frameRotationVector.z += frameVelocityVector.z;
+    frameVelocityVector.x *= 0.99;
+    frameVelocityVector.y *= 0.99;
+    frameVelocityVector.z *= 0.99;
+    
+    if (GLKVector3Length(frameVelocityVector) > 15.0){
+        [self addFrameWithMatrix:model2];
+    }
+}
+
+- (void)addFrameWithMatrix:(GLKMatrix4)matrix {
+    frameControl.frames[frameControl.index].alpha = 0.15;
+    frameControl.frames[frameControl.index].modelMatrix = matrix;
+    frameControl.index++;
+    if (frameControl.index == maxFrames)frameControl.index = 0;
 }
 
 static GLsizei GetGLTypeSize(GLenum type)
@@ -298,8 +355,6 @@ static GLsizei GetGLTypeSize(GLenum type)
 		m_defaultFBOName = defaultFBOName;
 		m_viewWidth = 100;
 		m_viewHeight = 100;
-		m_squareAngle = 0;
-        m_squareAngle2 = 0;
         
 		//////////////////////////////
 		// Create Model             //
@@ -364,6 +419,7 @@ static GLsizei GetGLTypeSize(GLenum type)
         m_squareViewUniformIdx = glGetUniformLocation(m_squarePrgName, "viewMatrix");
 		m_squareModelUniformIdx = glGetUniformLocation(m_squarePrgName, "modelMatrix");
         m_squareProjectionUniformIdx = glGetUniformLocation(m_squarePrgName, "projectionMatrix");
+        m_alphaUniformIndex = glGetUniformLocation(m_squarePrgName, "inAlpha");
 		
 		if(m_squareModelUniformIdx < 0)
 		{
@@ -384,16 +440,13 @@ static GLsizei GetGLTypeSize(GLenum type)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		// Always use this clear color
-		glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		
 		// Draw our scene once without presenting the rendered image.
 		//   This is done in order to pre-warm OpenGL
 		// We don't need to present the buffer since we don't actually want the
 		//   user to see this, we're only drawing as a pre-warm stage
 		[self render];
-		
-		// Reset the m_squareAngle which is incremented in render
-		m_squareAngle = 0;
 		
 		// Check for errors to make sure all of our setup went ok
 		GetGLError();

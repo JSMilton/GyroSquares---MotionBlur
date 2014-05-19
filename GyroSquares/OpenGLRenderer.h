@@ -7,6 +7,7 @@
 //
 
 #include "glUtil.h"
+#import <GLKit/GLKit.h>
 #import <Foundation/Foundation.h>
 
 @interface OpenGLRenderer : NSObject
@@ -18,6 +19,8 @@
 - (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height;
 - (void)render;
 - (void)dealloc;
-- (void)moveCamera:(float)deltaX andDeltaY:(float)deltaY;
+- (void)moveCamera:(GLKVector3)vector;
+- (void)moveInnerCube:(GLKVector3)vector;
+- (void)moveOuterFrame:(GLKVector3)vector;
 
 @end

@@ -47,6 +47,7 @@
 
 #import "GLEssentialsGLView.h"
 #import "OpenGLRenderer.h"
+#import "LeapObjectiveC.h"
 
 #define SUPPORT_RETINA_RESOLUTION 1
 
@@ -58,6 +59,8 @@
 @implementation GLEssentialsGLView
 {
     CGPoint lastPoint;
+    LeapController *leapController;
+    int handId[2];
 }
 OpenGLRenderer* m_renderer;
 
@@ -151,6 +154,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 											 selector:@selector(windowWillClose:)
 												 name:NSWindowWillCloseNotification
 											   object:[self window]];
+    
+    [self run];
 }
 
 - (void) windowWillClose:(NSNotification*)notification
@@ -275,12 +280,194 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	CVDisplayLinkRelease(displayLink);
 }
 
-- (void)mouseDown:(NSEvent *)theEvent {
-    lastPoint = theEvent.locationInWindow;
+#pragma mark - Leap Motion Shit
+
+- (void)run
+{
+    leapController = [[LeapController alloc] init];
+    [leapController addListener:self];
+    handId[0] = -1;
+    handId[1] = -1;
+    NSLog(@"running");
 }
 
-- (void)mouseDragged:(NSEvent *)theEvent {
-    [m_renderer moveCamera:theEvent.deltaX andDeltaY:theEvent.deltaY];
+#pragma mark - SampleListener Callbacks
+
+- (void)onInit:(NSNotification *)notification
+{
+    NSLog(@"Initialized");
+}
+
+- (void)onConnect:(NSNotification *)notification
+{
+    NSLog(@"Connected");
+//    LeapController *aController = (LeapController *)[notification object];
+//    [aController enableGesture:LEAP_GESTURE_TYPE_CIRCLE enable:YES];
+//    [aController enableGesture:LEAP_GESTURE_TYPE_KEY_TAP enable:YES];
+//    [aController enableGesture:LEAP_GESTURE_TYPE_SCREEN_TAP enable:YES];
+//    [aController enableGesture:LEAP_GESTURE_TYPE_SWIPE enable:YES];
+}
+
+- (void)onDisconnect:(NSNotification *)notification
+{
+    //Note: not dispatched when running in a debugger.
+    NSLog(@"Disconnected");
+}
+
+- (void)onServiceConnect:(NSNotification *)notification
+{
+    NSLog(@"Service Connected");
+}
+
+- (void)onServiceDisconnect:(NSNotification *)notification
+{
+    NSLog(@"Service Disconnected");
+}
+
+- (void)onDeviceChange:(NSNotification *)notification
+{
+    NSLog(@"Device Changed");
+}
+
+- (void)onExit:(NSNotification *)notification
+{
+    NSLog(@"Exited");
+}
+
+- (void)onFrame:(NSNotification *)notification
+{
+    LeapController *aController = (LeapController *)[notification object];
+    
+    // Get the most recent frame and report some basic information
+    LeapFrame *frame = [aController frame:0];
+    
+//    NSLog(@"Frame id: %lld, timestamp: %lld, hands: %ld, fingers: %ld, tools: %ld, gestures: %ld",
+//          [frame id], [frame timestamp], [[frame hands] count],
+//          [[frame fingers] count], [[frame tools] count], [[frame gestures:nil] count]);
+    
+    for (int i = 0; i < [[frame hands] count]; i++){
+        // Get the first hand
+        LeapHand *hand = [[frame hands] objectAtIndex:i];
+        
+        // Check if the hand has any fingers
+        NSArray *fingers = [hand fingers];
+        if ([fingers count] != 0) {
+            // Calculate the hand's average finger tip position
+            LeapVector *avgPos = [[LeapVector alloc] init];
+            for (int i = 0; i < [fingers count]; i++) {
+                LeapFinger *finger = [fingers objectAtIndex:i];
+                avgPos = [avgPos plus:[finger tipPosition]];
+            }
+            avgPos = [avgPos divide:[fingers count]];
+//            NSLog(@"Hand has %ld fingers, average finger tip position %@",
+//                  [fingers count], avgPos);
+        }
+        
+        // Get the hand's sphere radius and palm position
+//        NSLog(@"Hand sphere radius: %f mm, palm position: %@",
+//              [hand sphereRadius], [hand palmPosition]);
+        
+        // Get the hand's normal vector and direction
+        const LeapVector *position = [hand palmPosition];
+        const LeapVector *velocity = [hand palmVelocity];
+        LeapVector *boxCenter = frame.interactionBox.center;
+        
+        if (position.x > boxCenter.x){
+            [m_renderer moveInnerCube:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
+        } else {
+            [m_renderer moveOuterFrame:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
+        }
+    }
+    
+        // Calculate the hand's pitch, roll, and yaw angles
+//        NSLog(@"Hand pitch: %f degrees, roll: %f degrees, yaw: %f degrees\n",
+//              [direction pitch] * LEAP_RAD_TO_DEG,
+//              [normal roll] * LEAP_RAD_TO_DEG,
+//              [direction yaw] * LEAP_RAD_TO_DEG);
+    
+//    NSArray *gestures = [frame gestures:nil];
+//    for (int g = 0; g < [gestures count]; g++) {
+//        LeapGesture *gesture = [gestures objectAtIndex:g];
+//        switch (gesture.type) {
+//            case LEAP_GESTURE_TYPE_CIRCLE: {
+//                LeapCircleGesture *circleGesture = (LeapCircleGesture *)gesture;
+//                
+//                NSString *clockwiseness;
+//                if ([[[circleGesture pointable] direction] angleTo:[circleGesture normal]] <= LEAP_PI/4) {
+//                    clockwiseness = @"clockwise";
+//                } else {
+//                    clockwiseness = @"counterclockwise";
+//                }
+//                
+//                // Calculate the angle swept since the last frame
+//                float sweptAngle = 0;
+//                if(circleGesture.state != LEAP_GESTURE_STATE_START) {
+//                    LeapCircleGesture *previousUpdate = (LeapCircleGesture *)[[aController frame:1] gesture:gesture.id];
+//                    sweptAngle = (circleGesture.progress - previousUpdate.progress) * 2 * LEAP_PI;
+//                }
+//                
+//                NSLog(@"Circle id: %d, %@, progress: %f, radius %f, angle: %f degrees %@",
+//                      circleGesture.id, [self stringForState:gesture.state],
+//                      circleGesture.progress, circleGesture.radius,
+//                      sweptAngle * LEAP_RAD_TO_DEG, clockwiseness);
+//                break;
+//            }
+//            case LEAP_GESTURE_TYPE_SWIPE: {
+//                LeapSwipeGesture *swipeGesture = (LeapSwipeGesture *)gesture;
+//                NSLog(@"Swipe id: %d, %@, position: %@, direction: %@, speed: %f",
+//                      swipeGesture.id, [self stringForState:swipeGesture.state],
+//                      swipeGesture.position, swipeGesture.direction, swipeGesture.speed);
+//                break;
+//            }
+//            case LEAP_GESTURE_TYPE_KEY_TAP: {
+//                LeapKeyTapGesture *keyTapGesture = (LeapKeyTapGesture *)gesture;
+//                NSLog(@"Key Tap id: %d, %@, position: %@, direction: %@",
+//                      keyTapGesture.id, [self stringForState:keyTapGesture.state],
+//                      keyTapGesture.position, keyTapGesture.direction);
+//                break;
+//            }
+//            case LEAP_GESTURE_TYPE_SCREEN_TAP: {
+//                LeapScreenTapGesture *screenTapGesture = (LeapScreenTapGesture *)gesture;
+//                NSLog(@"Screen Tap id: %d, %@, position: %@, direction: %@",
+//                      screenTapGesture.id, [self stringForState:screenTapGesture.state],
+//                      screenTapGesture.position, screenTapGesture.direction);
+//                break;
+//            }
+//            default:
+//                NSLog(@"Unknown gesture type");
+//                break;
+//        }
+//    }
+    
+//    if (([[frame hands] count] > 0) || [[frame gestures:nil] count] > 0) {
+//        NSLog(@" ");
+//    }
+}
+
+- (void)onFocusGained:(NSNotification *)notification
+{
+    NSLog(@"Focus Gained");
+}
+
+- (void)onFocusLost:(NSNotification *)notification
+{
+    NSLog(@"Focus Lost");
+}
+
+- (NSString *)stringForState:(LeapGestureState)state
+{
+    switch (state) {
+        case LEAP_GESTURE_STATE_INVALID:
+            return @"STATE_INVALID";
+        case LEAP_GESTURE_STATE_START:
+            return @"STATE_START";
+        case LEAP_GESTURE_STATE_UPDATE:
+            return @"STATE_UPDATED";
+        case LEAP_GESTURE_STATE_STOP:
+            return @"STATE_STOP";
+        default:
+            return @"STATE_INVALID";
+    }
 }
 
 @end

@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		430BD62D1924F14900BF2259 /* libLeap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 430BD62C1924F14900BF2259 /* libLeap.dylib */; };
+		430BD62F1924F25E00BF2259 /* libLeap.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 430BD62C1924F14900BF2259 /* libLeap.dylib */; };
+		433FEB391924E7E9007BDAD5 /* LeapObjectiveC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 433FEB381924E7E9007BDAD5 /* LeapObjectiveC.mm */; };
 		4F254C01190AF09800A2E945 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C00190AF09800A2E945 /* Cocoa.framework */; };
 		4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C09190AF09800A2E945 /* InfoPlist.strings */; };
 		4F254C0D190AF09800A2E945 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C0C190AF09800A2E945 /* main.m */; };
 		4F254C11190AF09800A2E945 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C0F190AF09800A2E945 /* Credits.rtf */; };
-		4F254C17190AF09800A2E945 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C15190AF09800A2E945 /* MainMenu.xib */; };
 		4F254C20190AF09800A2E945 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C1F190AF09800A2E945 /* XCTest.framework */; };
 		4F254C21190AF09800A2E945 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C00190AF09800A2E945 /* Cocoa.framework */; };
 		4F254C29190AF09800A2E945 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C27190AF09800A2E945 /* InfoPlist.strings */; };
@@ -41,7 +43,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		430BD62E1924F24900BF2259 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				430BD62F1924F25E00BF2259 /* libLeap.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		430BD62C1924F14900BF2259 /* libLeap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libLeap.dylib; path = "../LeapDeveloperKit_2.0.0+15464_mac/LeapSDK/lib/libLeap.dylib"; sourceTree = "<group>"; };
+		433FEB351924E7E9007BDAD5 /* Leap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leap.h; sourceTree = "<group>"; };
+		433FEB361924E7E9007BDAD5 /* LeapMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeapMath.h; sourceTree = "<group>"; };
+		433FEB371924E7E9007BDAD5 /* LeapObjectiveC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeapObjectiveC.h; sourceTree = "<group>"; };
+		433FEB381924E7E9007BDAD5 /* LeapObjectiveC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LeapObjectiveC.mm; sourceTree = "<group>"; };
 		4F254BFD190AF09800A2E945 /* GyroSquares.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GyroSquares.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F254C00190AF09800A2E945 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4F254C03190AF09800A2E945 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -90,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				430BD62D1924F14900BF2259 /* libLeap.dylib in Frameworks */,
 				4F254C37190AF22700A2E945 /* GLKit.framework in Frameworks */,
 				4F254C35190AF22200A2E945 /* OpenGL.framework in Frameworks */,
 				4F254C01190AF09800A2E945 /* Cocoa.framework in Frameworks */,
@@ -108,6 +129,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		433FEB341924E7DB007BDAD5 /* Leap Motion SDK */ = {
+			isa = PBXGroup;
+			children = (
+				433FEB351924E7E9007BDAD5 /* Leap.h */,
+				433FEB361924E7E9007BDAD5 /* LeapMath.h */,
+				433FEB371924E7E9007BDAD5 /* LeapObjectiveC.h */,
+				433FEB381924E7E9007BDAD5 /* LeapObjectiveC.mm */,
+			);
+			name = "Leap Motion SDK";
+			sourceTree = "<group>";
+		};
 		4F254BF4190AF09800A2E945 = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +162,7 @@
 		4F254BFF190AF09800A2E945 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				430BD62C1924F14900BF2259 /* libLeap.dylib */,
 				4F254C36190AF22700A2E945 /* GLKit.framework */,
 				4F254C34190AF22200A2E945 /* OpenGL.framework */,
 				4F254C00190AF09800A2E945 /* Cocoa.framework */,
@@ -152,6 +185,7 @@
 		4F254C06190AF09800A2E945 /* GyroSquares */ = {
 			isa = PBXGroup;
 			children = (
+				433FEB341924E7DB007BDAD5 /* Leap Motion SDK */,
 				4F254C56190AFA3A00A2E945 /* Classes */,
 				4FD4A64D190C07E2003AF3DC /* Shaders */,
 				4F254C44190AF9B300A2E945 /* Other Sources */,
@@ -245,6 +279,7 @@
 				4F254BF9190AF09800A2E945 /* Sources */,
 				4F254BFA190AF09800A2E945 /* Frameworks */,
 				4F254BFB190AF09800A2E945 /* Resources */,
+				430BD62E1924F24900BF2259 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -315,7 +350,6 @@
 				4F254C11190AF09800A2E945 /* Credits.rtf in Resources */,
 				4FD4A651190C0856003AF3DC /* square.fsh in Resources */,
 				4FD4A64F190C084F003AF3DC /* square.vsh in Resources */,
-				4F254C17190AF09800A2E945 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +374,7 @@
 				4F254C53190AF9CA00A2E945 /* matrixUtil.c in Sources */,
 				4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */,
 				4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */,
+				433FEB391924E7E9007BDAD5 /* LeapObjectiveC.mm in Sources */,
 				4F254C0D190AF09800A2E945 /* main.m in Sources */,
 				4F254C51190AF9CA00A2E945 /* vectorUtil.c in Sources */,
 				4F254C52190AF9CA00A2E945 /* modelUtil.c in Sources */,
@@ -479,6 +514,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GyroSquares/GyroSquares-Prefix.pch";
 				INFOPLIST_FILE = "GyroSquares/GyroSquares-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"/Users/jmilton/Downloads/LeapDeveloperKit_2.0.0+15464_mac/LeapSDK/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -492,6 +533,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GyroSquares/GyroSquares-Prefix.pch";
 				INFOPLIST_FILE = "GyroSquares/GyroSquares-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"/Users/jmilton/Downloads/LeapDeveloperKit_2.0.0+15464_mac/LeapSDK/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
