@@ -161,17 +161,17 @@ int velMod = 500;
     
     glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
     
-    for (int i = 0; i < maxFrames; i++){
-        if (frameControl.frames[i].alpha > 0.0){
-            GLKMatrix4 mat = GLKMatrix4Scale(frameControl.frames[i].modelMatrix, 1, 1, 1);
-            glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &mat.m00);
-            glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
-            glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
-            glUniform1f(m_alphaUniformIndex, frameControl.frames[i].alpha -= 0.02);
-            
-            glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
-        }
-    }
+//    for (int i = 0; i < maxFrames; i++){
+//        if (frameControl.frames[i].alpha > 0.0){
+//            GLKMatrix4 mat = GLKMatrix4Scale(frameControl.frames[i].modelMatrix, 1, 1, 1);
+//            glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &mat.m00);
+//            glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
+//            glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
+//            glUniform1f(m_alphaUniformIndex, frameControl.frames[i].alpha -= 0.02);
+//            
+//            glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
+//        }
+//    }
 
     cubeRotationVector.x += cubeVelocityVector.x;
     cubeRotationVector.y += cubeVelocityVector.y;
