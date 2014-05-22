@@ -173,7 +173,7 @@ int velMod = 500;
 	//glCullFace(GL_BACK);
 	
 	// Draw our square
-    glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
+    //glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
     
     glBindVertexArray(m_squareVAOName2);
     
@@ -429,7 +429,7 @@ static GLsizei GetGLTypeSize(GLenum type)
     
     glGenTextures(1, &m_velocityTexture);
     glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -584,7 +584,7 @@ static GLsizei GetGLTypeSize(GLenum type)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		// Always use this clear color
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		
 		// Draw our scene once without presenting the rendered image.
 		//   This is done in order to pre-warm OpenGL

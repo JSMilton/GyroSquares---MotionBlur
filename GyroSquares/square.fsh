@@ -1,8 +1,8 @@
 
 in vec3 position_eye, normal_eye;
 in mat4 modelView;
-out vec4 fragColor;
-out vec2 velocity;
+layout(location = 0) out vec4 fragColor;
+layout(location = 1) out vec2 velocity;
 
 in vec4 vPosition;
 in vec4 vPreviousPosition;
@@ -47,7 +47,8 @@ void main (void)
     // final colour
     fragColor = vec4 (Is + Id + Ia, 1.0);
     
-    vec2 a = (vPosition.xy / vPosition.w) * 0.5 + 0.5;
-    vec2 b = (vPreviousPosition.xy / vPreviousPosition.w) * 0.5 + 0.5;
-    velocity = a - b;
+    vec2 a = (vPosition.xy / vPosition.w) * 0.5;
+    vec2 b = (vPreviousPosition.xy / vPreviousPosition.w) * 0.5;
+    vec2 result = a - b;
+    velocity = result;
 }

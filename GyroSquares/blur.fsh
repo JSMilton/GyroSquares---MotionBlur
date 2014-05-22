@@ -5,7 +5,7 @@ in vec4 viewRay;
 
 // texture sampler
 uniform sampler2D tex;
-uniform sampler2D velocity;
+uniform sampler2D velocityTex;
 uniform sampler2D depthTex;
 uniform mat4 inverseModelViewMatrix;
 uniform mat4 previousModelViewProjectionMatrix;
@@ -45,11 +45,11 @@ void main (void) {
     vec2 texelSize = 1.0 / vec2(textureSize(tex, 0));
     vec2 screenTexCoords = gl_FragCoord.xy * texelSize;
     
-    vec2 vel = texture(velocity, st).rg;
-    vel *= 0.25;
+    vec2 vel = vec2(0.2,0.0);
+    vel *= 0.1;
     
-    //float speed = length(vel / texelSize);
-    float nSamples = 30;// clamp(int(speed), 1, 5);
+    float speed = length(vel / texelSize);
+    float nSamples = clamp(int(speed), 1, 30);
     vec4 result = texture(tex, st);
 
     for (int i = 1; i < nSamples; ++i) {
@@ -60,5 +60,6 @@ void main (void) {
         result += texture(tex, st + offset);
     }
     
+    vec2 d = texture(velocityTex, st).rg;
     frag_colour = result /= float(nSamples);
 }
