@@ -2,13 +2,17 @@
 in vec3 position_eye, normal_eye;
 in mat4 modelView;
 out vec4 fragColor;
+out vec2 velocity;
+
+in vec4 vPosition;
+in vec4 vPreviousPosition;
 
 uniform mat4 viewMatrix;
 
 // fixed point light properties
 vec3 light_position_world = vec3 (0.0, 0.0, 10.5);
 vec3 Ls = vec3 (1.0, 1.0, 1.0); // white specular colour
-vec3 Ld = vec3 (0.8, 0.0, 0.0); // dull white diffuse light colour
+vec3 Ld = vec3 (0.0, 0.5, 1.0); // dull white diffuse light colour
 vec3 La = vec3 (0.1, 0.1, 0.1); // grey ambient colour
 
 // surface reflectance
@@ -42,4 +46,8 @@ void main (void)
     
     // final colour
     fragColor = vec4 (Is + Id + Ia, 1.0);
+    
+    vec2 a = (vPosition.xy / vPosition.w) * 0.5 + 0.5;
+    vec2 b = (vPreviousPosition.xy / vPreviousPosition.w) * 0.5 + 0.5;
+    velocity = a - b;
 }

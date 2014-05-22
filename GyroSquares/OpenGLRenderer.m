@@ -84,10 +84,12 @@ typedef struct {
     GLuint m_blurProgram;
     
     GLuint m_colorTexture;
+    GLuint m_velocityTexture;
     GLuint m_depthTexture;
     GLuint m_frameBuffer;
     GLint  m_colorTextureUniformIdx;
     GLint  m_depthTextureUniformIdx;
+    GLint  m_velocityTextureUniformIdx;
     GLint  m_inverseModelViewMatrixIdx;
     GLint  m_inverseProjectionMatrix;
     GLint  m_previousModelViewProjectionUniformIdx;
@@ -104,6 +106,8 @@ typedef struct {
     GLKVector3 frameOldRotationVector;
     
     GLKMatrix4 previousModelViewProjectionMatrix;
+    GLKMatrix4 previousModelViewProjectionMatrix2;
+    GLint m_previousMVPMatrixFirstPass;
     
     FrameControl frameControl;
 }
@@ -142,7 +146,6 @@ int velMod = 500;
     GLKMatrix4 model, model2, view, projection;
     
     glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glClearDepth(100.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -160,6 +163,7 @@ int velMod = 500;
 	glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
+    glUniformMatrix4fv(m_previousMVPMatrixFirstPass, 1, GL_FALSE, &previousModelViewProjectionMatrix.m00);
 	
 	// Bind our vertex array object
 	glBindVertexArray(m_squareVAOName);
@@ -169,7 +173,7 @@ int velMod = 500;
 	//glCullFace(GL_BACK);
 	
 	// Draw our square
-    //glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
+    glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
     
     glBindVertexArray(m_squareVAOName2);
     
@@ -183,6 +187,7 @@ int velMod = 500;
     glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model2.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
+    glUniformMatrix4fv(m_previousMVPMatrixFirstPass, 1, GL_FALSE, &previousModelViewProjectionMatrix2.m00);
     
     glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
 
@@ -201,17 +206,17 @@ int velMod = 500;
     frameVelocityVector.z *= 0.99;
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClearColor(0.f, 0.f, 0.5f, 1.0f);
     glClearDepth(1.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_blurProgram);
     
-    GLKMatrix4 modelViewMatrix = GLKMatrix4Multiply(model2, view);
+    GLKMatrix4 modelViewMatrix = GLKMatrix4Multiply(view, model2);
     
     bool isInvertible = false;
     GLKMatrix4 inverseModelViewMatrix = GLKMatrix4Invert(modelViewMatrix, &isInvertible);
     if (!isInvertible) NSLog(@"failed to invert model view matrix");
-    GLKMatrix4 modelViewProjectionMatrix = GLKMatrix4Multiply(projection, modelViewMatrix);
+    GLKMatrix4 modelViewProjectionMatrix = GLKMatrix4Multiply(GLKMatrix4Multiply(projection, view), model);
+    GLKMatrix4 modelViewProjectionMatrix2 = GLKMatrix4Multiply(GLKMatrix4Multiply(projection, view), model2);
     GLKMatrix4 inverseProjectionMatrix = GLKMatrix4Invert(projection, &isInvertible);
     if (!isInvertible) NSLog(@"failed to invert projection matrix");
     
@@ -224,13 +229,17 @@ int velMod = 500;
     glBindTexture(GL_TEXTURE_2D, m_colorTexture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
     glUniform1i(m_colorTextureUniformIdx, 0);
     glUniform1i(m_depthTextureUniformIdx, 1);
+    glUniform1i(m_velocityTextureUniformIdx, 2);
     glDrawArrays(m_screenQuadPrimType, 0, m_screenQuadNumElements);
     
     glActiveTexture(GL_TEXTURE0);
     
     previousModelViewProjectionMatrix = modelViewProjectionMatrix;
+    previousModelViewProjectionMatrix2 = modelViewProjectionMatrix2;
 }
 
 static GLsizei GetGLTypeSize(GLenum type)
@@ -418,6 +427,14 @@ static GLsizei GetGLTypeSize(GLenum type)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorTexture, 0);
     
+    glGenTextures(1, &m_velocityTexture);
+    glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_velocityTexture, 0);
     
     glGenTextures(1, &m_depthTexture);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
@@ -428,8 +445,8 @@ static GLsizei GetGLTypeSize(GLenum type)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
     
-    GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, DrawBuffers);
+    GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+    glDrawBuffers(2, DrawBuffers);
     
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
         fb = 0;
@@ -519,6 +536,7 @@ static GLsizei GetGLTypeSize(GLenum type)
         m_squareViewUniformIdx = glGetUniformLocation(m_squarePrgName, "viewMatrix");
 		m_squareModelUniformIdx = glGetUniformLocation(m_squarePrgName, "modelMatrix");
         m_squareProjectionUniformIdx = glGetUniformLocation(m_squarePrgName, "projectionMatrix");
+        m_previousMVPMatrixFirstPass = glGetUniformLocation(m_squarePrgName, "previousModelViewProjectionMatrix");
 		
 		if(m_squareModelUniformIdx < 0)
 		{
@@ -539,6 +557,7 @@ static GLsizei GetGLTypeSize(GLenum type)
         m_blurProgram = [self buildProgramWithVertexSource:vtxSource withFragmentSource:frgSource withNormal:NO withTexcoord:YES withColor:NO];
         m_colorTextureUniformIdx = glGetUniformLocation(m_blurProgram, "tex");
         m_depthTextureUniformIdx = glGetUniformLocation(m_blurProgram, "depthTex");
+        m_velocityTextureUniformIdx = glGetUniformLocation(m_blurProgram, "velocityTex");
         m_previousModelViewProjectionUniformIdx = glGetUniformLocation(m_blurProgram, "previousModelViewProjectionMatrix");
         m_inverseModelViewMatrixIdx = glGetUniformLocation(m_blurProgram, "inverseModelViewMatrix");
         m_inverseProjectionMatrix = glGetUniformLocation(m_blurProgram, "inverseProjectionMatrix");
@@ -565,7 +584,7 @@ static GLsizei GetGLTypeSize(GLenum type)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		// Always use this clear color
-		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
 		// Draw our scene once without presenting the rendered image.
 		//   This is done in order to pre-warm OpenGL
@@ -621,7 +640,7 @@ static GLsizei GetGLTypeSize(GLenum type)
 	//  set with glVertexAttribPointer
 	//  See buildVAO to see where vertex arrays are actually set
 	glBindAttribLocation(prgName, POS_ATTRIB_IDX, "inPosition");
-    
+
     if (hasNormal){
         glBindAttribLocation(prgName, NORMAL_ATTRIB_IDX, "inNormal");
     }
