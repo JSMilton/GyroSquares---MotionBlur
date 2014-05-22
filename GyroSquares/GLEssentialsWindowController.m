@@ -146,7 +146,6 @@ NSWindow* standardWindow;
 	fullscreenWindow = nil;
 }
 
-
 - (void) keyDown:(NSEvent *)event
 {
 	unichar c = [[event charactersIgnoringModifiers] characterAtIndex:0];

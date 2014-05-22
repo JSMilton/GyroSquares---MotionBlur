@@ -16,7 +16,7 @@
 }
 
 - (id)initWithDefaultFBO: (GLuint) defaultFBOName;
-- (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height;
+- (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height andIsLive:(BOOL)isLive;
 - (void)render;
 - (void)dealloc;
 - (void)moveCamera:(GLKVector3)vector;

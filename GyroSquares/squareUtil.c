@@ -467,6 +467,53 @@ SquareModel *loadCube()
     return newModel;
 }
 
+SquareModel *loadScreenQuad()
+{
+    const int vertexCount = 6;
+    // x,y vertex positions
+    float positionArray[] = {
+        -1.0, -1.0,
+        1.0, -1.0,
+        1.0,  1.0,
+        1.0,  1.0,
+        -1.0,  1.0,
+        -1.0, -1.0
+    };
+    // per-vertex texture coordinates
+    float textureUVArray[] = {
+        0.0, 0.0,
+        1.0, 0.0,
+        1.0, 1.0,
+        1.0, 1.0,
+        0.0, 1.0,
+        0.0, 0.0
+    };
+    
+    SquareModel *newModel = (SquareModel *)calloc(sizeof(SquareModel), 1);
+    
+    // check for memory error
+    if (newModel == NULL){
+        return NULL;
+    }
+    
+    newModel->positionSize = 2;
+    newModel->positionArraySize = sizeof(positionArray);
+    newModel->positionType = GL_FLOAT;
+    newModel->positions = (GLubyte *)malloc(newModel->positionArraySize);
+    memcpy(newModel->positions, positionArray, newModel->positionArraySize);
+    
+    newModel->textureSize = 2;
+    newModel->texureUVArraySize = sizeof(textureUVArray);
+    newModel->textureType = GL_FLOAT;
+    newModel->textureUV = (GLubyte *)malloc(newModel->texureUVArraySize);
+    memcpy(newModel->textureUV, textureUVArray, newModel->texureUVArraySize);
+    
+    newModel->numVertcies = vertexCount;
+    newModel->primType = GL_TRIANGLES;
+    
+    return newModel;
+}
+
 void destroySquareModel(SquareModel *model)
 {
     if (model == NULL){

@@ -183,27 +183,19 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// Init our renderer.  Use 0 for the defaultFBO which is appropriate for
 	// OSX (but not iOS since iOS apps must create their own FBO)
 	m_renderer = [[OpenGLRenderer alloc] initWithDefaultFBO:0];
+    [self viewDidEndLiveResize];
 }
 
-- (void) reshape
-{	
-	[super reshape];
-	
-	// We draw on a secondary thread through the display link. However, when
-	// resizing the view, -drawRect is called on the main thread.
-	// Add a mutex around to avoid the threads accessing the context
-	// simultaneously when resizing.
-	CGLLockContext([[self openGLContext] CGLContextObj]);
-
-	// Get the view size in Points
+- (NSRect)getViewRect {
+    // Get the view size in Points
 	NSRect viewRectPoints = [self bounds];
     
 #if SUPPORT_RETINA_RESOLUTION
-
+    
     // Rendering at retina resolutions will reduce aliasing, but at the potential
     // cost of framerate and battery life due to the GPU needing to render more
     // pixels.
-
+    
     // Any calculations the renderer does which use pixel dimentions, must be
     // in "retina" space.  [NSView convertRectToBacking] converts point sizes
     // to pixel sizes.  Thus the renderer gets the size in pixels, not points,
@@ -224,12 +216,36 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     NSRect viewRectPixels = viewRectPoints;
     
 #endif // !SUPPORT_RETINA_RESOLUTION
+
+    return viewRectPixels;
+}
+
+- (void) reshape
+{	
+	[super reshape];
+	
+	// We draw on a secondary thread through the display link. However, when
+	// resizing the view, -drawRect is called on the main thread.
+	// Add a mutex around to avoid the threads accessing the context
+	// simultaneously when resizing.
+	CGLLockContext([[self openGLContext] CGLContextObj]);
+
+    NSRect viewRectPixels = [self getViewRect];
+	   
+	// Set the new dimensions in our renderer
+	[m_renderer resizeWithWidth:viewRectPixels.size.width
+                      AndHeight:viewRectPixels.size.height andIsLive:YES];
+	
+	CGLUnlockContext([[self openGLContext] CGLContextObj]);
+}
+
+- (void)viewDidEndLiveResize {
+    // Set the new dimensions in our renderer
+	NSRect viewRectPixels = [self getViewRect];
     
 	// Set the new dimensions in our renderer
 	[m_renderer resizeWithWidth:viewRectPixels.size.width
-                      AndHeight:viewRectPixels.size.height];
-	
-	CGLUnlockContext([[self openGLContext] CGLContextObj]);
+                      AndHeight:viewRectPixels.size.height andIsLive:NO];
 }
 
 
@@ -290,8 +306,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     handId[1] = -1;
     NSLog(@"running");
 }
-
-#pragma mark - SampleListener Callbacks
 
 - (void)onInit:(NSNotification *)notification
 {

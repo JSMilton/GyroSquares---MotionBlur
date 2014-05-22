@@ -7,9 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4307943E192D054800C304C9 /* StandardShadingRTT.fragmentshader in Resources */ = {isa = PBXBuildFile; fileRef = 4307943D192D054800C304C9 /* StandardShadingRTT.fragmentshader */; };
+		43079440192D055D00C304C9 /* Passthrough.vertexshader in Resources */ = {isa = PBXBuildFile; fileRef = 4307943F192D055D00C304C9 /* Passthrough.vertexshader */; };
+		43079442192D076100C304C9 /* StandardShadingRTT.vertexshader in Resources */ = {isa = PBXBuildFile; fileRef = 43079441192D076100C304C9 /* StandardShadingRTT.vertexshader */; };
 		430BD62D1924F14900BF2259 /* libLeap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 430BD62C1924F14900BF2259 /* libLeap.dylib */; };
-		430BD62F1924F25E00BF2259 /* libLeap.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 430BD62C1924F14900BF2259 /* libLeap.dylib */; };
+		430BD62F1924F25E00BF2259 /* libLeap.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 430BD62C1924F14900BF2259 /* libLeap.dylib */; };
 		433FEB391924E7E9007BDAD5 /* LeapObjectiveC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 433FEB381924E7E9007BDAD5 /* LeapObjectiveC.mm */; };
+		43FDD3A8192B6B0A00667CDA /* blur.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 43FDD3A7192B6B0A00667CDA /* blur.vsh */; };
+		43FDD3AA192B6B1100667CDA /* blur.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 43FDD3A9192B6B1100667CDA /* blur.fsh */; };
+		43FDD3B5192B888E00667CDA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43FDD3B3192B883700667CDA /* MainMenu.xib */; };
 		4F254C01190AF09800A2E945 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C00190AF09800A2E945 /* Cocoa.framework */; };
 		4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C09190AF09800A2E945 /* InfoPlist.strings */; };
 		4F254C0D190AF09800A2E945 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C0C190AF09800A2E945 /* main.m */; };
@@ -25,9 +31,6 @@
 		4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C3D190AF44A00A2E945 /* GLEssentialsWindowController.m */; };
 		4F254C43190AF96500A2E945 /* OpenGLRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C42190AF96500A2E945 /* OpenGLRenderer.m */; };
 		4F254C50190AF9CA00A2E945 /* sourceUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C45190AF9CA00A2E945 /* sourceUtil.c */; };
-		4F254C51190AF9CA00A2E945 /* vectorUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C47190AF9CA00A2E945 /* vectorUtil.c */; };
-		4F254C52190AF9CA00A2E945 /* modelUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C49190AF9CA00A2E945 /* modelUtil.c */; };
-		4F254C53190AF9CA00A2E945 /* matrixUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C4B190AF9CA00A2E945 /* matrixUtil.c */; };
 		4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C57190AFC6700A2E945 /* squareUtil.c */; };
 		4FD4A64F190C084F003AF3DC /* square.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A64E190C084F003AF3DC /* square.vsh */; };
 		4FD4A651190C0856003AF3DC /* square.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A650190C0856003AF3DC /* square.fsh */; };
@@ -44,24 +47,31 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		430BD62E1924F24900BF2259 /* CopyFiles */ = {
+		430BD62E1924F24900BF2259 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				430BD62F1924F25E00BF2259 /* libLeap.dylib in CopyFiles */,
+				430BD62F1924F25E00BF2259 /* libLeap.dylib in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4307943D192D054800C304C9 /* StandardShadingRTT.fragmentshader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = StandardShadingRTT.fragmentshader; sourceTree = "<group>"; };
+		4307943F192D055D00C304C9 /* Passthrough.vertexshader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Passthrough.vertexshader; sourceTree = "<group>"; };
+		43079441192D076100C304C9 /* StandardShadingRTT.vertexshader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = StandardShadingRTT.vertexshader; sourceTree = "<group>"; };
 		430BD62C1924F14900BF2259 /* libLeap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libLeap.dylib; path = "../LeapDeveloperKit_2.0.0+15464_mac/LeapSDK/lib/libLeap.dylib"; sourceTree = "<group>"; };
 		433FEB351924E7E9007BDAD5 /* Leap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leap.h; sourceTree = "<group>"; };
 		433FEB361924E7E9007BDAD5 /* LeapMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeapMath.h; sourceTree = "<group>"; };
 		433FEB371924E7E9007BDAD5 /* LeapObjectiveC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeapObjectiveC.h; sourceTree = "<group>"; };
 		433FEB381924E7E9007BDAD5 /* LeapObjectiveC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LeapObjectiveC.mm; sourceTree = "<group>"; };
+		43FDD3A7192B6B0A00667CDA /* blur.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blur.vsh; sourceTree = "<group>"; };
+		43FDD3A9192B6B1100667CDA /* blur.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blur.fsh; sourceTree = "<group>"; };
+		43FDD3B3192B883700667CDA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		4F254BFD190AF09800A2E945 /* GyroSquares.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GyroSquares.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F254C00190AF09800A2E945 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4F254C03190AF09800A2E945 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -72,7 +82,6 @@
 		4F254C0C190AF09800A2E945 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4F254C0E190AF09800A2E945 /* GyroSquares-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GyroSquares-Prefix.pch"; sourceTree = "<group>"; };
 		4F254C10190AF09800A2E945 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		4F254C16190AF09800A2E945 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4F254C1E190AF09800A2E945 /* GyroSquaresTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GyroSquaresTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F254C1F190AF09800A2E945 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4F254C26190AF09800A2E945 /* GyroSquaresTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GyroSquaresTests-Info.plist"; sourceTree = "<group>"; };
@@ -90,12 +99,6 @@
 		4F254C42190AF96500A2E945 /* OpenGLRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLRenderer.m; sourceTree = "<group>"; };
 		4F254C45190AF9CA00A2E945 /* sourceUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sourceUtil.c; sourceTree = "<group>"; };
 		4F254C46190AF9CA00A2E945 /* sourceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sourceUtil.h; sourceTree = "<group>"; };
-		4F254C47190AF9CA00A2E945 /* vectorUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vectorUtil.c; sourceTree = "<group>"; };
-		4F254C48190AF9CA00A2E945 /* vectorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vectorUtil.h; sourceTree = "<group>"; };
-		4F254C49190AF9CA00A2E945 /* modelUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = modelUtil.c; sourceTree = "<group>"; };
-		4F254C4A190AF9CA00A2E945 /* modelUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = modelUtil.h; sourceTree = "<group>"; };
-		4F254C4B190AF9CA00A2E945 /* matrixUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = matrixUtil.c; sourceTree = "<group>"; };
-		4F254C4C190AF9CA00A2E945 /* matrixUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrixUtil.h; sourceTree = "<group>"; };
 		4F254C4D190AF9CA00A2E945 /* imageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = imageUtil.m; sourceTree = "<group>"; };
 		4F254C4E190AF9CA00A2E945 /* imageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imageUtil.h; sourceTree = "<group>"; };
 		4F254C4F190AF9CA00A2E945 /* glUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glUtil.h; sourceTree = "<group>"; };
@@ -201,8 +204,8 @@
 				4F254C09190AF09800A2E945 /* InfoPlist.strings */,
 				4F254C0C190AF09800A2E945 /* main.m */,
 				4F254C0E190AF09800A2E945 /* GyroSquares-Prefix.pch */,
-				4F254C15190AF09800A2E945 /* MainMenu.xib */,
 				4F254C0F190AF09800A2E945 /* Credits.rtf */,
+				43FDD3B3192B883700667CDA /* MainMenu.xib */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -230,12 +233,6 @@
 			children = (
 				4F254C45190AF9CA00A2E945 /* sourceUtil.c */,
 				4F254C46190AF9CA00A2E945 /* sourceUtil.h */,
-				4F254C47190AF9CA00A2E945 /* vectorUtil.c */,
-				4F254C48190AF9CA00A2E945 /* vectorUtil.h */,
-				4F254C49190AF9CA00A2E945 /* modelUtil.c */,
-				4F254C4A190AF9CA00A2E945 /* modelUtil.h */,
-				4F254C4B190AF9CA00A2E945 /* matrixUtil.c */,
-				4F254C4C190AF9CA00A2E945 /* matrixUtil.h */,
 				4F254C4D190AF9CA00A2E945 /* imageUtil.m */,
 				4F254C4E190AF9CA00A2E945 /* imageUtil.h */,
 				4F254C4F190AF9CA00A2E945 /* glUtil.h */,
@@ -263,8 +260,13 @@
 		4FD4A64D190C07E2003AF3DC /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				43079441192D076100C304C9 /* StandardShadingRTT.vertexshader */,
+				4307943F192D055D00C304C9 /* Passthrough.vertexshader */,
+				4307943D192D054800C304C9 /* StandardShadingRTT.fragmentshader */,
 				4FD4A64E190C084F003AF3DC /* square.vsh */,
 				4FD4A650190C0856003AF3DC /* square.fsh */,
+				43FDD3A7192B6B0A00667CDA /* blur.vsh */,
+				43FDD3A9192B6B1100667CDA /* blur.fsh */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -279,7 +281,7 @@
 				4F254BF9190AF09800A2E945 /* Sources */,
 				4F254BFA190AF09800A2E945 /* Frameworks */,
 				4F254BFB190AF09800A2E945 /* Resources */,
-				430BD62E1924F24900BF2259 /* CopyFiles */,
+				430BD62E1924F24900BF2259 /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -346,9 +348,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43FDD3B5192B888E00667CDA /* MainMenu.xib in Resources */,
+				4307943E192D054800C304C9 /* StandardShadingRTT.fragmentshader in Resources */,
 				4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */,
+				43FDD3A8192B6B0A00667CDA /* blur.vsh in Resources */,
 				4F254C11190AF09800A2E945 /* Credits.rtf in Resources */,
+				43079442192D076100C304C9 /* StandardShadingRTT.vertexshader in Resources */,
+				43079440192D055D00C304C9 /* Passthrough.vertexshader in Resources */,
 				4FD4A651190C0856003AF3DC /* square.fsh in Resources */,
+				43FDD3AA192B6B1100667CDA /* blur.fsh in Resources */,
 				4FD4A64F190C084F003AF3DC /* square.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,13 +379,10 @@
 				4F254C50190AF9CA00A2E945 /* sourceUtil.c in Sources */,
 				4F254C3E190AF44A00A2E945 /* GLEssentialsGLView.m in Sources */,
 				4F254C3F190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m in Sources */,
-				4F254C53190AF9CA00A2E945 /* matrixUtil.c in Sources */,
 				4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */,
 				4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */,
 				433FEB391924E7E9007BDAD5 /* LeapObjectiveC.mm in Sources */,
 				4F254C0D190AF09800A2E945 /* main.m in Sources */,
-				4F254C51190AF9CA00A2E945 /* vectorUtil.c in Sources */,
-				4F254C52190AF9CA00A2E945 /* modelUtil.c in Sources */,
 				4F254C43190AF96500A2E945 /* OpenGLRenderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,14 +420,6 @@
 				4F254C10190AF09800A2E945 /* en */,
 			);
 			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		4F254C15190AF09800A2E945 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4F254C16190AF09800A2E945 /* Base */,
-			);
-			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 		4F254C27190AF09800A2E945 /* InfoPlist.strings */ = {

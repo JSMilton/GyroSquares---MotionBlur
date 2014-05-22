@@ -8,7 +8,6 @@
 
 #import "OpenGLRenderer.h"
 
-#import "matrixUtil.h"
 #import "sourceUtil.h"
 #import "squareUtil.h"
 
@@ -40,7 +39,8 @@
 enum {
 	POS_ATTRIB_IDX,
 	NORMAL_ATTRIB_IDX,
-    COLOR_ATTRIB_IDX
+    COLOR_ATTRIB_IDX,
+    TEXTURE_ATTRIB_IDX
 };
 
 const int maxFrames = 50;
@@ -75,6 +75,23 @@ typedef struct {
     GLuint m_squareNumElements2;
     GLfloat m_squareAngle2;
     
+    SquareModel *m_screenQuad;
+    GLuint m_screenQuadVAO;
+    GLuint m_screenQuadElementType;
+    GLuint m_screenQuadPrimType;
+    GLuint m_screenQuadNumElements;
+    
+    GLuint m_blurProgram;
+    
+    GLuint m_colorTexture;
+    GLuint m_depthTexture;
+    GLuint m_frameBuffer;
+    GLint  m_colorTextureUniformIdx;
+    GLint  m_depthTextureUniformIdx;
+    GLint  m_inverseModelViewMatrixIdx;
+    GLint  m_inverseProjectionMatrix;
+    GLint  m_previousModelViewProjectionUniformIdx;
+    
     GLuint m_viewWidth;
     GLuint m_viewHeight;
     
@@ -86,15 +103,21 @@ typedef struct {
     GLKVector3 frameRotationVector;
     GLKVector3 frameOldRotationVector;
     
+    GLKMatrix4 previousModelViewProjectionMatrix;
+    
     FrameControl frameControl;
 }
 
-- (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height
+- (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height andIsLive:(BOOL)isLive
 {
 	glViewport(0, 0, width, height);
     
 	m_viewWidth = width;
 	m_viewHeight = height;
+    
+    if (!isLive){
+        m_frameBuffer = [self buildFrameBuffer];
+    }
 }
 
 - (void)moveCamera:(GLKVector3)vector {
@@ -115,16 +138,20 @@ int velMod = 500;
 }
 
 - (void)render {
+    glEnable(GL_DEPTH_TEST);
     GLKMatrix4 model, model2, view, projection;
     
+    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearDepth(100.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// Use the program for rendering our square
 	glUseProgram(m_squarePrgName);
     
-    projection = GLKMatrix4MakePerspective(45.0f, (float)m_viewWidth / (float)m_viewHeight, 1.0, 100.0);
+    projection = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(45.0f), (float)m_viewWidth / (float)m_viewHeight, 0.1, 100.0);
     view = GLKMatrix4MakeLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
-    model = GLKMatrix4MakeTranslation(100, 100, 100);
+    model = GLKMatrix4MakeTranslation(0, 0, -2);
     model = GLKMatrix4RotateX(model, GLKMathDegreesToRadians(cubeRotationVector.y));
     model = GLKMatrix4RotateY(model, GLKMathDegreesToRadians(cubeRotationVector.x));
 	
@@ -133,7 +160,6 @@ int velMod = 500;
 	glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
-    glUniform1f(m_alphaUniformIndex, 1.0);
 	
 	// Bind our vertex array object
 	glBindVertexArray(m_squareVAOName);
@@ -143,11 +169,11 @@ int velMod = 500;
 	//glCullFace(GL_BACK);
 	
 	// Draw our square
-   // glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
+    //glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
     
     glBindVertexArray(m_squareVAOName2);
     
-    model2 = GLKMatrix4MakeTranslation(0, 0, 0);
+    model2 = GLKMatrix4MakeTranslation(0, 0, -2);
     model2 = GLKMatrix4RotateX(model2, GLKMathDegreesToRadians(frameRotationVector.x));
     model2 = GLKMatrix4RotateY(model2, GLKMathDegreesToRadians(frameRotationVector.y));
     model2 = GLKMatrix4Scale(model2, 3, 3, 0.25);
@@ -157,21 +183,8 @@ int velMod = 500;
     glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model2.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
-    glUniform1f(m_alphaUniformIndex, 1.0);
     
     glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
-    
-//    for (int i = 0; i < maxFrames; i++){
-//        if (frameControl.frames[i].alpha > 0.0){
-//            GLKMatrix4 mat = GLKMatrix4Scale(frameControl.frames[i].modelMatrix, 1, 1, 1);
-//            glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &mat.m00);
-//            glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
-//            glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
-//            glUniform1f(m_alphaUniformIndex, frameControl.frames[i].alpha -= 0.02);
-//            
-//            glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
-//        }
-//    }
 
     cubeRotationVector.x += cubeVelocityVector.x;
     cubeRotationVector.y += cubeVelocityVector.y;
@@ -187,16 +200,37 @@ int velMod = 500;
     frameVelocityVector.y *= 0.99;
     frameVelocityVector.z *= 0.99;
     
-    if (GLKVector3Length(frameVelocityVector) > 15.0){
-        [self addFrameWithMatrix:model2];
-    }
-}
-
-- (void)addFrameWithMatrix:(GLKMatrix4)matrix {
-    frameControl.frames[frameControl.index].alpha = 0.15;
-    frameControl.frames[frameControl.index].modelMatrix = matrix;
-    frameControl.index++;
-    if (frameControl.index == maxFrames)frameControl.index = 0;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClearColor(0.f, 0.f, 0.5f, 1.0f);
+    glClearDepth(1.f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glUseProgram(m_blurProgram);
+    
+    GLKMatrix4 modelViewMatrix = GLKMatrix4Multiply(model2, view);
+    
+    bool isInvertible = false;
+    GLKMatrix4 inverseModelViewMatrix = GLKMatrix4Invert(modelViewMatrix, &isInvertible);
+    if (!isInvertible) NSLog(@"failed to invert model view matrix");
+    GLKMatrix4 modelViewProjectionMatrix = GLKMatrix4Multiply(projection, modelViewMatrix);
+    GLKMatrix4 inverseProjectionMatrix = GLKMatrix4Invert(projection, &isInvertible);
+    if (!isInvertible) NSLog(@"failed to invert projection matrix");
+    
+    glUniformMatrix4fv(m_previousModelViewProjectionUniformIdx, 1, GL_FALSE, &previousModelViewProjectionMatrix.m00);
+    glUniformMatrix4fv(m_inverseModelViewMatrixIdx, 1, GL_FALSE, &inverseModelViewMatrix.m00);
+    glUniformMatrix4fv(m_inverseProjectionMatrix, 1, GL_FALSE, &inverseProjectionMatrix.m00);
+    
+    glBindVertexArray(m_screenQuadVAO);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_colorTexture);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+    glUniform1i(m_colorTextureUniformIdx, 0);
+    glUniform1i(m_depthTextureUniformIdx, 1);
+    glDrawArrays(m_screenQuadPrimType, 0, m_screenQuadNumElements);
+    
+    glActiveTexture(GL_TEXTURE0);
+    
+    previousModelViewProjectionMatrix = modelViewProjectionMatrix;
 }
 
 static GLsizei GetGLTypeSize(GLenum type)
@@ -249,56 +283,85 @@ static GLsizei GetGLTypeSize(GLenum type)
                           model->positionSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
                           0);	// What is the offset in the VBO to the position data?
     
-    GLuint normalBufferName;
-    // Create a vertex buffer object (VBO) to store positions
-    glGenBuffers(1, &normalBufferName);
-    glBindBuffer(GL_ARRAY_BUFFER, normalBufferName);
+    if (model->normalSize > 0){
+        GLuint normalBufferName;
+        // Create a vertex buffer object (VBO) to store positions
+        glGenBuffers(1, &normalBufferName);
+        glBindBuffer(GL_ARRAY_BUFFER, normalBufferName);
+        
+        // Allocate and load position data into the VBO
+        glBufferData(GL_ARRAY_BUFFER, model->normalArraySize, model->normals, GL_STATIC_DRAW);
+        
+        // Enable the position attribute for this VAO
+        glEnableVertexAttribArray(NORMAL_ATTRIB_IDX);
+        
+        // Get the size of the position type so we can set the stride properly
+        posTypeSize = GetGLTypeSize(model->normalType);
+        
+        glVertexAttribPointer(NORMAL_ATTRIB_IDX,		// What attibute index will this array feed in the vertex shader (see buildProgram)
+                              model->normalSize,	// How many elements are there per position?
+                              model->normalType,	// What is the type of this data?
+                              GL_FALSE,				// Do we want to normalize this data (0-1 range for fixed-pont types)
+                              model->normalSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
+                              0);	// What is the offset in the VBO to the position data?
+    }
     
-    // Allocate and load position data into the VBO
-    glBufferData(GL_ARRAY_BUFFER, model->normalArraySize, model->normals, GL_STATIC_DRAW);
+    if (model->colorSize > 0){
+        GLuint colorBufferName;
+        // Create a vertex buffer object (VBO) to store positions
+        glGenBuffers(1, &colorBufferName);
+        glBindBuffer(GL_ARRAY_BUFFER, colorBufferName);
+        
+        // Allocate and load position data into the VBO
+        glBufferData(GL_ARRAY_BUFFER, model->colorArraySize, model->colors, GL_STATIC_DRAW);
+        
+        // Enable the position attribute for this VAO
+        glEnableVertexAttribArray(COLOR_ATTRIB_IDX);
+        
+        // Get the size of the position type so we can set the stride properly
+        posTypeSize = GetGLTypeSize(model->colorType);
+        
+        glVertexAttribPointer(COLOR_ATTRIB_IDX,		// What attibute index will this array feed in the vertex shader (see buildProgram)
+                              model->colorSize,	// How many elements are there per position?
+                              model->colorType,	// What is the type of this data?
+                              GL_FALSE,				// Do we want to colorize this data (0-1 range for fixed-pont types)
+                              model->colorSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
+                              0);	// What is the offset in the VBO to the position data?
+    }
     
-    // Enable the position attribute for this VAO
-    glEnableVertexAttribArray(NORMAL_ATTRIB_IDX);
+    if (model->textureSize > 0){
+        GLuint textureBufferName;
+        // Create a vertex buffer object (VBO) to store positions
+        glGenBuffers(1, &textureBufferName);
+        glBindBuffer(GL_ARRAY_BUFFER, textureBufferName);
+        
+        // Allocate and load position data into the VBO
+        glBufferData(GL_ARRAY_BUFFER, model->texureUVArraySize, model->textureUV, GL_STATIC_DRAW);
+        
+        // Enable the position attribute for this VAO
+        glEnableVertexAttribArray(TEXTURE_ATTRIB_IDX);
+        
+        // Get the size of the position type so we can set the stride properly
+        posTypeSize = GetGLTypeSize(model->textureType);
+        
+        glVertexAttribPointer(TEXTURE_ATTRIB_IDX,		// What attibute index will this array feed in the vertex shader (see buildProgram)
+                              model->textureSize,	// How many elements are there per position?
+                              model->textureType,	// What is the type of this data?
+                              GL_FALSE,				// Do we want to colorize this data (0-1 range for fixed-pont types)
+                              model->textureSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
+                              0);	// What is the offset in the VBO to the position data?
+    }
     
-    // Get the size of the position type so we can set the stride properly
-    posTypeSize = GetGLTypeSize(model->normalType);
-    
-    glVertexAttribPointer(NORMAL_ATTRIB_IDX,		// What attibute index will this array feed in the vertex shader (see buildProgram)
-                          model->normalSize,	// How many elements are there per position?
-                          model->normalType,	// What is the type of this data?
-                          GL_FALSE,				// Do we want to normalize this data (0-1 range for fixed-pont types)
-                          model->normalSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
-                          0);	// What is the offset in the VBO to the position data?
-    
-    GLuint colorBufferName;
-    // Create a vertex buffer object (VBO) to store positions
-    glGenBuffers(1, &colorBufferName);
-    glBindBuffer(GL_ARRAY_BUFFER, colorBufferName);
-    
-    // Allocate and load position data into the VBO
-    glBufferData(GL_ARRAY_BUFFER, model->colorArraySize, model->colors, GL_STATIC_DRAW);
-    
-    // Enable the position attribute for this VAO
-    glEnableVertexAttribArray(COLOR_ATTRIB_IDX);
-    
-    // Get the size of the position type so we can set the stride properly
-    posTypeSize = GetGLTypeSize(model->colorType);
-    
-    glVertexAttribPointer(COLOR_ATTRIB_IDX,		// What attibute index will this array feed in the vertex shader (see buildProgram)
-                          model->colorSize,	// How many elements are there per position?
-                          model->colorType,	// What is the type of this data?
-                          GL_FALSE,				// Do we want to colorize this data (0-1 range for fixed-pont types)
-                          model->colorSize*posTypeSize, // What is the stride (i.e. bytes between positions)?
-                          0);	// What is the offset in the VBO to the position data?
-
-    GLuint elementBufferName;
-    // Create a VBO to vertex array elements
-    // This also attaches the element array buffer to the VAO
-    glGenBuffers(1, &elementBufferName);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferName);
-    
-    // Allocate and load vertex array element data into VBO
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, model->elementArraySize, model->elements, GL_STATIC_DRAW);
+    if (model->elementArraySize > 0){
+        GLuint elementBufferName;
+        // Create a VBO to vertex array elements
+        // This also attaches the element array buffer to the VAO
+        glGenBuffers(1, &elementBufferName);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferName);
+        
+        // Allocate and load vertex array element data into VBO
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, model->elementArraySize, model->elements, GL_STATIC_DRAW);
+    }
     
     return vaoName;
 }
@@ -341,6 +404,42 @@ static GLsizei GetGLTypeSize(GLenum type)
 	GetGLError();
 }
 
+- (GLuint)buildFrameBuffer {
+    GLuint fb = 0;
+    glGenFramebuffers(1, &fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+    
+    glGenTextures(1, &m_colorTexture);
+    glBindTexture(GL_TEXTURE_2D, m_colorTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_viewWidth, m_viewHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorTexture, 0);
+    
+    
+    glGenTextures(1, &m_depthTexture);
+    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_viewWidth, m_viewHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
+    
+    GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1, DrawBuffers);
+    
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+        fb = 0;
+    }
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+    return fb;
+}
+
 - (id)initWithDefaultFBO: (GLuint) defaultFBOName
 {
 	if((self = [super init]))
@@ -353,8 +452,8 @@ static GLsizei GetGLTypeSize(GLenum type)
 		////////////////////////////////////////////////////
 		
 		m_defaultFBOName = defaultFBOName;
-		m_viewWidth = 100;
-		m_viewHeight = 100;
+		m_viewWidth = 1280;
+		m_viewHeight = 720;
         
 		//////////////////////////////
 		// Create Model             //
@@ -410,8 +509,9 @@ static GLsizei GetGLTypeSize(GLenum type)
 		// Build Program
 		m_squarePrgName = [self buildProgramWithVertexSource:vtxSource
 											 withFragmentSource:frgSource
-													 withNormal:NO
-												   withTexcoord:NO];
+													 withNormal:YES
+												   withTexcoord:NO
+                                                   withColor:NO];
 		
 		srcDestroySource(vtxSource);
 		srcDestroySource(frgSource);
@@ -419,12 +519,37 @@ static GLsizei GetGLTypeSize(GLenum type)
         m_squareViewUniformIdx = glGetUniformLocation(m_squarePrgName, "viewMatrix");
 		m_squareModelUniformIdx = glGetUniformLocation(m_squarePrgName, "modelMatrix");
         m_squareProjectionUniformIdx = glGetUniformLocation(m_squarePrgName, "projectionMatrix");
-        m_alphaUniformIndex = glGetUniformLocation(m_squarePrgName, "inAlpha");
 		
 		if(m_squareModelUniformIdx < 0)
 		{
 			NSLog(@"No modelViewProjectionMatrix in square shader");
 		}
+        
+        m_frameBuffer = [self buildFrameBuffer];
+        if (m_frameBuffer == 0){
+            NSLog(@"Failed to create the frame buffer");
+        }
+        
+        filePathName = [[NSBundle mainBundle] pathForResource:@"blur" ofType:@"vsh"];
+		vtxSource = srcLoadSource([filePathName cStringUsingEncoding:NSASCIIStringEncoding]);
+		
+		filePathName = [[NSBundle mainBundle] pathForResource:@"blur" ofType:@"fsh"];
+		frgSource = srcLoadSource([filePathName cStringUsingEncoding:NSASCIIStringEncoding]);
+
+        m_blurProgram = [self buildProgramWithVertexSource:vtxSource withFragmentSource:frgSource withNormal:NO withTexcoord:YES withColor:NO];
+        m_colorTextureUniformIdx = glGetUniformLocation(m_blurProgram, "tex");
+        m_depthTextureUniformIdx = glGetUniformLocation(m_blurProgram, "depthTex");
+        m_previousModelViewProjectionUniformIdx = glGetUniformLocation(m_blurProgram, "previousModelViewProjectionMatrix");
+        m_inverseModelViewMatrixIdx = glGetUniformLocation(m_blurProgram, "inverseModelViewMatrix");
+        m_inverseProjectionMatrix = glGetUniformLocation(m_blurProgram, "inverseProjectionMatrix");
+        
+        m_screenQuad = loadScreenQuad();
+        m_screenQuadVAO = [self buildVAO:m_screenQuad];
+        m_screenQuadNumElements = m_screenQuad->numVertcies;
+        m_screenQuadPrimType = m_screenQuad->primType;
+        
+        destroySquareModel(m_screenQuad);
+        m_screenQuad = NULL;
 		
 		////////////////////////////////////////////////
 		// Set up OpenGL state that will never change //
@@ -440,7 +565,7 @@ static GLsizei GetGLTypeSize(GLenum type)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		// Always use this clear color
-		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		
 		// Draw our scene once without presenting the rendered image.
 		//   This is done in order to pre-warm OpenGL
@@ -459,6 +584,7 @@ static GLsizei GetGLTypeSize(GLenum type)
 					withFragmentSource:(demoSource*)fragmentSource
 							withNormal:(BOOL)hasNormal
 						  withTexcoord:(BOOL)hasTexcoord
+                             withColor:(BOOL)hasColor
 {
 	GLuint prgName;
 	
@@ -483,16 +609,32 @@ static GLsizei GetGLTypeSize(GLenum type)
 	// Get the size of the version preprocessor string info so we know
 	//  how much memory to allocate for our sourceString
 	const GLsizei versionStringSize = sizeof("#version 123\n");
+    
+    GetGLError();
 	
 	// Create a program object
 	prgName = glCreateProgram();
+    
+    GetGLError();
 	
 	// Indicate the attribute indicies on which vertex arrays will be
 	//  set with glVertexAttribPointer
 	//  See buildVAO to see where vertex arrays are actually set
 	glBindAttribLocation(prgName, POS_ATTRIB_IDX, "inPosition");
-    glBindAttribLocation(prgName, NORMAL_ATTRIB_IDX, "inNormal");
-    glBindAttribLocation(prgName, COLOR_ATTRIB_IDX, "inColor");
+    
+    if (hasNormal){
+        glBindAttribLocation(prgName, NORMAL_ATTRIB_IDX, "inNormal");
+    }
+    
+    if (hasTexcoord){
+        glBindAttribLocation(prgName, TEXTURE_ATTRIB_IDX, "inTexture");
+    }
+    
+    if (hasColor){
+        glBindAttribLocation(prgName, COLOR_ATTRIB_IDX, "inColor");
+    }
+    
+    GetGLError();
 	
 	//////////////////////////////////////
 	// Specify and compile VertexShader //

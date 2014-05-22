@@ -1,6 +1,5 @@
 
 in vec3 position_eye, normal_eye;
-in float alpha;
 in mat4 modelView;
 out vec4 fragColor;
 
@@ -42,5 +41,5 @@ void main (void)
     vec3 Is = Ls * Ks * light_power * pow(cosAlpha, 5) / LD; // final specular intensity
     
     // final colour
-    fragColor = vec4 (Is + Id + Ia, alpha);
+    fragColor = vec4 (Is + Id + Ia, 1.0);
 }
