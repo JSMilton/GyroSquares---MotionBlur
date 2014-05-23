@@ -43,23 +43,23 @@ void main (void) {
 //    frag_colour = result /= float(nSamples);
     
     vec2 texelSize = 1.0 / vec2(textureSize(tex, 0));
-    vec2 screenTexCoords = gl_FragCoord.xy * texelSize;
-    
-    vec2 vel = vec2(0.2,0.0);
-    vel *= 0.1;
-    
+    vec2 vel = vec2(texture(velocityTex, st).rg);// * 2.0 - 1.0;
+    //vel *= 10;
+   // vel = pow(vel, vec2(1.0/3.0,1.0/3.0));
+    //vel = vel * 2.0 - 1.0;
     float speed = length(vel / texelSize);
-    float nSamples = clamp(int(speed), 1, 30);
+    float nSamples = 20;// clamp(int(speed), 1, 20);
+   // vel *= .01;
     vec4 result = texture(tex, st);
+    float f = vel.r;
+    float d = vel.g;
 
-    for (int i = 1; i < nSamples; ++i) {
-        // get offset in range [-0.5, 0.5]:
-        vec2 offset = (vel * (float(i) / float(nSamples - 1) - 0.5));
-
-        // sample & add to result:
-        result += texture(tex, st + offset);
-    }
-    
-    vec2 d = texture(velocityTex, st).rg;
-    frag_colour = result /= float(nSamples);
+//    for (int i = 1; i < nSamples; ++i) {
+//        // get offset in range [-0.5, 0.5]:
+//        vec2 offset = (vel * (float(i) / float(nSamples - 1) - 0.5));
+//
+//        // sample & add to result
+//        result += texture(tex, st + offset);
+//    }
+    frag_colour = vec4(result.r,d,result.z,1);// result;// result;// result;// /= float(nSamples);
 }

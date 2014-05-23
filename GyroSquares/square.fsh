@@ -45,10 +45,12 @@ void main (void)
     vec3 Is = Ls * Ks * light_power * pow(cosAlpha, 5) / LD; // final specular intensity
     
     // final colour
-    fragColor = vec4 (Is + Id + Ia, 1.0);
+    //fragColor = vec4 (Is + Id + Ia, 1.0);
+    fragColor = vec4(1.0,1.0,1.0,1.0);
     
-    vec2 a = (vPosition.xy / vPosition.w) * 0.5;
-    vec2 b = (vPreviousPosition.xy / vPreviousPosition.w) * 0.5;
+    vec2 a = vec2(1,1);// * 0.5 + 0.5;;// (vPosition.xy / vPosition.w) * 100;// * 0.5 + 0.5;
+    vec2 b = vec2(0,0);// * 0.5 + 0.5;;// (vPreviousPosition.xy / vPreviousPosition.w) * 100;// * 0.5 + 0.5;
     vec2 result = a - b;
-    velocity = result;
+    velocity = vec2(1.0,1.0);// result;
+    //velocity = pow(velocity, vec4(3.0,3.0,3.0,3.0));
 }

@@ -187,7 +187,7 @@ int velMod = 500;
     glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model2.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
-    glUniformMatrix4fv(m_previousMVPMatrixFirstPass, 1, GL_FALSE, &previousModelViewProjectionMatrix2.m00);
+    glUniformMatrix4fv(m_previousMVPMatrixFirstPass, 1, GL_FALSE, &previousModelViewProjectionMatrix.m00);
     
     glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
 
@@ -220,7 +220,7 @@ int velMod = 500;
     GLKMatrix4 inverseProjectionMatrix = GLKMatrix4Invert(projection, &isInvertible);
     if (!isInvertible) NSLog(@"failed to invert projection matrix");
     
-    glUniformMatrix4fv(m_previousModelViewProjectionUniformIdx, 1, GL_FALSE, &previousModelViewProjectionMatrix.m00);
+    glUniformMatrix4fv(m_previousModelViewProjectionUniformIdx, 1, GL_FALSE, &previousModelViewProjectionMatrix2.m00);
     glUniformMatrix4fv(m_inverseModelViewMatrixIdx, 1, GL_FALSE, &inverseModelViewMatrix.m00);
     glUniformMatrix4fv(m_inverseProjectionMatrix, 1, GL_FALSE, &inverseProjectionMatrix.m00);
     
@@ -228,15 +228,14 @@ int velMod = 500;
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_colorTexture);
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-    glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
-    glUniform1i(m_colorTextureUniformIdx, 0);
-    glUniform1i(m_depthTextureUniformIdx, 1);
-    glUniform1i(m_velocityTextureUniformIdx, 2);
-    glDrawArrays(m_screenQuadPrimType, 0, m_screenQuadNumElements);
-    
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
     glActiveTexture(GL_TEXTURE0);
+    glUniform1i(m_colorTextureUniformIdx, 0);
+    glUniform1i(m_depthTextureUniformIdx, 2);
+    glUniform1i(m_velocityTextureUniformIdx, 1);
+    glDrawArrays(m_screenQuadPrimType, 0, m_screenQuadNumElements);
     
     previousModelViewProjectionMatrix = modelViewProjectionMatrix;
     previousModelViewProjectionMatrix2 = modelViewProjectionMatrix2;
@@ -420,7 +419,7 @@ static GLsizei GetGLTypeSize(GLenum type)
     
     glGenTextures(1, &m_colorTexture);
     glBindTexture(GL_TEXTURE_2D, m_colorTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_viewWidth, m_viewHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, m_viewWidth, m_viewHeight, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -429,11 +428,11 @@ static GLsizei GetGLTypeSize(GLenum type)
     
     glGenTextures(1, &m_velocityTexture);
     glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG32F, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_velocityTexture, 0);
     
     glGenTextures(1, &m_depthTexture);
