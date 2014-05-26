@@ -150,6 +150,7 @@ int velMod = 1000;
     projection = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(45.0f), (float)m_viewWidth / (float)m_viewHeight, 0.1, 100.0);
     view = GLKMatrix4MakeLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);
     model = GLKMatrix4MakeTranslation(0, 0, -2);
+    //model = GLKMatrix4Translate(model, cubeVelocityVector.x, 0, 0);
     model = GLKMatrix4RotateX(model, GLKMathDegreesToRadians(cubeRotationVector.y));
     model = GLKMatrix4RotateY(model, GLKMathDegreesToRadians(cubeRotationVector.x));
 //
@@ -168,6 +169,7 @@ int velMod = 1000;
 	//glCullFace(GL_BACK);
 	
 	// Draw our square
+    //
     glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
     
     glBindVertexArray(m_squareVAOName2);
