@@ -472,12 +472,12 @@ SquareModel *loadScreenQuad()
     const int vertexCount = 6;
     // x,y vertex positions
     float positionArray[] = {
-        -1.0, -1.0,
-        1.0, -1.0,
-        1.0,  1.0,
-        1.0,  1.0,
-        -1.0,  1.0,
-        -1.0, -1.0
+        -1.0, -1.0, 0.0,
+        1.0, -1.0, 0.0,
+        1.0,  1.0, 0.0,
+        1.0,  1.0, 0.0,
+        -1.0,  1.0, 0.0,
+        -1.0, -1.0, 0.0
     };
     // per-vertex texture coordinates
     float textureUVArray[] = {
@@ -496,7 +496,7 @@ SquareModel *loadScreenQuad()
         return NULL;
     }
     
-    newModel->positionSize = 2;
+    newModel->positionSize = 3;
     newModel->positionArraySize = sizeof(positionArray);
     newModel->positionType = GL_FLOAT;
     newModel->positions = (GLubyte *)malloc(newModel->positionArraySize);

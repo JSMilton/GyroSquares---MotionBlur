@@ -39,8 +39,8 @@
 enum {
 	POS_ATTRIB_IDX,
 	NORMAL_ATTRIB_IDX,
-    COLOR_ATTRIB_IDX,
-    TEXTURE_ATTRIB_IDX
+    TEXTURE_ATTRIB_IDX,
+    COLOR_ATTRIB_IDX
 };
 
 const int maxFrames = 50;
@@ -62,7 +62,6 @@ typedef struct {
     GLint m_squareModelUniformIdx;
     GLint m_squareViewUniformIdx;
     GLint m_squareProjectionUniformIdx;
-    GLint m_alphaUniformIndex;
     GLuint m_squareVAOName;
     GLenum m_squarePrimType;
     GLenum m_squareElementType;
@@ -73,7 +72,6 @@ typedef struct {
     GLenum m_squarePrimType2;
     GLenum m_squareElementType2;
     GLuint m_squareNumElements2;
-    GLfloat m_squareAngle2;
     
     SquareModel *m_screenQuad;
     GLuint m_screenQuadVAO;
@@ -90,9 +88,8 @@ typedef struct {
     GLint  m_colorTextureUniformIdx;
     GLint  m_depthTextureUniformIdx;
     GLint  m_velocityTextureUniformIdx;
-    GLint  m_inverseModelViewMatrixIdx;
-    GLint  m_inverseProjectionMatrix;
     GLint  m_previousModelViewProjectionUniformIdx;
+    GLint  m_testVelocityUniformIdx;
     
     GLuint m_viewWidth;
     GLuint m_viewHeight;
@@ -107,9 +104,9 @@ typedef struct {
     
     GLKMatrix4 previousModelViewProjectionMatrix;
     GLKMatrix4 previousModelViewProjectionMatrix2;
-    GLint m_previousMVPMatrixFirstPass;
     
-    FrameControl frameControl;
+    float testVelocity;
+    float step;
 }
 
 - (void)resizeWithWidth:(GLuint)width AndHeight:(GLuint)height andIsLive:(BOOL)isLive
@@ -128,7 +125,7 @@ typedef struct {
     
 }
 
-int velMod = 500;
+int velMod = 1000;
 - (void)moveInnerCube:(GLKVector3)vector {
     cubeVelocityVector.x += vector.x / velMod;
     cubeVelocityVector.y += vector.y / velMod;
@@ -142,12 +139,10 @@ int velMod = 500;
 }
 
 - (void)render {
-    glEnable(GL_DEPTH_TEST);
     GLKMatrix4 model, model2, view, projection;
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
-    glClearDepth(100.f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_frameBuffer);
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	
 	// Use the program for rendering our square
 	glUseProgram(m_squarePrgName);
@@ -157,15 +152,15 @@ int velMod = 500;
     model = GLKMatrix4MakeTranslation(0, 0, -2);
     model = GLKMatrix4RotateX(model, GLKMathDegreesToRadians(cubeRotationVector.y));
     model = GLKMatrix4RotateY(model, GLKMathDegreesToRadians(cubeRotationVector.x));
-	
-	// Have our shader use the modelview projection matrix
-	// that we calculated above
+//
+//	// Have our shader use the modelview projection matrix
+//	// that we calculated above
 	glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
-    glUniformMatrix4fv(m_previousMVPMatrixFirstPass, 1, GL_FALSE, &previousModelViewProjectionMatrix.m00);
-	
-	// Bind our vertex array object
+    glUniformMatrix4fv(m_previousModelViewProjectionUniformIdx, 1, GL_FALSE, &previousModelViewProjectionMatrix.m00);
+//
+//	// Bind our vertex array object
 	glBindVertexArray(m_squareVAOName);
 	
 	// Cull back faces now that we no longer render
@@ -173,7 +168,7 @@ int velMod = 500;
 	//glCullFace(GL_BACK);
 	
 	// Draw our square
-    //glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
+    glDrawElements(m_squarePrimType, m_squareNumElements, m_squareElementType, 0);
     
     glBindVertexArray(m_squareVAOName2);
     
@@ -187,7 +182,20 @@ int velMod = 500;
     glUniformMatrix4fv(m_squareModelUniformIdx, 1, GL_FALSE, &model2.m00);
     glUniformMatrix4fv(m_squareViewUniformIdx, 1, GL_FALSE, &view.m00);
     glUniformMatrix4fv(m_squareProjectionUniformIdx, 1, GL_FALSE, &projection.m00);
-    glUniformMatrix4fv(m_previousMVPMatrixFirstPass, 1, GL_FALSE, &previousModelViewProjectionMatrix.m00);
+    glUniformMatrix4fv(m_previousModelViewProjectionUniformIdx, 1, GL_FALSE, &previousModelViewProjectionMatrix2.m00);
+
+    if (testVelocity >= 1.0){
+        step = -0.01;
+        testVelocity = 0.9;
+    }
+    
+    if (testVelocity <= -1.0){
+        step = 0.01;
+        testVelocity = -0.9;
+    }
+    
+    testVelocity+=step;
+    glUniform1f(m_testVelocityUniformIdx, testVelocity);
     
     glDrawElements(m_squarePrimType2, m_squareNumElements2, m_squareElementType2, 0);
 
@@ -205,36 +213,23 @@ int velMod = 500;
     frameVelocityVector.y *= 0.99;
     frameVelocityVector.z *= 0.99;
     
+    glBindVertexArray(m_screenQuadVAO);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClearDepth(1.f);
+    //glClearColor(0.5, 0.5, 0.5, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_blurProgram);
     
-    GLKMatrix4 modelViewMatrix = GLKMatrix4Multiply(view, model2);
-    
-    bool isInvertible = false;
-    GLKMatrix4 inverseModelViewMatrix = GLKMatrix4Invert(modelViewMatrix, &isInvertible);
-    if (!isInvertible) NSLog(@"failed to invert model view matrix");
     GLKMatrix4 modelViewProjectionMatrix = GLKMatrix4Multiply(GLKMatrix4Multiply(projection, view), model);
     GLKMatrix4 modelViewProjectionMatrix2 = GLKMatrix4Multiply(GLKMatrix4Multiply(projection, view), model2);
-    GLKMatrix4 inverseProjectionMatrix = GLKMatrix4Invert(projection, &isInvertible);
-    if (!isInvertible) NSLog(@"failed to invert projection matrix");
-    
-    glUniformMatrix4fv(m_previousModelViewProjectionUniformIdx, 1, GL_FALSE, &previousModelViewProjectionMatrix2.m00);
-    glUniformMatrix4fv(m_inverseModelViewMatrixIdx, 1, GL_FALSE, &inverseModelViewMatrix.m00);
-    glUniformMatrix4fv(m_inverseProjectionMatrix, 1, GL_FALSE, &inverseProjectionMatrix.m00);
-    
-    glBindVertexArray(m_screenQuadVAO);
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_colorTexture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-    glActiveTexture(GL_TEXTURE0);
+    
     glUniform1i(m_colorTextureUniformIdx, 0);
-    glUniform1i(m_depthTextureUniformIdx, 2);
     glUniform1i(m_velocityTextureUniformIdx, 1);
+
     glDrawArrays(m_screenQuadPrimType, 0, m_screenQuadNumElements);
     
     previousModelViewProjectionMatrix = modelViewProjectionMatrix;
@@ -264,6 +259,8 @@ static GLsizei GetGLTypeSize(GLenum type)
 }
 
 - (GLuint)buildVAO:(SquareModel *)model {
+    
+    step = 0.01;
     
     GLuint vaoName;
     glGenVertexArrays(1, &vaoName);
@@ -412,46 +409,62 @@ static GLsizei GetGLTypeSize(GLenum type)
 	GetGLError();
 }
 
+- (void)resetFramebuffer {
+    if (m_frameBuffer){
+        glDeleteFramebuffers(1, &m_frameBuffer);
+    }
+    
+    if (m_colorTexture){
+        glDeleteTextures(1, &m_colorTexture);
+    }
+    
+    if (m_velocityTexture){
+        glDeleteTextures(1, &m_velocityTexture);
+    }
+    
+    if (m_depthTexture){
+        glDeleteTextures(1, &m_depthTexture);
+    }
+}
+
 - (GLuint)buildFrameBuffer {
+    [self resetFramebuffer];
+    
     GLuint fb = 0;
     glGenFramebuffers(1, &fb);
-    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
     
     glGenTextures(1, &m_colorTexture);
     glBindTexture(GL_TEXTURE_2D, m_colorTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, m_viewWidth, m_viewHeight, 0, GL_RGBA, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorTexture, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, m_viewWidth, m_viewHeight, 0, GL_RGB, GL_FLOAT, NULL);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorTexture, 0);
     
     glGenTextures(1, &m_velocityTexture);
     glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG32F, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_velocityTexture, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, NULL);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_velocityTexture, 0);
     
     glGenTextures(1, &m_depthTexture);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_viewWidth, m_viewHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_viewWidth, m_viewHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
     
     GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
     glDrawBuffers(2, DrawBuffers);
     
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+    if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
         fb = 0;
+    } else {
+        printf("framebuffer = %i\n", fb);
     }
     
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     
     return fb;
 }
@@ -468,8 +481,8 @@ static GLsizei GetGLTypeSize(GLenum type)
 		////////////////////////////////////////////////////
 		
 		m_defaultFBOName = defaultFBOName;
-		m_viewWidth = 1280;
-		m_viewHeight = 720;
+		m_viewWidth = 1200;
+		m_viewHeight = 800;
         
 		//////////////////////////////
 		// Create Model             //
@@ -531,16 +544,20 @@ static GLsizei GetGLTypeSize(GLenum type)
 		
 		srcDestroySource(vtxSource);
 		srcDestroySource(frgSource);
+        
+        m_screenQuad = loadScreenQuad();
+        m_screenQuadVAO = [self buildVAO:m_screenQuad];
+        m_screenQuadNumElements = m_screenQuad->numVertcies;
+        m_screenQuadPrimType = m_screenQuad->primType;
+        
+        destroySquareModel(m_screenQuad);
+        m_screenQuad = NULL;
 		
         m_squareViewUniformIdx = glGetUniformLocation(m_squarePrgName, "viewMatrix");
 		m_squareModelUniformIdx = glGetUniformLocation(m_squarePrgName, "modelMatrix");
         m_squareProjectionUniformIdx = glGetUniformLocation(m_squarePrgName, "projectionMatrix");
-        m_previousMVPMatrixFirstPass = glGetUniformLocation(m_squarePrgName, "previousModelViewProjectionMatrix");
-		
-		if(m_squareModelUniformIdx < 0)
-		{
-			NSLog(@"No modelViewProjectionMatrix in square shader");
-		}
+        m_previousModelViewProjectionUniformIdx = glGetUniformLocation(m_squarePrgName, "previousModelViewProjectionMatrix");
+        m_testVelocityUniformIdx = glGetUniformLocation(m_squarePrgName, "testVelocity");
         
         m_frameBuffer = [self buildFrameBuffer];
         if (m_frameBuffer == 0){
@@ -554,20 +571,9 @@ static GLsizei GetGLTypeSize(GLenum type)
 		frgSource = srcLoadSource([filePathName cStringUsingEncoding:NSASCIIStringEncoding]);
 
         m_blurProgram = [self buildProgramWithVertexSource:vtxSource withFragmentSource:frgSource withNormal:NO withTexcoord:YES withColor:NO];
-        m_colorTextureUniformIdx = glGetUniformLocation(m_blurProgram, "tex");
-        m_depthTextureUniformIdx = glGetUniformLocation(m_blurProgram, "depthTex");
-        m_velocityTextureUniformIdx = glGetUniformLocation(m_blurProgram, "velocityTex");
-        m_previousModelViewProjectionUniformIdx = glGetUniformLocation(m_blurProgram, "previousModelViewProjectionMatrix");
-        m_inverseModelViewMatrixIdx = glGetUniformLocation(m_blurProgram, "inverseModelViewMatrix");
-        m_inverseProjectionMatrix = glGetUniformLocation(m_blurProgram, "inverseProjectionMatrix");
-        
-        m_screenQuad = loadScreenQuad();
-        m_screenQuadVAO = [self buildVAO:m_screenQuad];
-        m_screenQuadNumElements = m_screenQuad->numVertcies;
-        m_screenQuadPrimType = m_screenQuad->primType;
-        
-        destroySquareModel(m_screenQuad);
-        m_screenQuad = NULL;
+        m_colorTextureUniformIdx = glGetUniformLocation(m_blurProgram, "colorTexture");
+        //m_depthTextureUniformIdx = glGetUniformLocation(m_blurProgram, "depthTex");
+        m_velocityTextureUniformIdx = glGetUniformLocation(m_blurProgram, "velocityTexure");
 		
 		////////////////////////////////////////////////
 		// Set up OpenGL state that will never change //
@@ -575,15 +581,12 @@ static GLsizei GetGLTypeSize(GLenum type)
 		
 		// Depth test will always be enabled
 		glEnable(GL_DEPTH_TEST);
-        
-		// We will always cull back faces for better performance
-	//	glEnable(GL_CULL_FACE);
-
+//       
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
-		// Always use this clear color
-		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+//		
+//		// Always use this clear color
+		//glClearColor(0.f, 0.f, 0.f, 1.0f);
 		
 		// Draw our scene once without presenting the rendered image.
 		//   This is done in order to pre-warm OpenGL
@@ -638,19 +641,19 @@ static GLsizei GetGLTypeSize(GLenum type)
 	// Indicate the attribute indicies on which vertex arrays will be
 	//  set with glVertexAttribPointer
 	//  See buildVAO to see where vertex arrays are actually set
-	glBindAttribLocation(prgName, POS_ATTRIB_IDX, "inPosition");
-
-    if (hasNormal){
-        glBindAttribLocation(prgName, NORMAL_ATTRIB_IDX, "inNormal");
-    }
-    
-    if (hasTexcoord){
-        glBindAttribLocation(prgName, TEXTURE_ATTRIB_IDX, "inTexture");
-    }
-    
-    if (hasColor){
-        glBindAttribLocation(prgName, COLOR_ATTRIB_IDX, "inColor");
-    }
+//	glBindAttribLocation(prgName, POS_ATTRIB_IDX, "inPosition");
+//
+//    if (hasNormal){
+//        glBindAttribLocation(prgName, NORMAL_ATTRIB_IDX, "inNormal");
+//    }
+//    
+//    if (hasTexcoord){
+//        glBindAttribLocation(prgName, TEXTURE_ATTRIB_IDX, "inTexture");
+//    }
+//    
+//    if (hasColor){
+//        glBindAttribLocation(prgName, COLOR_ATTRIB_IDX, "inColor");
+//    }
     
     GetGLError();
 	

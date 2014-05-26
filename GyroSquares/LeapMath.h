@@ -13,7 +13,6 @@
 #include <iostream>
 #include <sstream>
 #include <float.h>
-#include <algorithm>
 
 namespace Leap {
 
@@ -34,13 +33,6 @@ static const float DEG_TO_RAD  = 0.0174532925f;
  * @since 1.0
  */
 static const float RAD_TO_DEG  = 57.295779513f;
-
-/**
-* The difference between 1 and the least value greater than 1 that is
-* representable as a float.
-* @since 2.0
-*/
-static const float EPSILON = 1.192092896e-07f;
 
 /**
  * The Vector struct represents a three-component mathematical vector or point
@@ -246,16 +238,10 @@ struct Vector {
    */
   float angleTo(const Vector& other) const {
     float denom = this->magnitudeSquared() * other.magnitudeSquared();
-    if (denom <= EPSILON) {
+    if (denom <= 0.0f) {
       return 0.0f;
     }
-    float val = this->dot(other) / std::sqrt(denom);
-    if (val >= 1.0f) {
-      return 0.0f;
-    } else if (val <= -1.0f) {
-      return PI;
-    }
-    return std::acos(val);
+    return std::acos(this->dot(other) / std::sqrt(denom));
   }
 
   /**
@@ -377,7 +363,7 @@ struct Vector {
    */
   Vector normalized() const {
     float denom = this->magnitudeSquared();
-    if (denom <= EPSILON) {
+    if (denom <= 0.0f) {
       return Vector::zero();
     }
     denom = 1.0f / std::sqrt(denom);
@@ -825,7 +811,7 @@ struct Matrix
    *
    * \include Matrix_rigidInverse.txt
    *
-   * Note that all matrices that are directly returned by the API are rigid.
+   * Note that all matricies that are directly returned by the API are rigid.
    *
    * @returns The rigid inverse of the matrix.
    * @since 1.0
