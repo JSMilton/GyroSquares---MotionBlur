@@ -25,8 +25,8 @@ void main (void) {
 //    
 //    frag_colour = color;
     
-    vec2 vel = texture(velocityTexure, st).xy;
-    float nSamples = 10;// clamp(int(speed), 1, 20);
+    vec2 vel = texture(velocityTexure, st).xy * 2;
+    float nSamples = 20;// clamp(int(speed), 1, 20);
     vec4 result = texture(colorTexture, st);
     
     for (int i = 1; i < nSamples; ++i) {
@@ -36,5 +36,5 @@ void main (void) {
         // sample & add to result
         result += texture(colorTexture, st + offset);
     }
-    frag_colour = result /= float(nSamples);
+    frag_colour = (result /= float(nSamples));// + vec4(0.5,0.5,0.5,1);
 }

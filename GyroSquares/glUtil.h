@@ -84,6 +84,18 @@
 #define glDeleteVertexArrays glDeleteVertexArraysAPPLE
 #endif //!ESSENTIAL_GL_PRACTICES_SUPPORT_GL3
 
+#define GetGLError()									\
+{														\
+    GLenum err = glGetError();							\
+    while (err != GL_NO_ERROR) {						\
+        printf("GLError %s set in File:%s Line:%d\n",	\
+                GetGLErrorString(err),					\
+                __FILE__,								\
+                __LINE__);								\
+        err = glGetError();								\
+    }													\
+}
+
 static inline const char * GetGLErrorString(GLenum error)
 {
 	const char *str;
@@ -126,7 +138,6 @@ static inline const char * GetGLErrorString(GLenum error)
 	}
 	return str;
 }
-
 
 #endif // __GL_UTIL_H__
 

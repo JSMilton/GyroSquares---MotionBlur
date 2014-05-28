@@ -48,6 +48,7 @@
 #import "GLEssentialsGLView.h"
 #import "OpenGLRenderer.h"
 #import "LeapObjectiveC.h"
+#include "GLRenderer.h"
 
 #define SUPPORT_RETINA_RESOLUTION 1
 
@@ -61,6 +62,7 @@
     CGPoint lastPoint;
     LeapController *leapController;
     int handId[2];
+    GLRenderer *glRenderer;
 }
 OpenGLRenderer* m_renderer;
 
@@ -114,7 +116,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// that we can remove such calls.
 	// Without this we'd simply get GL_INVALID_OPERATION error for calling legacy functions
 	// but it would be more difficult to see where that function was called.
-	CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
+	CGLEnable((CGLContextObj)[context CGLContextObj], kCGLCECrashOnRemovedFunctions);
 #endif
 	
     [self setPixelFormat:pf];
@@ -142,8 +144,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, (__bridge void *)self);
 	
 	// Set the display link for the current renderer
-	CGLContextObj cglContext = [[self openGLContext] CGLContextObj];
-	CGLPixelFormatObj cglPixelFormat = [[self pixelFormat] CGLPixelFormatObj];
+	CGLContextObj cglContext = (CGLContextObj)[[self openGLContext] CGLContextObj];
+	CGLPixelFormatObj cglPixelFormat = (CGLPixelFormatObj)[[self pixelFormat] CGLPixelFormatObj];
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
 	
 	// Activate the display link
@@ -182,7 +184,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	
 	// Init our renderer.  Use 0 for the defaultFBO which is appropriate for
 	// OSX (but not iOS since iOS apps must create their own FBO)
-	m_renderer = [[OpenGLRenderer alloc] initWithDefaultFBO:0];
+	//m_renderer = [[OpenGLRenderer alloc] initWithDefaultFBO:0];
+    glRenderer = new GLRenderer();
     [self viewDidEndLiveResize];
 }
 
@@ -228,7 +231,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// resizing the view, -drawRect is called on the main thread.
 	// Add a mutex around to avoid the threads accessing the context
 	// simultaneously when resizing.
-	CGLLockContext([[self openGLContext] CGLContextObj]);
+	CGLLockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 
     NSRect viewRectPixels = [self getViewRect];
 	   
@@ -236,7 +239,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	[m_renderer resizeWithWidth:viewRectPixels.size.width
                       AndHeight:viewRectPixels.size.height andIsLive:YES];
 	
-	CGLUnlockContext([[self openGLContext] CGLContextObj]);
+	CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 }
 
 - (void)viewDidEndLiveResize {
@@ -279,12 +282,12 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// When resizing the view, -reshape is called automatically on the main
 	// thread. Add a mutex around to avoid the threads accessing the context
 	// simultaneously when resizing
-	CGLLockContext([[self openGLContext] CGLContextObj]);
+	CGLLockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 
 	[m_renderer render];
 
-	CGLFlushDrawable([[self openGLContext] CGLContextObj]);
-	CGLUnlockContext([[self openGLContext] CGLContextObj]);
+	CGLFlushDrawable((CGLContextObj)[[self openGLContext] CGLContextObj]);
+	CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 }
 
 - (void) dealloc

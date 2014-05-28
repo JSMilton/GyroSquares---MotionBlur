@@ -116,9 +116,9 @@ typedef struct {
 	m_viewWidth = width;
 	m_viewHeight = height;
     
-    if (!isLive){
-        m_frameBuffer = [self buildFrameBuffer];
-    }
+//    if (!isLive){
+//        m_frameBuffer = [self buildFrameBuffer];
+//    }
 }
 
 - (void)moveCamera:(GLKVector3)vector {
@@ -140,8 +140,8 @@ int velMod = 1000;
 
 - (void)render {
     GLKMatrix4 model, model2, view, projection;
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_frameBuffer);
-    glClearColor(0, 0, 0, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_frameBuffer);
+    glClearColor(0, 0, 0, 1);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	
 	// Use the program for rendering our square
@@ -217,7 +217,6 @@ int velMod = 1000;
     
     glBindVertexArray(m_screenQuadVAO);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    //glClearColor(0.5, 0.5, 0.5, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_blurProgram);
     
@@ -434,39 +433,39 @@ static GLsizei GetGLTypeSize(GLenum type)
     
     GLuint fb = 0;
     glGenFramebuffers(1, &fb);
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb);
     
     glGenTextures(1, &m_colorTexture);
     glBindTexture(GL_TEXTURE_2D, m_colorTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, m_viewWidth, m_viewHeight, 0, GL_RGB, GL_FLOAT, NULL);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorTexture, 0);
     
     glGenTextures(1, &m_velocityTexture);
     glBindTexture(GL_TEXTURE_2D, m_velocityTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, m_viewWidth, m_viewHeight, 0, GL_RG, GL_FLOAT, NULL);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_velocityTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_velocityTexture, 0);
     
     glGenTextures(1, &m_depthTexture);
     glBindTexture(GL_TEXTURE_2D, m_depthTexture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_viewWidth, m_viewHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
     
     GLenum DrawBuffers[] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
     glDrawBuffers(2, DrawBuffers);
     
-    if(glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
         fb = 0;
     } else {
         printf("framebuffer = %i\n", fb);
     }
     
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
     return fb;
 }
@@ -584,8 +583,8 @@ static GLsizei GetGLTypeSize(GLenum type)
 		// Depth test will always be enabled
 		glEnable(GL_DEPTH_TEST);
 //       
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 //		
 //		// Always use this clear color
 		//glClearColor(0.f, 0.f, 0.f, 1.0f);
