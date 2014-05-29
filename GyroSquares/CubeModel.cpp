@@ -7,7 +7,6 @@
 //
 
 #include "CubeModel.h"
-#include <string.h>
 
 CubeModel::CubeModel() : BaseModel() {
     const int vertexCount = 24;

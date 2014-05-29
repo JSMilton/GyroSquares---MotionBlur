@@ -8,7 +8,7 @@
 
 #include "BaseModel.h"
 
-class CubeModel : BaseModel {
+class CubeModel : public BaseModel {
 public:
     CubeModel();
 };

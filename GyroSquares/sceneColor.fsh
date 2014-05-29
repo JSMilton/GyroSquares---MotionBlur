@@ -1,8 +1,8 @@
 
+layout (location = 0) out vec3 outColor;
+
 in vec3 vPosition_eye, vNormal_eye;
 in mat4 vViewMatrix;
-
-layout (location = 0)out vec3 outColor;
 
 // fixed point light properties
 vec3 light_position_world = vec3 (0.0, 0.0, 10.5);

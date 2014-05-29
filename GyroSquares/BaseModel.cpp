@@ -8,6 +8,39 @@
 
 #include "BaseModel.h"
 
+BaseModel::BaseModel() {
+    mModelMatrix = glm::mat4(1.0);
+    mVAO = 0;
+    
+    mNumVertcies = 0;
+    mPositions = NULL;
+    mPositionType = 0;
+    mPositionSize = 0;
+    mPositionArraySize = 0;
+	
+    mColors = NULL;
+    mColorType = 0;
+    mColorSize = 0;
+    mColorArraySize = 0;
+    
+    mNormals = NULL;
+    mNormalType = 0;
+    mNormalSize = 0;
+    mNormalArraySize = 0;
+    
+    mTextureUV = NULL;
+    mTextureType = 0;
+    mTextureSize = 0;
+    mTexureUVArraySize = 0;
+    
+    mElements = NULL;
+    mElementType = 0;
+    mNumElements = 0;
+    mElementArraySize = 0;
+    
+    mPrimType = GL_TRIANGLES;
+}
+
 BaseModel::~BaseModel() {
     free(mElements);
     free(mColors);
@@ -127,4 +160,12 @@ void BaseModel::buildVAO() {
         // Allocate and load vertex array element data into VBO
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, mElementArraySize, mElements, GL_STATIC_DRAW);
     }
+}
+
+void BaseModel::translateModelByVector3(glm::vec3 vec) {
+    mModelMatrix = glm::translate(mModelMatrix, vec);
+}
+
+glm::mat4 BaseModel::getModelMatrix() {
+    return mModelMatrix;
 }

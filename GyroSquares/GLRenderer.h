@@ -6,15 +6,16 @@
 //  Copyright (c) 2014 James Milton. All rights reserved.
 //
 
-#include "glm.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
 class SceneColorShader;
 class CubeModel;
 
 class GLRenderer {
 public:
-    GLRenderer();
-    
-    void initGL();
+    void initOpenGL();
     void render();
     void reshape(int width, int height);
     void destroy();
@@ -22,9 +23,12 @@ public:
     void moveOuterFrame(glm::vec3 vector);
     
 private:
-    SceneColorShader *myShader;
-    CubeModel *myCube;
+    SceneColorShader *mSceneColorShader;
+    CubeModel *mCubeModel;
     
     glm::mat4 mProjectionMatrix;
     glm::mat4 mViewMatrix;
+    
+    int mViewWidth;
+    int mViewHeight;
 };

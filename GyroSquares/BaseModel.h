@@ -6,8 +6,12 @@
 //  Copyright (c) 2014 James Milton. All rights reserved.
 //
 
+
 #include "glUtil.h"
+#include <string.h>
 #include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 enum {
     POSITION_ATTRIB_IDX,
@@ -23,11 +27,11 @@ public:
     void buildVAO();
     void drawElements();
     glm::mat4 getModelMatrix();
-    glm::mat4 setModelMatrix(glm::mat4 newMatrix);
+    void translateModelByVector3(glm::vec3 vec);
     
 private:
-    glm::mat4 mModelMatrix;
     GLuint mVAO;
+    glm::mat4 mModelMatrix;
     
 protected:
     GLuint mNumVertcies;

@@ -46,7 +46,7 @@
  */
 
 #import "GLEssentialsGLView.h"
-#import "OpenGLRenderer.h"
+//#import "OpenGLRenderer.h"
 #import "LeapObjectiveC.h"
 #include "GLRenderer.h"
 
@@ -64,7 +64,7 @@
     int handId[2];
     GLRenderer *glRenderer;
 }
-OpenGLRenderer* m_renderer;
+//OpenGLRenderer* m_renderer;
 
 - (CVReturn) getFrameForTime:(const CVTimeStamp*)outputTime
 {
@@ -186,6 +186,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// OSX (but not iOS since iOS apps must create their own FBO)
 	//m_renderer = [[OpenGLRenderer alloc] initWithDefaultFBO:0];
     glRenderer = new GLRenderer();
+    glRenderer->initOpenGL();
     [self viewDidEndLiveResize];
 }
 
@@ -236,8 +237,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     NSRect viewRectPixels = [self getViewRect];
 	   
 	// Set the new dimensions in our renderer
-	[m_renderer resizeWithWidth:viewRectPixels.size.width
-                      AndHeight:viewRectPixels.size.height andIsLive:YES];
+	//[m_renderer resizeWithWidth:viewRectPixels.size.width
+                     // AndHeight:viewRectPixels.size.height andIsLive:YES];
 	
 	CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 }
@@ -247,8 +248,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	NSRect viewRectPixels = [self getViewRect];
     
 	// Set the new dimensions in our renderer
-	[m_renderer resizeWithWidth:viewRectPixels.size.width
-                      AndHeight:viewRectPixels.size.height andIsLive:NO];
+	//[m_renderer resizeWithWidth:viewRectPixels.size.width
+                    //  AndHeight:viewRectPixels.size.height andIsLive:NO];
 }
 
 
@@ -284,7 +285,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// simultaneously when resizing
 	CGLLockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 
-	[m_renderer render];
+	//[m_renderer render];
 
 	CGLFlushDrawable((CGLContextObj)[[self openGLContext] CGLContextObj]);
 	CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
@@ -390,9 +391,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
         LeapVector *boxCenter = frame.interactionBox.center;
         
         if (position.x > boxCenter.x){
-            [m_renderer moveInnerCube:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
+          //  [m_renderer moveInnerCube:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
         } else {
-            [m_renderer moveOuterFrame:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
+         //   [m_renderer moveOuterFrame:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
         }
     }
     
