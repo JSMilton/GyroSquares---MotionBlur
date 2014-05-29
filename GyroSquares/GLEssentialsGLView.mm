@@ -94,10 +94,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
 		// Must specify the 3.2 Core Profile to use OpenGL 3.2
-#if ESSENTIAL_GL_PRACTICES_SUPPORT_GL3 
 		NSOpenGLPFAOpenGLProfile,
 		NSOpenGLProfileVersion3_2Core,
-#endif
 		0
 	};
 	
@@ -132,6 +130,12 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 - (void) prepareOpenGL
 {
 	[super prepareOpenGL];
+    
+    NSOpenGLPixelFormatAttribute pixelFormatAttributes[] =
+    {
+        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+        0
+    };
 	
 	// Make all the OpenGL calls to setup rendering  
 	//  and build the necessary rendering objects
@@ -184,7 +188,6 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	
 	// Init our renderer.  Use 0 for the defaultFBO which is appropriate for
 	// OSX (but not iOS since iOS apps must create their own FBO)
-	//m_renderer = [[OpenGLRenderer alloc] initWithDefaultFBO:0];
     glRenderer = new GLRenderer();
     glRenderer->initOpenGL();
     [self viewDidEndLiveResize];
@@ -237,8 +240,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     NSRect viewRectPixels = [self getViewRect];
 	   
 	// Set the new dimensions in our renderer
-	//[m_renderer resizeWithWidth:viewRectPixels.size.width
-                     // AndHeight:viewRectPixels.size.height andIsLive:YES];
+    glRenderer->reshape(viewRectPixels.size.width, viewRectPixels.size.height);
 	
 	CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 }
@@ -246,10 +248,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 - (void)viewDidEndLiveResize {
     // Set the new dimensions in our renderer
 	NSRect viewRectPixels = [self getViewRect];
-    
-	// Set the new dimensions in our renderer
-	//[m_renderer resizeWithWidth:viewRectPixels.size.width
-                    //  AndHeight:viewRectPixels.size.height andIsLive:NO];
+    glRenderer->reshape(viewRectPixels.size.width, viewRectPixels.size.height);
 }
 
 
@@ -285,6 +284,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// simultaneously when resizing
 	CGLLockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 
+    glRenderer->render();
 	//[m_renderer render];
 
 	CGLFlushDrawable((CGLContextObj)[[self openGLContext] CGLContextObj]);
@@ -391,9 +391,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
         LeapVector *boxCenter = frame.interactionBox.center;
         
         if (position.x > boxCenter.x){
-          //  [m_renderer moveInnerCube:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
+            glRenderer->leap_rightHandVelocity(velocity.x, velocity.y, velocity.z);
         } else {
-         //   [m_renderer moveOuterFrame:GLKVector3Make(velocity.x, velocity.y, velocity.z)];
+            glRenderer->leap_leftHandVelocity(velocity.x, velocity.y, velocity.z);
         }
     }
     

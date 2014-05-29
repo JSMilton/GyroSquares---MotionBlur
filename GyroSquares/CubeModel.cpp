@@ -179,3 +179,12 @@ CubeModel::CubeModel() : BaseModel() {
     
     mNumVertcies = vertexCount;
 }
+
+void CubeModel::update() {
+    velocityVector.x *= 0.99;
+    velocityVector.y *= 0.99;
+    velocityVector.z *= 0.99;
+    
+    rotateModelByVector3AndAngle(1, 0, 0, velocityVector.x);
+    rotateModelByVector3AndAngle(0, 1, 0, velocityVector.y);
+}

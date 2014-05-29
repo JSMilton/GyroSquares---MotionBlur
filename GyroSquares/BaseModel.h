@@ -27,7 +27,8 @@ public:
     void buildVAO();
     void drawElements();
     glm::mat4 getModelMatrix();
-    void translateModelByVector3(glm::vec3 vec);
+    void translateModelByVector3(float x, float y, float z);
+    void rotateModelByVector3AndAngle(float x, float y, float z, float angle);
     
 private:
     GLuint mVAO;

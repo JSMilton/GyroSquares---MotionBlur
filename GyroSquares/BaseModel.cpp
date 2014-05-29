@@ -162,8 +162,12 @@ void BaseModel::buildVAO() {
     }
 }
 
-void BaseModel::translateModelByVector3(glm::vec3 vec) {
-    mModelMatrix = glm::translate(mModelMatrix, vec);
+void BaseModel::translateModelByVector3(float x, float y, float z) {
+    mModelMatrix = glm::translate(mModelMatrix, glm::vec3(x,y,z));
+}
+
+void BaseModel::rotateModelByVector3AndAngle(float x, float y, float z, float angle) {
+    mModelMatrix = glm::rotate(mModelMatrix, angle, glm::vec3(x,y,z));
 }
 
 glm::mat4 BaseModel::getModelMatrix() {

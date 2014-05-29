@@ -63,7 +63,7 @@ GLchar* getShaderString(const char* shaderName, const char* shaderType) {
     
     sourceString = (GLchar *)malloc(fileSize+1 + versionStringSize);
     
-    printf("VERSION IS: %d\n", version);
+   // printf("VERSION IS: %d\n", version);
 	
 	// Prepend our vertex shader source string with the supported GLSL version so
 	//  the shader will work on ES, Legacy, and OpenGL 3.2 Core Profile contexts

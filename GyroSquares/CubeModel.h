@@ -11,4 +11,7 @@
 class CubeModel : public BaseModel {
 public:
     CubeModel();
+    
+    void update();
+    glm::vec3 velocityVector;
 };

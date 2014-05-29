@@ -135,7 +135,6 @@
 		4F254C3E190AF44A00A2E945 /* GLEssentialsGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C39190AF44A00A2E945 /* GLEssentialsGLView.mm */; };
 		4F254C3F190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C3B190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m */; };
 		4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C3D190AF44A00A2E945 /* GLEssentialsWindowController.m */; };
-		4F254C43190AF96500A2E945 /* OpenGLRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C42190AF96500A2E945 /* OpenGLRenderer.m */; };
 		4F254C50190AF9CA00A2E945 /* sourceUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C45190AF9CA00A2E945 /* sourceUtil.c */; };
 		4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C57190AFC6700A2E945 /* squareUtil.c */; };
 		4F2896751931F1AB004925C9 /* libLeap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2896741931F1AB004925C9 /* libLeap.dylib */; };
@@ -1194,7 +1193,6 @@
 				4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */,
 				43646191193731F7004E6751 /* SceneColorShader.cpp in Sources */,
 				4F254C0D190AF09800A2E945 /* main.m in Sources */,
-				4F254C43190AF96500A2E945 /* OpenGLRenderer.m in Sources */,
 				4364619519373F3D004E6751 /* BaseModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

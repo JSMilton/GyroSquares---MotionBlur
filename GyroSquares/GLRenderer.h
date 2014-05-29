@@ -19,8 +19,8 @@ public:
     void render();
     void reshape(int width, int height);
     void destroy();
-    void moveInnerCube(glm::vec3 vector);
-    void moveOuterFrame(glm::vec3 vector);
+    void leap_rightHandVelocity(float x, float y, float z);
+    void leap_leftHandVelocity(float x, float y, float z);
     
 private:
     SceneColorShader *mSceneColorShader;
