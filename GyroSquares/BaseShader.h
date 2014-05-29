@@ -17,8 +17,10 @@ class BaseShader {
 public:
     BaseShader(const char* vShader, const char* fShader);
     
+    GLint getUniformLocation(const char* uniformName);
     void enable();
     void disable();
+    
 private:
     GLuint mProgram;
 };

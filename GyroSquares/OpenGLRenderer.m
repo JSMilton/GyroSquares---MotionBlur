@@ -237,28 +237,6 @@ int velMod = 1000;
     previousModelViewProjectionMatrix2 = modelViewProjectionMatrix2;
 }
 
-static GLsizei GetGLTypeSize(GLenum type)
-{
-	switch (type) {
-		case GL_BYTE:
-			return sizeof(GLbyte);
-		case GL_UNSIGNED_BYTE:
-			return sizeof(GLubyte);
-		case GL_SHORT:
-			return sizeof(GLshort);
-		case GL_UNSIGNED_SHORT:
-			return sizeof(GLushort);
-		case GL_INT:
-			return sizeof(GLint);
-		case GL_UNSIGNED_INT:
-			return sizeof(GLuint);
-		case GL_FLOAT:
-			return sizeof(GLfloat);
-	}
-    
-	return 0;
-}
-
 - (GLuint)buildVAO:(SquareModel *)model {
     
     step = 0.01;

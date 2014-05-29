@@ -7,12 +7,14 @@
 //
 
 #include "glm.hpp"
-class BaseShader;
+class SceneColorShader;
+class CubeModel;
 
 class GLRenderer {
 public:
     GLRenderer();
     
+    void initGL();
     void render();
     void reshape(int width, int height);
     void destroy();
@@ -20,5 +22,9 @@ public:
     void moveOuterFrame(glm::vec3 vector);
     
 private:
-    BaseShader *myBaseShader;
+    SceneColorShader *myShader;
+    CubeModel *myCube;
+    
+    glm::mat4 mProjectionMatrix;
+    glm::mat4 mViewMatrix;
 };

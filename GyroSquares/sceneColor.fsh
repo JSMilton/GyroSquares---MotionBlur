@@ -1,13 +1,8 @@
 
-in vec3 position_eye, normal_eye;
-in vec4 vPosition;
-in vec4 vPreviousPosition;
+in vec3 vPosition_eye, vNormal_eye;
 in mat4 vViewMatrix;
 
 layout (location = 0)out vec3 outColor;
-layout (location = 1)out vec2 outVelocity;
-
-uniform float testVelocity;
 
 // fixed point light properties
 vec3 light_position_world = vec3 (0.0, 0.0, 10.5);
@@ -25,12 +20,12 @@ float light_power = 150;
 
 void main (void)
 {
-    vec3 EyeDirection_eye = vec3(0,0,0) - position_eye;
+    vec3 EyeDirection_eye = vec3(0,0,0) - vPosition_eye;
     vec3 light_position_eye = vec3(vViewMatrix * vec4(light_position_world, 1.0)).xyz;
     vec3 light_direction_eye = light_position_eye + EyeDirection_eye;
-    vec3 light_distance_eye = light_position_eye.xyz - position_eye.xyz;
+    vec3 light_distance_eye = light_position_eye.xyz - vPosition_eye.xyz;
     float LD = dot(light_distance_eye, light_distance_eye);
-    vec3 n = normalize(normal_eye);
+    vec3 n = normalize(vNormal_eye);
     vec3 l = normalize(light_direction_eye);
     float dot_prod = dot (n, l);
     dot_prod = max (dot_prod, 0.0);
@@ -46,13 +41,4 @@ void main (void)
     
     // final colour
     outColor = vec3 (Is + Id + Ia).xyz;
-    //outColor = vec3(1,1,1);
-    vec3 a = (vPosition.xyz / vPosition.w);
-    vec3 b = (vPreviousPosition.xyz / vPreviousPosition.w);
-    outVelocity = vec2(a.x - b.x, a.y - b.y);
-    
-//    vec3 a = (vPosition.xyz) * 0.5 + 0.5;
-//    vec3 b = (vPreviousPosition.xyz) * 0.5 + 0.5;
-//    vec2 result = vec2(a.x - b.x, a.y - b.y);
-//    velocity = pow(result, vec2(3.0,3.0));
 }

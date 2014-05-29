@@ -7,8 +7,8 @@
 //
 
 #include "GLRenderer.h"
-#include "BaseShader.h"
+#include "SceneColorShader.h"
 
 GLRenderer::GLRenderer() {
-    myBaseShader = new BaseShader("square", "square");
+    myShader = new SceneColorShader();
 }

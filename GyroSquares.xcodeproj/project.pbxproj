@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4352DC2E193752210074ADAB /* CubeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4352DC2C193752210074ADAB /* CubeModel.cpp */; };
+		43646191193731F7004E6751 /* SceneColorShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4364618F193731F7004E6751 /* SceneColorShader.cpp */; };
+		4364619519373F3D004E6751 /* BaseModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4364619319373F3D004E6751 /* BaseModel.cpp */; };
 		43F8B8DD1935F68B00E16654 /* GLRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F8B8DB1935F68B00E16654 /* GLRenderer.cpp */; };
 		43F8B9E01935F9D200E16654 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F8B8DF1935F9D200E16654 /* CMakeLists.txt */; };
 		43F8B9E21935F9D200E16654 /* func_common.inl in Resources */ = {isa = PBXBuildFile; fileRef = 43F8B8EB1935F9D200E16654 /* func_common.inl */; };
@@ -138,8 +141,8 @@
 		4F2896751931F1AB004925C9 /* libLeap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2896741931F1AB004925C9 /* libLeap.dylib */; };
 		4F2896761931F1C5004925C9 /* libLeap.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 4F2896741931F1AB004925C9 /* libLeap.dylib */; };
 		4F28967B1931F1DC004925C9 /* LeapObjectiveC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F28967A1931F1DC004925C9 /* LeapObjectiveC.mm */; };
-		4FD4A64F190C084F003AF3DC /* square.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A64E190C084F003AF3DC /* square.vsh */; };
-		4FD4A651190C0856003AF3DC /* square.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A650190C0856003AF3DC /* square.fsh */; };
+		4FD4A64F190C084F003AF3DC /* sceneColor.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A64E190C084F003AF3DC /* sceneColor.vsh */; };
+		4FD4A651190C0856003AF3DC /* sceneColor.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 4FD4A650190C0856003AF3DC /* sceneColor.fsh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +170,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4352DC2C193752210074ADAB /* CubeModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CubeModel.cpp; sourceTree = "<group>"; };
+		4352DC2D193752210074ADAB /* CubeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CubeModel.h; sourceTree = "<group>"; };
+		4364618F193731F7004E6751 /* SceneColorShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneColorShader.cpp; sourceTree = "<group>"; };
+		43646190193731F7004E6751 /* SceneColorShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneColorShader.h; sourceTree = "<group>"; };
+		4364619319373F3D004E6751 /* BaseModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseModel.cpp; sourceTree = "<group>"; };
+		4364619419373F3D004E6751 /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
 		43F8B8DB1935F68B00E16654 /* GLRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLRenderer.cpp; sourceTree = "<group>"; };
 		43F8B8DC1935F68B00E16654 /* GLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLRenderer.h; sourceTree = "<group>"; };
 		43F8B8DF1935F9D200E16654 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
@@ -465,8 +474,8 @@
 		4F2896781931F1DC004925C9 /* LeapMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeapMath.h; sourceTree = "<group>"; };
 		4F2896791931F1DC004925C9 /* LeapObjectiveC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeapObjectiveC.h; sourceTree = "<group>"; };
 		4F28967A1931F1DC004925C9 /* LeapObjectiveC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LeapObjectiveC.mm; sourceTree = "<group>"; };
-		4FD4A64E190C084F003AF3DC /* square.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = square.vsh; sourceTree = "<group>"; };
-		4FD4A650190C0856003AF3DC /* square.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = square.fsh; sourceTree = "<group>"; };
+		4FD4A64E190C084F003AF3DC /* sceneColor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = sceneColor.vsh; sourceTree = "<group>"; };
+		4FD4A650190C0856003AF3DC /* sceneColor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = sceneColor.fsh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -503,6 +512,17 @@
 				4F28967A1931F1DC004925C9 /* LeapObjectiveC.mm */,
 			);
 			name = "Leap Motion SDK";
+			sourceTree = "<group>";
+		};
+		4364619219373F23004E6751 /* Model Classes */ = {
+			isa = PBXGroup;
+			children = (
+				4364619419373F3D004E6751 /* BaseModel.h */,
+				4364619319373F3D004E6751 /* BaseModel.cpp */,
+				4352DC2D193752210074ADAB /* CubeModel.h */,
+				4352DC2C193752210074ADAB /* CubeModel.cpp */,
+			);
+			name = "Model Classes";
 			sourceTree = "<group>";
 		};
 		43F8B8DE1935F9D200E16654 /* glm */ = {
@@ -802,6 +822,8 @@
 			children = (
 				43F8BA4F19360CF600E16654 /* BaseShader.h */,
 				43F8BA4E19360CF600E16654 /* BaseShader.cpp */,
+				43646190193731F7004E6751 /* SceneColorShader.h */,
+				4364618F193731F7004E6751 /* SceneColorShader.cpp */,
 			);
 			name = "Shader Classes";
 			sourceTree = "<group>";
@@ -937,6 +959,7 @@
 				43F8BA5319360D1D00E16654 /* Views / Windows */,
 				43F8BA5419360D2E00E16654 /* Renderers */,
 				43F8BA5119360D0100E16654 /* Shader Classes */,
+				4364619219373F23004E6751 /* Model Classes */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -944,8 +967,8 @@
 		4FD4A64D190C07E2003AF3DC /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				4FD4A64E190C084F003AF3DC /* square.vsh */,
-				4FD4A650190C0856003AF3DC /* square.fsh */,
+				4FD4A64E190C084F003AF3DC /* sceneColor.vsh */,
+				4FD4A650190C0856003AF3DC /* sceneColor.fsh */,
 				43FDD3A7192B6B0A00667CDA /* blur.vsh */,
 				43FDD3A9192B6B1100667CDA /* blur.fsh */,
 			);
@@ -1073,7 +1096,7 @@
 				43F8BA381935F9D200E16654 /* projection.inl in Resources */,
 				43F8B9E51935F9D200E16654 /* func_integer.inl in Resources */,
 				43F8BA121935F9D200E16654 /* associated_min_max.inl in Resources */,
-				4FD4A651190C0856003AF3DC /* square.fsh in Resources */,
+				4FD4A651190C0856003AF3DC /* sceneColor.fsh in Resources */,
 				43F8BA231935F9D200E16654 /* int_10_10_10_2.inl in Resources */,
 				43F8B9EF1935F9D200E16654 /* intrinsic_integer.inl in Resources */,
 				43F8B9FB1935F9D200E16654 /* type_mat3x3.inl in Resources */,
@@ -1119,7 +1142,7 @@
 				43F8BA301935F9D200E16654 /* norm.inl in Resources */,
 				43F8BA111935F9D200E16654 /* ulp.inl in Resources */,
 				43F8BA091935F9D200E16654 /* matrix_transform.inl in Resources */,
-				4FD4A64F190C084F003AF3DC /* square.vsh in Resources */,
+				4FD4A64F190C084F003AF3DC /* sceneColor.vsh in Resources */,
 				43F8BA171935F9D200E16654 /* compatibility.inl in Resources */,
 				43F8BA331935F9D200E16654 /* number_precision.inl in Resources */,
 				43F8B9EE1935F9D200E16654 /* intrinsic_geometric.inl in Resources */,
@@ -1161,6 +1184,7 @@
 			files = (
 				4F254C50190AF9CA00A2E945 /* sourceUtil.c in Sources */,
 				43F8BA551936196700E16654 /* BaseShader.cpp in Sources */,
+				4352DC2E193752210074ADAB /* CubeModel.cpp in Sources */,
 				4F28967B1931F1DC004925C9 /* LeapObjectiveC.mm in Sources */,
 				4F254C3E190AF44A00A2E945 /* GLEssentialsGLView.mm in Sources */,
 				4F254C3F190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m in Sources */,
@@ -1168,8 +1192,10 @@
 				43F8B8DD1935F68B00E16654 /* GLRenderer.cpp in Sources */,
 				43F8B9EB1935F9D200E16654 /* glm.cpp in Sources */,
 				4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */,
+				43646191193731F7004E6751 /* SceneColorShader.cpp in Sources */,
 				4F254C0D190AF09800A2E945 /* main.m in Sources */,
 				4F254C43190AF96500A2E945 /* OpenGLRenderer.m in Sources */,
+				4364619519373F3D004E6751 /* BaseModel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

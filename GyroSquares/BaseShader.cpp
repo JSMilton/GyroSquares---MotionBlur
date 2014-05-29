@@ -199,3 +199,15 @@ BaseShader::BaseShader(const char* vShader, const char* fShader) {
 	
 	GetGLError();
 }
+
+GLint BaseShader::getUniformLocation(const char *uniformName) {
+    return glGetUniformLocation(mProgram, uniformName);
+}
+
+void BaseShader::enable() {
+    glUseProgram(mProgram);
+}
+
+void BaseShader::disable() {
+    glUseProgram(0);
+}
