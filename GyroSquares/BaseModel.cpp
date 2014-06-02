@@ -9,7 +9,9 @@
 #include "BaseModel.h"
 
 BaseModel::BaseModel() {
-    mModelMatrix = glm::mat4(1.0);
+    mTranslationMatrix = glm::mat4(1.0);
+    mScaleMatrix = glm::mat4(1.0);
+    mRotationMatrix = glm::mat4(1.0);
     mVAO = 0;
     
     mNumVertcies = 0;
@@ -52,6 +54,12 @@ BaseModel::~BaseModel() {
 void BaseModel::drawElements() {
     glBindVertexArray(mVAO);
     glDrawElements(mPrimType, mNumElements, mElementType, 0);
+    glBindVertexArray(0);
+}
+
+void BaseModel::drawArrays() {
+    glBindVertexArray(mVAO);
+    glDrawArrays(mPrimType, 0, mNumVertcies);
     glBindVertexArray(0);
 }
 
@@ -163,13 +171,22 @@ void BaseModel::buildVAO() {
 }
 
 void BaseModel::translateModelByVector3(float x, float y, float z) {
-    mModelMatrix = glm::translate(mModelMatrix, glm::vec3(x,y,z));
+    mTranslationMatrix = glm::translate(mTranslationMatrix, glm::vec3(x,y,z));
 }
 
 void BaseModel::rotateModelByVector3AndAngle(float x, float y, float z, float angle) {
-    mModelMatrix = glm::rotate(mModelMatrix, angle, glm::vec3(x,y,z));
+    mRotationMatrix = glm::rotate(mRotationMatrix, angle, glm::vec3(x,y,z));
 }
 
-glm::mat4 BaseModel::getModelMatrix() {
-    return mModelMatrix;
+void BaseModel::scaleModelByVector3(float x, float y, float z) {
+    mScaleMatrix = glm::scale(mScaleMatrix, glm::vec3(x,y,z));
+}
+
+glm::mat4 BaseModel::getPreviousModelMatrix() {
+    return mPreviousModelMatrix;
+}
+
+glm::mat4 BaseModel::createModelMatrix() {
+    glm::mat4 modelMatrix = mTranslationMatrix * mRotationMatrix * mScaleMatrix;
+    return modelMatrix;
 }

@@ -190,7 +190,9 @@ BaseShader::BaseShader(const char* vShader, const char* fShader) {
 		printf("Failed to validate program");
 	}
 	
-	glUseProgram(mProgram);
+	//glUseProgram(mProgram);
+    
+    printf("prog is: %i\n", mProgram);
 	
 	GetGLError();
 }

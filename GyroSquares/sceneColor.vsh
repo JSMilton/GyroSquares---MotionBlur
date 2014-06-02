@@ -1,6 +1,6 @@
 
-layout (location = 0) in vec4  inPosition;
-layout (location = 1) in vec3  inNormal;
+layout (location = 0) in vec3 inPosition;
+layout (location = 1) in vec3 inNormal;
 
 uniform mat4 uProjectionMatrix;
 uniform mat4 uModelMatrix;
@@ -13,7 +13,7 @@ void main (void)
 {
 	// Transform the vertex by the model view projection matrix so
 	// the polygon shows up in the right place
-    vPosition_eye = vec3(uViewMatrix * uModelMatrix * inPosition).xyz;
+    vPosition_eye = vec3(uViewMatrix * uModelMatrix * vec4(inPosition, 1)).xyz;
     vNormal_eye = vec3(uViewMatrix * uModelMatrix * vec4(inNormal, 0)).xyz;
     gl_Position	= uProjectionMatrix * vec4(vPosition_eye, 1.0);
     vViewMatrix = uViewMatrix;

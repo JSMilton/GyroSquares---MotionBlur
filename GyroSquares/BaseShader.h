@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 James Milton. All rights reserved.
 //
 
+#ifndef BASE_SHADER_H
+#define BASE_SHADER_H
 
 #include "glUtil.h"
 #include <stdio.h>
@@ -25,3 +27,5 @@ public:
 private:
     GLuint mProgram;
 };
+
+#endif // BASE_SHADER_H

@@ -180,11 +180,17 @@ CubeModel::CubeModel() : BaseModel() {
     mNumVertcies = vertexCount;
 }
 
-void CubeModel::update() {
+void CubeModel::update(GLint modelMatrixHandle) {
     velocityVector.x *= 0.99;
     velocityVector.y *= 0.99;
     velocityVector.z *= 0.99;
     
     rotateModelByVector3AndAngle(1, 0, 0, velocityVector.x);
     rotateModelByVector3AndAngle(0, 1, 0, velocityVector.y);
+    
+    glm::mat4 modelMatrix = BaseModel::createModelMatrix();
+    
+    glUniformMatrix4fv(modelMatrixHandle, 1, GL_FALSE, glm::value_ptr(BaseModel::createModelMatrix()));
+    
+    mPreviousModelMatrix = modelMatrix;
 }

@@ -73,7 +73,7 @@ typedef struct {
     GLenum m_squareElementType2;
     GLuint m_squareNumElements2;
     
-    SquareModel *m_screenQuad;
+    SquareMomcodel *m_screenQuad;
     GLuint m_screenQuadVAO;
     GLuint m_screenQuadElementType;
     GLuint m_screenQuadPrimType;

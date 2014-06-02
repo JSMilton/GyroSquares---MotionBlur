@@ -1,5 +1,5 @@
 
-layout (location = 0) out vec3 outColor;
+layout (location = 0) out vec4 outColor;
 
 in vec3 vPosition_eye, vNormal_eye;
 in mat4 vViewMatrix;
@@ -40,5 +40,5 @@ void main (void)
     vec3 Is = Ls * Ks * light_power * pow(cosAlpha, 5) / LD; // final specular intensity
     
     // final colour
-    outColor = vec3 (Is + Id + Ia).xyz;
+    outColor = vec4(Is + Id + Ia, 1);
 }

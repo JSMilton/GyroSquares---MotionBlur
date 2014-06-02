@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 James Milton. All rights reserved.
 //
 
+#ifndef BASE_MODEL_H
+#define BASE_MODEL_H
 
 #include "glUtil.h"
 #include <string.h>
@@ -26,15 +28,18 @@ public:
     ~BaseModel();
     void buildVAO();
     void drawElements();
-    glm::mat4 getModelMatrix();
+    void drawArrays();
     void translateModelByVector3(float x, float y, float z);
     void rotateModelByVector3AndAngle(float x, float y, float z, float angle);
+    void scaleModelByVector3(float x, float y, float z);
+    glm::mat4 getPreviousModelMatrix();
     
 private:
     GLuint mVAO;
-    glm::mat4 mModelMatrix;
     
 protected:
+    glm::mat4 createModelMatrix();
+    
     GLuint mNumVertcies;
 	
 	GLubyte *mPositions;
@@ -63,4 +68,11 @@ protected:
 	GLsizei mElementArraySize;
     
 	GLenum mPrimType;
+    
+    glm::mat4 mRotationMatrix;
+    glm::mat4 mScaleMatrix;
+    glm::mat4 mTranslationMatrix;
+    glm::mat4 mPreviousModelMatrix;
 };
+
+#endif // BASE_MODEL_H

@@ -10,6 +10,14 @@
 		4352DC2E193752210074ADAB /* CubeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4352DC2C193752210074ADAB /* CubeModel.cpp */; };
 		43646191193731F7004E6751 /* SceneColorShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4364618F193731F7004E6751 /* SceneColorShader.cpp */; };
 		4364619519373F3D004E6751 /* BaseModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4364619319373F3D004E6751 /* BaseModel.cpp */; };
+		43F60CA4193C7AF200CE3747 /* HollowCubeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F60CA2193C7AF200CE3747 /* HollowCubeModel.cpp */; };
+		43F60CA7193C9E3800CE3747 /* SceneVelocityShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F60CA5193C9E3800CE3747 /* SceneVelocityShader.cpp */; };
+		43F60CAC193CA25C00CE3747 /* sceneVelocity.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 43F60CAB193CA25C00CE3747 /* sceneVelocity.vsh */; };
+		43F60CAE193CA26700CE3747 /* sceneVelocity.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 43F60CAD193CA26700CE3747 /* sceneVelocity.fsh */; };
+		43F60CB1193CAADE00CE3747 /* ScreenQuadModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F60CAF193CAADE00CE3747 /* ScreenQuadModel.cpp */; };
+		43F60CB4193CAEA300CE3747 /* BlurGatherShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F60CB2193CAEA300CE3747 /* BlurGatherShader.cpp */; };
+		43F60CB6193CB01E00CE3747 /* blurGather.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 43F60CB5193CB01E00CE3747 /* blurGather.vsh */; };
+		43F60CB8193CB02500CE3747 /* blurGather.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 43F60CB7193CB02500CE3747 /* blurGather.fsh */; };
 		43F8B8DD1935F68B00E16654 /* GLRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F8B8DB1935F68B00E16654 /* GLRenderer.cpp */; };
 		43F8B9E01935F9D200E16654 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43F8B8DF1935F9D200E16654 /* CMakeLists.txt */; };
 		43F8B9E21935F9D200E16654 /* func_common.inl in Resources */ = {isa = PBXBuildFile; fileRef = 43F8B8EB1935F9D200E16654 /* func_common.inl */; };
@@ -175,6 +183,18 @@
 		43646190193731F7004E6751 /* SceneColorShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneColorShader.h; sourceTree = "<group>"; };
 		4364619319373F3D004E6751 /* BaseModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseModel.cpp; sourceTree = "<group>"; };
 		4364619419373F3D004E6751 /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
+		43F60CA2193C7AF200CE3747 /* HollowCubeModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HollowCubeModel.cpp; sourceTree = "<group>"; };
+		43F60CA3193C7AF200CE3747 /* HollowCubeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HollowCubeModel.h; sourceTree = "<group>"; };
+		43F60CA5193C9E3800CE3747 /* SceneVelocityShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneVelocityShader.cpp; sourceTree = "<group>"; };
+		43F60CA6193C9E3800CE3747 /* SceneVelocityShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneVelocityShader.h; sourceTree = "<group>"; };
+		43F60CAB193CA25C00CE3747 /* sceneVelocity.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = sceneVelocity.vsh; sourceTree = "<group>"; };
+		43F60CAD193CA26700CE3747 /* sceneVelocity.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = sceneVelocity.fsh; sourceTree = "<group>"; };
+		43F60CAF193CAADE00CE3747 /* ScreenQuadModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenQuadModel.cpp; sourceTree = "<group>"; };
+		43F60CB0193CAADE00CE3747 /* ScreenQuadModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenQuadModel.h; sourceTree = "<group>"; };
+		43F60CB2193CAEA300CE3747 /* BlurGatherShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlurGatherShader.cpp; sourceTree = "<group>"; };
+		43F60CB3193CAEA300CE3747 /* BlurGatherShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlurGatherShader.h; sourceTree = "<group>"; };
+		43F60CB5193CB01E00CE3747 /* blurGather.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurGather.vsh; sourceTree = "<group>"; };
+		43F60CB7193CB02500CE3747 /* blurGather.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurGather.fsh; sourceTree = "<group>"; };
 		43F8B8DB1935F68B00E16654 /* GLRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLRenderer.cpp; sourceTree = "<group>"; };
 		43F8B8DC1935F68B00E16654 /* GLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLRenderer.h; sourceTree = "<group>"; };
 		43F8B8DF1935F9D200E16654 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
@@ -520,6 +540,10 @@
 				4364619319373F3D004E6751 /* BaseModel.cpp */,
 				4352DC2D193752210074ADAB /* CubeModel.h */,
 				4352DC2C193752210074ADAB /* CubeModel.cpp */,
+				43F60CA3193C7AF200CE3747 /* HollowCubeModel.h */,
+				43F60CA2193C7AF200CE3747 /* HollowCubeModel.cpp */,
+				43F60CB0193CAADE00CE3747 /* ScreenQuadModel.h */,
+				43F60CAF193CAADE00CE3747 /* ScreenQuadModel.cpp */,
 			);
 			name = "Model Classes";
 			sourceTree = "<group>";
@@ -823,6 +847,10 @@
 				43F8BA4E19360CF600E16654 /* BaseShader.cpp */,
 				43646190193731F7004E6751 /* SceneColorShader.h */,
 				4364618F193731F7004E6751 /* SceneColorShader.cpp */,
+				43F60CA6193C9E3800CE3747 /* SceneVelocityShader.h */,
+				43F60CA5193C9E3800CE3747 /* SceneVelocityShader.cpp */,
+				43F60CB3193CAEA300CE3747 /* BlurGatherShader.h */,
+				43F60CB2193CAEA300CE3747 /* BlurGatherShader.cpp */,
 			);
 			name = "Shader Classes";
 			sourceTree = "<group>";
@@ -968,6 +996,10 @@
 			children = (
 				4FD4A64E190C084F003AF3DC /* sceneColor.vsh */,
 				4FD4A650190C0856003AF3DC /* sceneColor.fsh */,
+				43F60CAB193CA25C00CE3747 /* sceneVelocity.vsh */,
+				43F60CAD193CA26700CE3747 /* sceneVelocity.fsh */,
+				43F60CB5193CB01E00CE3747 /* blurGather.vsh */,
+				43F60CB7193CB02500CE3747 /* blurGather.fsh */,
 				43FDD3A7192B6B0A00667CDA /* blur.vsh */,
 				43FDD3A9192B6B1100667CDA /* blur.fsh */,
 			);
@@ -1053,6 +1085,7 @@
 			files = (
 				43F8BA3F1935F9D200E16654 /* simd_quat.inl in Resources */,
 				43F8B9FA1935F9D200E16654 /* type_mat3x2.inl in Resources */,
+				43F60CB8193CB02500CE3747 /* blurGather.fsh in Resources */,
 				43F8BA251935F9D200E16654 /* intersect.inl in Resources */,
 				43F8BA1B1935F9D200E16654 /* extend.inl in Resources */,
 				43F8BA261935F9D200E16654 /* io.inl in Resources */,
@@ -1114,6 +1147,7 @@
 				43F8BA3D1935F9D200E16654 /* scalar_relational.inl in Resources */,
 				43F8BA3C1935F9D200E16654 /* rotate_vector.inl in Resources */,
 				43F8BA191935F9D200E16654 /* dual_quaternion.inl in Resources */,
+				43F60CAC193CA25C00CE3747 /* sceneVelocity.vsh in Resources */,
 				43F8B9E71935F9D200E16654 /* func_noise.inl in Resources */,
 				43F8BA041935F9D200E16654 /* type_vec4.inl in Resources */,
 				43F8B9ED1935F9D200E16654 /* intrinsic_exponential.inl in Resources */,
@@ -1151,6 +1185,7 @@
 				43F8BA241935F9D200E16654 /* integer.inl in Resources */,
 				43F8BA1A1935F9D200E16654 /* euler_angles.inl in Resources */,
 				43F8BA4A1935F9D200E16654 /* wrap.inl in Resources */,
+				43F60CAE193CA26700CE3747 /* sceneVelocity.fsh in Resources */,
 				43F8B9EA1935F9D200E16654 /* func_vector_relational.inl in Resources */,
 				43F8B9F41935F9D200E16654 /* type_gentype.inl in Resources */,
 				43F8BA221935F9D200E16654 /* inertia.inl in Resources */,
@@ -1160,6 +1195,7 @@
 				43F8B9F01935F9D200E16654 /* intrinsic_matrix.inl in Resources */,
 				43F8BA401935F9D200E16654 /* simd_vec4.inl in Resources */,
 				43F8B9E21935F9D200E16654 /* func_common.inl in Resources */,
+				43F60CB6193CB01E00CE3747 /* blurGather.vsh in Resources */,
 				43F8BA421935F9D200E16654 /* std_based_type.inl in Resources */,
 				43F8B9F21935F9D200E16654 /* intrinsic_vector_relational.inl in Resources */,
 				43F8BA021935F9D200E16654 /* type_vec2.inl in Resources */,
@@ -1181,6 +1217,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43F60CB1193CAADE00CE3747 /* ScreenQuadModel.cpp in Sources */,
+				43F60CA7193C9E3800CE3747 /* SceneVelocityShader.cpp in Sources */,
 				4F254C50190AF9CA00A2E945 /* sourceUtil.c in Sources */,
 				43F8BA551936196700E16654 /* BaseShader.cpp in Sources */,
 				4352DC2E193752210074ADAB /* CubeModel.cpp in Sources */,
@@ -1190,6 +1228,8 @@
 				4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */,
 				43F8B8DD1935F68B00E16654 /* GLRenderer.cpp in Sources */,
 				43F8B9EB1935F9D200E16654 /* glm.cpp in Sources */,
+				43F60CA4193C7AF200CE3747 /* HollowCubeModel.cpp in Sources */,
+				43F60CB4193CAEA300CE3747 /* BlurGatherShader.cpp in Sources */,
 				4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */,
 				43646191193731F7004E6751 /* SceneColorShader.cpp in Sources */,
 				4F254C0D190AF09800A2E945 /* main.m in Sources */,
