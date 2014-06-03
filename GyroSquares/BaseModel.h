@@ -33,6 +33,7 @@ public:
     void rotateModelByVector3AndAngle(float x, float y, float z, float angle);
     void scaleModelByVector3(float x, float y, float z);
     glm::mat4 getPreviousModelMatrix();
+    glm::mat4 getModelMatrix();
     
 private:
     GLuint mVAO;

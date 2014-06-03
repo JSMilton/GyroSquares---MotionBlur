@@ -14,6 +14,8 @@
 class SceneColorShader;
 class SceneVelocityShader;
 class BlurGatherShader;
+class BlurTileMaxShader;
+class BlurNeighbourMaxShader;
 class CubeModel;
 class HollowCubeModel;
 class ScreenQuadModel;
@@ -21,7 +23,7 @@ class ScreenQuadModel;
 class GLRenderer {
 public:
     void initOpenGL();
-    void render();
+    void render(float dt);
     void reshape(int width, int height);
     void destroy();
     void leap_rightHandVelocity(float x, float y, float z);
@@ -30,26 +32,44 @@ public:
 private:
     void createFrameBuffers();
     void resetFramebuffers();
+    void drawSceneColor();
+    void drawSceneVelocity();
+    void drawBlurGather();
+    void drawBlurTileMax();
+    void drawBlurNeighbourMax();
     
     SceneColorShader *mSceneColorShader;
     SceneVelocityShader *mSceneVelocityShader;
     BlurGatherShader *mBlurGatherShader;
+    BlurTileMaxShader *mBlurTileMaxShader;
+    BlurNeighbourMaxShader *mBlurNeighbourMaxShader;
     CubeModel *mCubeModel;
     HollowCubeModel *mHollowCubeModel;
     ScreenQuadModel *mScreenQuadModel;
     
     glm::mat4 mProjectionMatrix;
     glm::mat4 mViewMatrix;
-    glm::mat4 mPreviousProjectionMatrix;
     glm::mat4 mPreviousViewMatrix;
     
     GLuint mColorTexture;
     GLuint mVelocityTexture;
     GLuint mDepthTexture;
+    GLuint mTileMaxTexture;
+    GLuint mNeighbourMaxTexture;
     
     GLuint mColorFramebuffer;
     GLuint mVelocityFramebuffer;
+    GLuint mTileMaxFramebuffer;
+    GLuint mNeighbourMaxFramebuffer;
     
     int mViewWidth;
     int mViewHeight;
+    int mHeightDividedByK;
+    int mWidthDividedByK;
+    
+    float mExposure;
+    float mLastDt;
+    
+    uint32_t mK;
+    uint32_t mLastK;
 };

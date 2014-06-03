@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		4352DC2E193752210074ADAB /* CubeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4352DC2C193752210074ADAB /* CubeModel.cpp */; };
+		4357DD62193DF82B000ABC74 /* BlurTileMaxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4357DD60193DF82B000ABC74 /* BlurTileMaxShader.cpp */; };
+		4357DD65193DF837000ABC74 /* BlurNeighbourMaxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4357DD63193DF837000ABC74 /* BlurNeighbourMaxShader.cpp */; };
+		4357DD67193DFC3D000ABC74 /* blurNeighbourMax.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 4357DD66193DFC3D000ABC74 /* blurNeighbourMax.vsh */; };
+		4357DD69193DFC45000ABC74 /* blurNeighbourMax.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 4357DD68193DFC45000ABC74 /* blurNeighbourMax.fsh */; };
+		4357DD6B193DFC53000ABC74 /* blurTileMax.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 4357DD6A193DFC53000ABC74 /* blurTileMax.vsh */; };
+		4357DD6D193DFC5A000ABC74 /* blurTileMax.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 4357DD6C193DFC5A000ABC74 /* blurTileMax.fsh */; };
 		43646191193731F7004E6751 /* SceneColorShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4364618F193731F7004E6751 /* SceneColorShader.cpp */; };
 		4364619519373F3D004E6751 /* BaseModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4364619319373F3D004E6751 /* BaseModel.cpp */; };
 		43F60CA4193C7AF200CE3747 /* HollowCubeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F60CA2193C7AF200CE3747 /* HollowCubeModel.cpp */; };
@@ -179,6 +185,14 @@
 /* Begin PBXFileReference section */
 		4352DC2C193752210074ADAB /* CubeModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CubeModel.cpp; sourceTree = "<group>"; };
 		4352DC2D193752210074ADAB /* CubeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CubeModel.h; sourceTree = "<group>"; };
+		4357DD60193DF82B000ABC74 /* BlurTileMaxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlurTileMaxShader.cpp; sourceTree = "<group>"; };
+		4357DD61193DF82B000ABC74 /* BlurTileMaxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlurTileMaxShader.h; sourceTree = "<group>"; };
+		4357DD63193DF837000ABC74 /* BlurNeighbourMaxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlurNeighbourMaxShader.cpp; sourceTree = "<group>"; };
+		4357DD64193DF837000ABC74 /* BlurNeighbourMaxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlurNeighbourMaxShader.h; sourceTree = "<group>"; };
+		4357DD66193DFC3D000ABC74 /* blurNeighbourMax.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurNeighbourMax.vsh; sourceTree = "<group>"; };
+		4357DD68193DFC45000ABC74 /* blurNeighbourMax.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurNeighbourMax.fsh; sourceTree = "<group>"; };
+		4357DD6A193DFC53000ABC74 /* blurTileMax.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurTileMax.vsh; sourceTree = "<group>"; };
+		4357DD6C193DFC5A000ABC74 /* blurTileMax.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blurTileMax.fsh; sourceTree = "<group>"; };
 		4364618F193731F7004E6751 /* SceneColorShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneColorShader.cpp; sourceTree = "<group>"; };
 		43646190193731F7004E6751 /* SceneColorShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneColorShader.h; sourceTree = "<group>"; };
 		4364619319373F3D004E6751 /* BaseModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseModel.cpp; sourceTree = "<group>"; };
@@ -851,6 +865,10 @@
 				43F60CA5193C9E3800CE3747 /* SceneVelocityShader.cpp */,
 				43F60CB3193CAEA300CE3747 /* BlurGatherShader.h */,
 				43F60CB2193CAEA300CE3747 /* BlurGatherShader.cpp */,
+				4357DD61193DF82B000ABC74 /* BlurTileMaxShader.h */,
+				4357DD60193DF82B000ABC74 /* BlurTileMaxShader.cpp */,
+				4357DD64193DF837000ABC74 /* BlurNeighbourMaxShader.h */,
+				4357DD63193DF837000ABC74 /* BlurNeighbourMaxShader.cpp */,
 			);
 			name = "Shader Classes";
 			sourceTree = "<group>";
@@ -1000,6 +1018,10 @@
 				43F60CAD193CA26700CE3747 /* sceneVelocity.fsh */,
 				43F60CB5193CB01E00CE3747 /* blurGather.vsh */,
 				43F60CB7193CB02500CE3747 /* blurGather.fsh */,
+				4357DD66193DFC3D000ABC74 /* blurNeighbourMax.vsh */,
+				4357DD68193DFC45000ABC74 /* blurNeighbourMax.fsh */,
+				4357DD6A193DFC53000ABC74 /* blurTileMax.vsh */,
+				4357DD6C193DFC5A000ABC74 /* blurTileMax.fsh */,
 				43FDD3A7192B6B0A00667CDA /* blur.vsh */,
 				43FDD3A9192B6B1100667CDA /* blur.fsh */,
 			);
@@ -1098,6 +1120,7 @@
 				43F8BA2D1935F9D200E16654 /* matrix_transform_2d.inl in Resources */,
 				43F8BA0E1935F9D200E16654 /* reciprocal.inl in Resources */,
 				43F8BA281935F9D200E16654 /* matrix_cross_product.inl in Resources */,
+				4357DD67193DFC3D000ABC74 /* blurNeighbourMax.vsh in Resources */,
 				43F8BA2A1935F9D200E16654 /* matrix_major_storage.inl in Resources */,
 				43F8BA031935F9D200E16654 /* type_vec3.inl in Resources */,
 				43F8BA0D1935F9D200E16654 /* random.inl in Resources */,
@@ -1113,6 +1136,7 @@
 				43F8BA061935F9D200E16654 /* epsilon.inl in Resources */,
 				43F8BA081935F9D200E16654 /* matrix_inverse.inl in Resources */,
 				43F8B9E01935F9D200E16654 /* CMakeLists.txt in Resources */,
+				4357DD6D193DFC5A000ABC74 /* blurTileMax.fsh in Resources */,
 				43F8BA211935F9D200E16654 /* handed_coordinate_space.inl in Resources */,
 				43F8BA1E1935F9D200E16654 /* fast_square_root.inl in Resources */,
 				43F8BA0C1935F9D200E16654 /* quaternion.inl in Resources */,
@@ -1154,6 +1178,7 @@
 				43F8BA291935F9D200E16654 /* matrix_interpolation.inl in Resources */,
 				43F8BA371935F9D200E16654 /* polar_coordinates.inl in Resources */,
 				43F8BA441935F9D200E16654 /* transform.inl in Resources */,
+				4357DD6B193DFC53000ABC74 /* blurTileMax.vsh in Resources */,
 				43F8B9E61935F9D200E16654 /* func_matrix.inl in Resources */,
 				43F8BA311935F9D200E16654 /* normal.inl in Resources */,
 				43F8BA411935F9D200E16654 /* spline.inl in Resources */,
@@ -1181,6 +1206,7 @@
 				43F8B9EE1935F9D200E16654 /* intrinsic_geometric.inl in Resources */,
 				43F8BA2B1935F9D200E16654 /* matrix_operation.inl in Resources */,
 				43F8BA011935F9D200E16654 /* type_vec1.inl in Resources */,
+				4357DD69193DFC45000ABC74 /* blurNeighbourMax.fsh in Resources */,
 				43F8BA161935F9D200E16654 /* color_space_YCoCg.inl in Resources */,
 				43F8BA241935F9D200E16654 /* integer.inl in Resources */,
 				43F8BA1A1935F9D200E16654 /* euler_angles.inl in Resources */,
@@ -1231,6 +1257,8 @@
 				43F60CA4193C7AF200CE3747 /* HollowCubeModel.cpp in Sources */,
 				43F60CB4193CAEA300CE3747 /* BlurGatherShader.cpp in Sources */,
 				4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */,
+				4357DD62193DF82B000ABC74 /* BlurTileMaxShader.cpp in Sources */,
+				4357DD65193DF837000ABC74 /* BlurNeighbourMaxShader.cpp in Sources */,
 				43646191193731F7004E6751 /* SceneColorShader.cpp in Sources */,
 				4F254C0D190AF09800A2E945 /* main.m in Sources */,
 				4364619519373F3D004E6751 /* BaseModel.cpp in Sources */,

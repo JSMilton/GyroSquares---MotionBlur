@@ -63,6 +63,7 @@
     LeapController *leapController;
     int handId[2];
     GLRenderer *glRenderer;
+    float deltaTime;
 }
 //OpenGLRenderer* m_renderer;
 
@@ -71,6 +72,7 @@
 	// There is no autorelease pool when this method is called
 	// because it will be called from a background thread.
 	// It's important to create one or app can leak objects.
+    deltaTime = 1.0 / (outputTime->rateScalar * (float)outputTime->videoTimeScale / (float)outputTime->videoRefreshPeriod);
 	[self drawView];
 	return kCVReturnSuccess;
 }
@@ -283,8 +285,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// thread. Add a mutex around to avoid the threads accessing the context
 	// simultaneously when resizing
 	CGLLockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
-
-    glRenderer->render();
+    glRenderer->render(deltaTime);
 	//[m_renderer render];
 
 	CGLFlushDrawable((CGLContextObj)[[self openGLContext] CGLContextObj]);

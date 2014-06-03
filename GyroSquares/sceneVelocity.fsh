@@ -2,7 +2,7 @@
 in vec4 vPosition;
 in vec4 vPreviousPosition;
 
-layout (location = 0) out vec4 outFragColor;
+layout (location = 0) out vec2 outFragColor;
 
 // UNIFORMS
 
@@ -36,15 +36,13 @@ vec2 writeBiasScale(vec2 v)
 
 void main()
 {
-    vec2 vQX = ((vPosition.xy / vPosition.w)
-                - (vPreviousPosition.xy/ vPreviousPosition.w))
-    * u_fHalfExposureXFramerate;
+    vec2 vQX = ((vPosition.xy / vPosition.w) - (vPreviousPosition.xy/ vPreviousPosition.w)) * ufHalfExposureXFramerate;
     float fLenQX = length(vQX);
     
-    float fWeight = max(0.5, min(fLenQX, u_fK));
+    float fWeight = max(0.5, min(fLenQX, ufK));
     fWeight /= ( fLenQX + EPSILON );
     
     vQX *= fWeight;
     
-    outFragColor = vec4(writeBiasScale(vQX), 0.5, 1.0);  // <- 0.5 to keep gray at 0
+    outFragColor = writeBiasScale(vQX);
 }

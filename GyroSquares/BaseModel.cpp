@@ -186,6 +186,10 @@ glm::mat4 BaseModel::getPreviousModelMatrix() {
     return mPreviousModelMatrix;
 }
 
+glm::mat4 BaseModel::getModelMatrix() {
+    return createModelMatrix();
+}
+
 glm::mat4 BaseModel::createModelMatrix() {
     glm::mat4 modelMatrix = mTranslationMatrix * mRotationMatrix * mScaleMatrix;
     return modelMatrix;

@@ -10,7 +10,6 @@
 
 BlurGatherShader::BlurGatherShader() : BaseShader("blurGather", "blurGather") {
     mColorTextureHandle = getUniformLocation("uColorTexture");
-    //mVelocityTextureHandle = getUniformLocation("uVelocityTexture");
+    mVelocityTextureHandle = getUniformLocation("uVelocityTexture");
     //mDepthTextureHandle = getUniformLocation("uDepthTexture");
-   // printf("%i colorHandle\n", mDepthTextureHandle);
 }
