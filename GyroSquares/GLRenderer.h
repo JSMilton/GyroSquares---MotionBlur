@@ -24,7 +24,7 @@ class GLRenderer {
 public:
     void initOpenGL();
     void render(float dt);
-    void reshape(int width, int height);
+    void reshape(int width, int height, bool isLive);
     void destroy();
     void leap_rightHandVelocity(float x, float y, float z);
     void leap_leftHandVelocity(float x, float y, float z);
@@ -38,6 +38,7 @@ private:
     void drawBlurTileMax();
     void drawBlurNeighbourMax();
     void computeMaxSampleTapDistance();
+    void freeGLBindings() const;
     
     SceneColorShader *mSceneColorShader;
     SceneVelocityShader *mSceneVelocityShader;
@@ -78,4 +79,6 @@ private:
     uint32_t mLastK;
     
     int32_t mMaxSampleTapDistance;
+    
+    bool mPaused;
 };

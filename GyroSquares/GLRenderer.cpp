@@ -30,7 +30,7 @@ void GLRenderer::initOpenGL() {
     glClearColor(0.f, 0.f, 0.f, 1.0f);
     mViewWidth = 1200;
     mViewHeight = 800;
-    reshape(1200, 800);
+    reshape(1200, 800, false);
 
     mCubeModel = new CubeModel;
     mCubeModel->buildVAO();
@@ -44,19 +44,11 @@ void GLRenderer::initOpenGL() {
     mBlurNeighbourMaxShader = new BlurNeighbourMaxShader;
     mBlurTileMaxShader = new BlurTileMaxShader;
     
-    mSceneColorShader->enable();
-    
-    glUniformMatrix4fv(mSceneColorShader->uProjectionMatrixHandle, 1, GL_FALSE, glm::value_ptr(mProjectionMatrix));
-    glUniformMatrix4fv(mSceneColorShader->uViewMatrixHandle, 1, GL_FALSE, glm::value_ptr(mViewMatrix));
-    
-    mSceneColorShader->disable();
-    
     mCubeModel->scaleModelByVector3(1, 1, 1);
     mCubeModel->translateModelByVector3(0,0,0);
     mHollowCubeModel->scaleModelByVector3(3, 3, 0.25);
     mHollowCubeModel->translateModelByVector3(0,0,0);
     
-    createFrameBuffers();
     render(0.0);
 }
 
@@ -64,12 +56,17 @@ void GLRenderer::render(float dt) {
     const float FPS_CLAMP = 1.0f / 15.0f;
     if (dt > FPS_CLAMP)
         dt = FPS_CLAMP;
-
-    drawSceneColor();
-    drawSceneVelocity();
-    drawBlurTileMax();
-    drawBlurNeighbourMax();
-    drawBlurGather();
+    
+    freeGLBindings();
+    
+    if (!mPaused){
+        drawSceneColor();
+        drawSceneVelocity();
+        drawBlurTileMax();
+        drawBlurNeighbourMax();
+        drawBlurGather();
+        freeGLBindings();
+    }
     
     mPreviousViewMatrix = mViewMatrix;
     mLastDt = dt;
@@ -81,6 +78,8 @@ void GLRenderer::drawSceneColor() {
     glClearColor(0.f, 0.f, 0.f, 0.f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     mSceneColorShader->enable();
+    glUniformMatrix4fv(mSceneColorShader->uProjectionMatrixHandle, 1, GL_FALSE, glm::value_ptr(mProjectionMatrix));
+    glUniformMatrix4fv(mSceneColorShader->uViewMatrixHandle, 1, GL_FALSE, glm::value_ptr(mViewMatrix));
     mCubeModel->update(mSceneColorShader->uModelMatrixHandle);
     mCubeModel->drawElements();
     mHollowCubeModel->update(mSceneColorShader->uModelMatrixHandle);
@@ -172,14 +171,19 @@ void GLRenderer::drawBlurGather() {
     mBlurGatherShader->disable();
 }
 
-void GLRenderer::reshape(int width, int height) {
-    mViewHeight = width;
+void GLRenderer::reshape(int width, int height, bool isLive) {
+    glViewport(0, 0, width, height);
+    mViewWidth = width;
     mViewHeight = height;
     mHeightDividedByK = height / mK;
     mWidthDividedByK = width / mK;
     mProjectionMatrix = glm::perspective(45.0f, (float)width/(float)height, 0.1f, 100.0f);
     mViewMatrix = glm::lookAt(glm::vec3(0,0,20), glm::vec3(0,0,0), glm::vec3(0,1,0));
     computeMaxSampleTapDistance();
+    
+    if (!isLive){
+        createFrameBuffers();
+    }
 }
 
 int velMod = 1500;
@@ -195,51 +199,30 @@ void GLRenderer::leap_leftHandVelocity(float x, float y, float z) {
     mHollowCubeModel->velocityVector.z += z/velMod;
 }
 
+void GLRenderer::freeGLBindings(void) const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER,     0);
+    glBindRenderbuffer(GL_RENDERBUFFER,   0);
+    glBindBuffer(GL_ARRAY_BUFFER,         0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D,          0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP,    0);
+}
+
 void GLRenderer::resetFramebuffers() {
-    if (mColorFramebuffer){
-        glDeleteFramebuffers(1, &mColorFramebuffer);
-        mColorFramebuffer = -1;
-    }
+    glDeleteFramebuffers(1, &mColorFramebuffer);
+    glDeleteFramebuffers(1, &mVelocityFramebuffer);
+    glDeleteFramebuffers(1, &mTileMaxFramebuffer);
+    glDeleteFramebuffers(1, &mNeighbourMaxFramebuffer);
     
-    if (mVelocityFramebuffer){
-        glDeleteBuffers(1, &mVelocityFramebuffer);
-        mVelocityFramebuffer = -1;
-    }
+    glDeleteRenderbuffers(1, &mSmallRenderbuffer);
+    glDeleteRenderbuffers(1, &mNormalRenderbuffer);
     
-    if (mTileMaxFramebuffer){
-        glDeleteBuffers(1, &mTileMaxFramebuffer);
-        mTileMaxFramebuffer = -1;
-    }
-    
-    if (mNeighbourMaxFramebuffer){
-        glDeleteBuffers(1, &mNeighbourMaxFramebuffer);
-        mNeighbourMaxFramebuffer = -1;
-    }
-    
-    if (mColorTexture){
-        glDeleteTextures(1, &mColorTexture);
-        mColorTexture = -1;
-    }
-    
-    if (mVelocityTexture){
-        glDeleteTextures(1, &mVelocityTexture);
-        mVelocityTexture = -1;
-    }
-    
-    if (mTileMaxTexture){
-        glDeleteTextures(1, &mTileMaxTexture);
-        mTileMaxTexture = -1;
-    }
-    
-    if (mNeighbourMaxTexture){
-        glDeleteTextures(1, &mNeighbourMaxTexture);
-        mNeighbourMaxTexture = -1;
-    }
-    
-    if (mDepthTexture){
-        glDeleteTextures(1, &mDepthTexture);
-        mDepthTexture = -1;
-    }
+    glDeleteTextures(1, &mColorTexture);
+    glDeleteTextures(1, &mVelocityTexture);
+    glDeleteTextures(1, &mTileMaxTexture);
+    glDeleteTextures(1, &mNeighbourMaxTexture);
+    glDeleteTextures(1, &mDepthTexture);
 }
 
 void GLRenderer::createFrameBuffers() {

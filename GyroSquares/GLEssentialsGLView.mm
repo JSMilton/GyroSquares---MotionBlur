@@ -64,6 +64,7 @@
     int handId[2];
     GLRenderer *glRenderer;
     float deltaTime;
+    BOOL shouldRender;
 }
 //OpenGLRenderer* m_renderer;
 
@@ -142,6 +143,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 	// Make all the OpenGL calls to setup rendering  
 	//  and build the necessary rendering objects
 	[self initGL];
+    
+    shouldRender = YES;
 	
 	// Create a display link capable of being used with all active displays
 	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
@@ -242,7 +245,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
     NSRect viewRectPixels = [self getViewRect];
 	   
 	// Set the new dimensions in our renderer
-    glRenderer->reshape(viewRectPixels.size.width, viewRectPixels.size.height);
+   // glRenderer->reshape(viewRectPixels.size.width, viewRectPixels.size.height, true);
 	
 	CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
 }
@@ -250,7 +253,11 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 - (void)viewDidEndLiveResize {
     // Set the new dimensions in our renderer
 	NSRect viewRectPixels = [self getViewRect];
-    glRenderer->reshape(viewRectPixels.size.width, viewRectPixels.size.height);
+    shouldRender = NO;
+    CGLLockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
+    glRenderer->reshape(viewRectPixels.size.width, viewRectPixels.size.height, false);
+    CGLUnlockContext((CGLContextObj)[[self openGLContext] CGLContextObj]);
+    shouldRender = YES;
 }
 
 
@@ -272,8 +279,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink,
 {
 	// Called during resize operations
 	
-	// Avoid flickering during resize by drawiing	
-	[self drawView];
+	// Avoid flickering during resize by drawiing
+    if (shouldRender)
+        [self drawView];
 }
 
 - (void) drawView
