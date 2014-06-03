@@ -37,6 +37,7 @@ private:
     void drawBlurGather();
     void drawBlurTileMax();
     void drawBlurNeighbourMax();
+    void computeMaxSampleTapDistance();
     
     SceneColorShader *mSceneColorShader;
     SceneVelocityShader *mSceneVelocityShader;
@@ -56,6 +57,7 @@ private:
     GLuint mDepthTexture;
     GLuint mTileMaxTexture;
     GLuint mNeighbourMaxTexture;
+    GLuint mRandomTexture;
     
     GLuint mColorFramebuffer;
     GLuint mVelocityFramebuffer;
@@ -74,4 +76,6 @@ private:
     
     uint32_t mK;
     uint32_t mLastK;
+    
+    int32_t mMaxSampleTapDistance;
 };

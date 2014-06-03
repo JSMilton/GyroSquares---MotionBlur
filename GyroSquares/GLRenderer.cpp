@@ -16,10 +16,13 @@
 #include "HollowCubeModel.h"
 #include "ScreenQuadModel.h"
 
+#define RANDOM_TEXTURE_SIZE (256U)
+
 void GLRenderer::initOpenGL() {
-    mExposure = 1.0f;
+    mExposure = 1.5f;
     mLastDt = 0.0f;
     mK = 4U;
+    mMaxSampleTapDistance = 6;
     mHeightDividedByK = mViewHeight / mK;
     mWidthDividedByK = mViewWidth / mK;
     
@@ -75,6 +78,7 @@ void GLRenderer::render(float dt) {
 void GLRenderer::drawSceneColor() {
     glBindFramebuffer(GL_FRAMEBUFFER, mColorFramebuffer);
     glViewport(0, 0, mViewWidth, mViewHeight);
+    glClearColor(0.f, 0.f, 0.f, 0.f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     mSceneColorShader->enable();
     mCubeModel->update(mSceneColorShader->uModelMatrixHandle);
@@ -132,6 +136,11 @@ void GLRenderer::drawBlurNeighbourMax() {
     mBlurNeighbourMaxShader->disable();
 }
 
+void GLRenderer::computeMaxSampleTapDistance(void)
+{
+    mMaxSampleTapDistance = (2 * mViewHeight + 1056) / 416;
+}
+
 void GLRenderer::drawBlurGather() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, mViewWidth, mViewHeight);
@@ -142,10 +151,23 @@ void GLRenderer::drawBlurGather() {
     glBindTexture(GL_TEXTURE_2D, mVelocityTexture);
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, mNeighbourMaxTexture);
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, mDepthTexture);
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, mRandomTexture);
     mBlurGatherShader->enable();
+    
+    glUniform1i(mBlurGatherShader->mKHandle, mK);
+    glUniform1i(mBlurGatherShader->mSHandle, 15);
+    glUniform1f(mBlurGatherShader->mHalfExposureHandle,
+                static_cast<GLfloat>(mExposure * 0.5f));
+    glUniform1f(mBlurGatherShader->mMaxSampleTapDistanceHandle,
+                static_cast<GLfloat>(mMaxSampleTapDistance));
     glUniform1i(mBlurGatherShader->mColorTextureHandle, 0);
     glUniform1i(mBlurGatherShader->mVelocityTextureHandle, 1);
     glUniform1i(mBlurGatherShader->mNeighbourMaxTextureHandle, 2);
+    glUniform1i(mBlurGatherShader->mDepthTextureHandle, 3);
+    glUniform1i(mBlurGatherShader->mRandomTextureHandle, 4);
     mScreenQuadModel->drawArrays();
     mBlurGatherShader->disable();
 }
@@ -157,6 +179,7 @@ void GLRenderer::reshape(int width, int height) {
     mWidthDividedByK = width / mK;
     mProjectionMatrix = glm::perspective(45.0f, (float)width/(float)height, 0.1f, 100.0f);
     mViewMatrix = glm::lookAt(glm::vec3(0,0,20), glm::vec3(0,0,0), glm::vec3(0,1,0));
+    computeMaxSampleTapDistance();
 }
 
 int velMod = 1500;
@@ -246,9 +269,9 @@ void GLRenderer::createFrameBuffers() {
     
     glGenTextures(1, &mDepthTexture);
     glBindTexture(GL_TEXTURE_2D, mDepthTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, mViewWidth, mViewHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, mViewWidth, mViewHeight, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthTexture, 0);
@@ -330,7 +353,30 @@ void GLRenderer::createFrameBuffers() {
     } else {
         printf("NeighbourMax framebuffer = %i\n", mNeighbourMaxFramebuffer);
     }
+    
+    // Random texture (used in gather pass)
+    srand( static_cast<unsigned int>( time(NULL) ) );
+    GLubyte *r = new unsigned char[RANDOM_TEXTURE_SIZE * RANDOM_TEXTURE_SIZE];
+    for(unsigned int i = 0U; i < RANDOM_TEXTURE_SIZE; i++)
+    {
+        for(unsigned int j = 0U; j < RANDOM_TEXTURE_SIZE; j++)
+        {
+            GLubyte val = static_cast<GLubyte>( rand() ) &
+            static_cast<GLubyte>(0x00ff);
+            r[i * RANDOM_TEXTURE_SIZE + j] = val;
+        }
+    }
 
+    glGenTextures(1, &mRandomTexture);
+    glBindTexture(GL_TEXTURE_2D, mRandomTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,
+                 RANDOM_TEXTURE_SIZE, RANDOM_TEXTURE_SIZE, 0, GL_RED,
+                 GL_UNSIGNED_BYTE, static_cast<const GLvoid*>(r));
+    delete r;
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

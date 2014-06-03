@@ -133,8 +133,6 @@
 		43F8BA4A1935F9D200E16654 /* wrap.inl in Resources */ = {isa = PBXBuildFile; fileRef = 43F8B9CC1935F9D200E16654 /* wrap.inl */; };
 		43F8BA551936196700E16654 /* BaseShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43F8BA4E19360CF600E16654 /* BaseShader.cpp */; };
 		43F8BA5719362B6400E16654 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F8BA5619362B6400E16654 /* CoreFoundation.framework */; };
-		43FDD3A8192B6B0A00667CDA /* blur.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 43FDD3A7192B6B0A00667CDA /* blur.vsh */; };
-		43FDD3AA192B6B1100667CDA /* blur.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 43FDD3A9192B6B1100667CDA /* blur.fsh */; };
 		43FDD3B5192B888E00667CDA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43FDD3B3192B883700667CDA /* MainMenu.xib */; };
 		4F254C01190AF09800A2E945 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F254C00190AF09800A2E945 /* Cocoa.framework */; };
 		4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F254C09190AF09800A2E945 /* InfoPlist.strings */; };
@@ -149,8 +147,6 @@
 		4F254C3E190AF44A00A2E945 /* GLEssentialsGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C39190AF44A00A2E945 /* GLEssentialsGLView.mm */; };
 		4F254C3F190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C3B190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m */; };
 		4F254C40190AF44A00A2E945 /* GLEssentialsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C3D190AF44A00A2E945 /* GLEssentialsWindowController.m */; };
-		4F254C50190AF9CA00A2E945 /* sourceUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C45190AF9CA00A2E945 /* sourceUtil.c */; };
-		4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F254C57190AFC6700A2E945 /* squareUtil.c */; };
 		4F2896751931F1AB004925C9 /* libLeap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F2896741931F1AB004925C9 /* libLeap.dylib */; };
 		4F2896761931F1C5004925C9 /* libLeap.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = 4F2896741931F1AB004925C9 /* libLeap.dylib */; };
 		4F28967B1931F1DC004925C9 /* LeapObjectiveC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F28967A1931F1DC004925C9 /* LeapObjectiveC.mm */; };
@@ -467,8 +463,6 @@
 		43F8BA4E19360CF600E16654 /* BaseShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseShader.cpp; sourceTree = "<group>"; };
 		43F8BA4F19360CF600E16654 /* BaseShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseShader.h; sourceTree = "<group>"; };
 		43F8BA5619362B6400E16654 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		43FDD3A7192B6B0A00667CDA /* blur.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blur.vsh; sourceTree = "<group>"; };
-		43FDD3A9192B6B1100667CDA /* blur.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blur.fsh; sourceTree = "<group>"; };
 		43FDD3B3192B883700667CDA /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		4F254BFD190AF09800A2E945 /* GyroSquares.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GyroSquares.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F254C00190AF09800A2E945 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -493,15 +487,9 @@
 		4F254C3B190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLEssentialsFullscreenWindow.m; sourceTree = "<group>"; };
 		4F254C3C190AF44A00A2E945 /* GLEssentialsWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLEssentialsWindowController.h; sourceTree = "<group>"; };
 		4F254C3D190AF44A00A2E945 /* GLEssentialsWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLEssentialsWindowController.m; sourceTree = "<group>"; };
-		4F254C41190AF96500A2E945 /* OpenGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLRenderer.h; sourceTree = "<group>"; };
-		4F254C42190AF96500A2E945 /* OpenGLRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLRenderer.m; sourceTree = "<group>"; };
-		4F254C45190AF9CA00A2E945 /* sourceUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sourceUtil.c; sourceTree = "<group>"; };
-		4F254C46190AF9CA00A2E945 /* sourceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sourceUtil.h; sourceTree = "<group>"; };
 		4F254C4D190AF9CA00A2E945 /* imageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = imageUtil.m; sourceTree = "<group>"; };
 		4F254C4E190AF9CA00A2E945 /* imageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imageUtil.h; sourceTree = "<group>"; };
 		4F254C4F190AF9CA00A2E945 /* glUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glUtil.h; sourceTree = "<group>"; };
-		4F254C57190AFC6700A2E945 /* squareUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = squareUtil.c; sourceTree = "<group>"; };
-		4F254C59190AFC7500A2E945 /* squareUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = squareUtil.h; sourceTree = "<group>"; };
 		4F2896741931F1AB004925C9 /* libLeap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libLeap.dylib; sourceTree = "<group>"; };
 		4F2896771931F1DC004925C9 /* Leap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leap.h; sourceTree = "<group>"; };
 		4F2896781931F1DC004925C9 /* LeapMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeapMath.h; sourceTree = "<group>"; };
@@ -889,8 +877,6 @@
 		43F8BA5419360D2E00E16654 /* Renderers */ = {
 			isa = PBXGroup;
 			children = (
-				4F254C41190AF96500A2E945 /* OpenGLRenderer.h */,
-				4F254C42190AF96500A2E945 /* OpenGLRenderer.m */,
 				43F8B8DC1935F68B00E16654 /* GLRenderer.h */,
 				43F8B8DB1935F68B00E16654 /* GLRenderer.cpp */,
 			);
@@ -987,13 +973,9 @@
 		4F254C44190AF9B300A2E945 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4F254C45190AF9CA00A2E945 /* sourceUtil.c */,
-				4F254C46190AF9CA00A2E945 /* sourceUtil.h */,
 				4F254C4D190AF9CA00A2E945 /* imageUtil.m */,
 				4F254C4E190AF9CA00A2E945 /* imageUtil.h */,
 				4F254C4F190AF9CA00A2E945 /* glUtil.h */,
-				4F254C57190AFC6700A2E945 /* squareUtil.c */,
-				4F254C59190AFC7500A2E945 /* squareUtil.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -1022,8 +1004,6 @@
 				4357DD68193DFC45000ABC74 /* blurNeighbourMax.fsh */,
 				4357DD6A193DFC53000ABC74 /* blurTileMax.vsh */,
 				4357DD6C193DFC5A000ABC74 /* blurTileMax.fsh */,
-				43FDD3A7192B6B0A00667CDA /* blur.vsh */,
-				43FDD3A9192B6B1100667CDA /* blur.fsh */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -1129,7 +1109,6 @@
 				43F8BA2E1935F9D200E16654 /* mixed_product.inl in Resources */,
 				4F254C0B190AF09800A2E945 /* InfoPlist.strings in Resources */,
 				43F8B9F51935F9D200E16654 /* type_half.inl in Resources */,
-				43FDD3A8192B6B0A00667CDA /* blur.vsh in Resources */,
 				4F254C11190AF09800A2E945 /* Credits.rtf in Resources */,
 				43F8BA461935F9D200E16654 /* unsigned_int.inl in Resources */,
 				43F8BA341935F9D200E16654 /* optimum_pow.inl in Resources */,
@@ -1192,7 +1171,6 @@
 				43F8B9F91935F9D200E16654 /* type_mat2x4.inl in Resources */,
 				43F8BA001935F9D200E16654 /* type_vec.inl in Resources */,
 				43F8BA491935F9D200E16654 /* vector_query.inl in Resources */,
-				43FDD3AA192B6B1100667CDA /* blur.fsh in Resources */,
 				43F8BA0B1935F9D200E16654 /* packing.inl in Resources */,
 				43F8B9E41935F9D200E16654 /* func_geometric.inl in Resources */,
 				43F8BA321935F9D200E16654 /* normalize_dot.inl in Resources */,
@@ -1245,13 +1223,11 @@
 			files = (
 				43F60CB1193CAADE00CE3747 /* ScreenQuadModel.cpp in Sources */,
 				43F60CA7193C9E3800CE3747 /* SceneVelocityShader.cpp in Sources */,
-				4F254C50190AF9CA00A2E945 /* sourceUtil.c in Sources */,
 				43F8BA551936196700E16654 /* BaseShader.cpp in Sources */,
 				4352DC2E193752210074ADAB /* CubeModel.cpp in Sources */,
 				4F28967B1931F1DC004925C9 /* LeapObjectiveC.mm in Sources */,
 				4F254C3E190AF44A00A2E945 /* GLEssentialsGLView.mm in Sources */,
 				4F254C3F190AF44A00A2E945 /* GLEssentialsFullscreenWindow.m in Sources */,
-				4F254C58190AFC6700A2E945 /* squareUtil.c in Sources */,
 				43F8B8DD1935F68B00E16654 /* GLRenderer.cpp in Sources */,
 				43F8B9EB1935F9D200E16654 /* glm.cpp in Sources */,
 				43F60CA4193C7AF200CE3747 /* HollowCubeModel.cpp in Sources */,

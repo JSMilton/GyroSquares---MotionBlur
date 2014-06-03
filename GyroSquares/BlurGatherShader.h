@@ -15,4 +15,9 @@ public:
     GLint mVelocityTextureHandle;
     GLint mNeighbourMaxTextureHandle;
     GLint mDepthTextureHandle;
+    GLint mRandomTextureHandle;
+    GLint mKHandle;
+    GLint mSHandle;
+    GLint mHalfExposureHandle;
+    GLint mMaxSampleTapDistanceHandle;
 };
