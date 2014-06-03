@@ -61,6 +61,8 @@ private:
     GLuint mVelocityFramebuffer;
     GLuint mTileMaxFramebuffer;
     GLuint mNeighbourMaxFramebuffer;
+    GLuint mSmallRenderbuffer;
+    GLuint mNormalRenderbuffer;
     
     int mViewWidth;
     int mViewHeight;

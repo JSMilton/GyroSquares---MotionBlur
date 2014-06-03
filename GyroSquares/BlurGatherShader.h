@@ -13,5 +13,6 @@ public:
     BlurGatherShader();
     GLint mColorTextureHandle;
     GLint mVelocityTextureHandle;
+    GLint mNeighbourMaxTextureHandle;
     GLint mDepthTextureHandle;
 };

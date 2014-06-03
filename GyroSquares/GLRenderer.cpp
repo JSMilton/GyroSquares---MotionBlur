@@ -17,6 +17,12 @@
 #include "ScreenQuadModel.h"
 
 void GLRenderer::initOpenGL() {
+    mExposure = 1.0f;
+    mLastDt = 0.0f;
+    mK = 4U;
+    mHeightDividedByK = mViewHeight / mK;
+    mWidthDividedByK = mViewWidth / mK;
+    
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.f, 0.f, 0.f, 1.0f);
     mViewWidth = 1200;
@@ -47,12 +53,6 @@ void GLRenderer::initOpenGL() {
     mHollowCubeModel->scaleModelByVector3(3, 3, 0.25);
     mHollowCubeModel->translateModelByVector3(0,0,0);
     
-    mExposure = 1.0f;
-    mLastDt = 0.0f;
-    mK = 4U;
-    mHeightDividedByK = mViewHeight / mK;
-    mWidthDividedByK = mViewWidth / mK;
-    
     createFrameBuffers();
     render(0.0);
 }
@@ -74,6 +74,7 @@ void GLRenderer::render(float dt) {
 
 void GLRenderer::drawSceneColor() {
     glBindFramebuffer(GL_FRAMEBUFFER, mColorFramebuffer);
+    glViewport(0, 0, mViewWidth, mViewHeight);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     mSceneColorShader->enable();
     mCubeModel->update(mSceneColorShader->uModelMatrixHandle);
@@ -86,6 +87,7 @@ void GLRenderer::drawSceneColor() {
 void GLRenderer::drawSceneVelocity() {
     GLfloat expFPS = 0.5f * mExposure / mLastDt;
     glBindFramebuffer(GL_FRAMEBUFFER, mVelocityFramebuffer);
+    glViewport(0, 0, mViewWidth, mViewHeight);
     glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     mSceneVelocityShader->enable();
@@ -104,23 +106,46 @@ void GLRenderer::drawSceneVelocity() {
 }
 
 void GLRenderer::drawBlurTileMax() {
-    
+    glBindFramebuffer(GL_FRAMEBUFFER, mTileMaxFramebuffer);
+    glViewport(0, 0, mWidthDividedByK, mHeightDividedByK);
+    glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    mBlurTileMaxShader->enable();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, mVelocityTexture);
+    glUniform1i(mBlurTileMaxShader->mInputTextureHandle, 0);
+    glUniform1i(mBlurTileMaxShader->mKHandle, mK);
+    mScreenQuadModel->drawArrays();
+    mBlurTileMaxShader->disable();
 }
 
 void GLRenderer::drawBlurNeighbourMax() {
-    
+    glBindFramebuffer(GL_FRAMEBUFFER, mNeighbourMaxFramebuffer);
+    glViewport(0, 0, mWidthDividedByK, mHeightDividedByK);
+    glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    mBlurNeighbourMaxShader->enable();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, mTileMaxTexture);
+    glUniform1i(mBlurNeighbourMaxShader->mInputTextureHandle, 0);
+    mScreenQuadModel->drawArrays();
+    mBlurNeighbourMaxShader->disable();
 }
 
 void GLRenderer::drawBlurGather() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, mViewWidth, mViewHeight);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, mColorTexture);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, mVelocityTexture);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, mNeighbourMaxTexture);
     mBlurGatherShader->enable();
     glUniform1i(mBlurGatherShader->mColorTextureHandle, 0);
     glUniform1i(mBlurGatherShader->mVelocityTextureHandle, 1);
+    glUniform1i(mBlurGatherShader->mNeighbourMaxTextureHandle, 2);
     mScreenQuadModel->drawArrays();
     mBlurGatherShader->disable();
 }
@@ -197,6 +222,16 @@ void GLRenderer::resetFramebuffers() {
 void GLRenderer::createFrameBuffers() {
     resetFramebuffers();
     
+    glGenRenderbuffers(1, &mNormalRenderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, mNormalRenderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
+                          mViewWidth, mViewHeight);
+    
+    glGenRenderbuffers(1, &mSmallRenderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, mSmallRenderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24,
+                          mWidthDividedByK, mHeightDividedByK);
+    
     glGenFramebuffers(1, &mColorFramebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, mColorFramebuffer);
     
@@ -239,6 +274,9 @@ void GLRenderer::createFrameBuffers() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mVelocityTexture, 0);
     
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                              GL_RENDERBUFFER, mNormalRenderbuffer);
+    
     glDrawBuffers(1, DrawBuffers);
     
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
@@ -252,12 +290,15 @@ void GLRenderer::createFrameBuffers() {
     
     glGenTextures(1, &mTileMaxTexture);
     glBindTexture(GL_TEXTURE_2D, mTileMaxTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, mViewWidth, mViewHeight, 0, GL_RG, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, mWidthDividedByK, mHeightDividedByK, 0, GL_RG, GL_UNSIGNED_BYTE, NULL);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTileMaxTexture, 0);
+    
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                              GL_RENDERBUFFER, mSmallRenderbuffer);
     
     glDrawBuffers(1, DrawBuffers);
     
@@ -272,12 +313,15 @@ void GLRenderer::createFrameBuffers() {
     
     glGenTextures(1, &mNeighbourMaxTexture);
     glBindTexture(GL_TEXTURE_2D, mNeighbourMaxTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, mViewWidth, mViewHeight, 0, GL_RG, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, mWidthDividedByK, mHeightDividedByK, 0, GL_RG, GL_UNSIGNED_BYTE, NULL);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mNeighbourMaxTexture, 0);
+    
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                              GL_RENDERBUFFER, mSmallRenderbuffer);
     
     glDrawBuffers(1, DrawBuffers);
     

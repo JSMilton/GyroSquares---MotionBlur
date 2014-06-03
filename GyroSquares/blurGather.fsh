@@ -25,6 +25,6 @@ vec2 writeBiasScale(vec2 v)
 void main(){
     vec4 velocity = vec4(readBiasScale(texture(uVelocityTexture, st).xy), 0.5, 1);
     vec4 color = vec4(texture(uColorTexture, st).xyz, 1);
-    vec4 neighbour = vec4(texture(uNeighbourMaxTexture, st).xy, 0.5, 1);
+    vec4 neighbour = vec4(readBiasScale(texture(uNeighbourMaxTexture, st).xy), 0.5, 1);
     outFragColor = neighbour;
 }
